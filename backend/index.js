@@ -14,6 +14,8 @@ require('dotenv').config();
 
 mysqlConnection();
 
+app.use('/api/uni', require('./routes/universidades'))
+
 app.listen(process.env.PORT, () => {
     console.log('Servidor corriendo en el puerto ' + process.env.PORT);
 });
