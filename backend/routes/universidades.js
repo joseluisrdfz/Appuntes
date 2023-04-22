@@ -10,7 +10,9 @@ router.get('/', [
 ], getUniversidades);
 
 router.post('/new', [
-
+    check('name', 'El nombre es obligatorio').not().isEmpty().trim(),
+    check('address', 'Debes poner la direccion de la universidad').not().isEmpty().trim(),
+    validarCampos
 ], newUniversidad)
 
 module.exports = router
