@@ -1,4 +1,4 @@
 # Appuntes
-Repository of my tfg
+Repositorio de mi tfg
 
 Autor : Jose Luis Rodriguez Ferrandiz 

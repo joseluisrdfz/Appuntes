@@ -4,6 +4,7 @@ const getGrados = async(req, res = response) => {
 
 
     const db = await mysqlConnection();
+
     let resultado;
 
     resultado = await db.query(`SELECT * FROM grados`)

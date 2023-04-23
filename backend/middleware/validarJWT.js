@@ -7,7 +7,7 @@ const validarJWT = (req, res, next) => {
     if (!token) {
         return res.status(400).json({
             ok: false,
-            msg: 'Falta token de autorización'
+            msg: 'Falta el token de autorización'
         });
     }
 
