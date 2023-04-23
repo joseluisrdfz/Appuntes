@@ -5,7 +5,7 @@ const generarJWT = (uid, rol) => {
     return new Promise((resolve, reject) => {
 
         const payload = {
-            uid,
+            id,
             rol
         }
 
