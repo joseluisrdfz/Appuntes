@@ -1,0 +1,34 @@
+h1 {
+    text-align: center;
+    font-size: 2.7em;
+}
+
+.logo {
+    width: auto;
+    height: 20vh;
+    margin: 0 auto
+}
+
+#zona-logo {
+    height: 40vh;
+    padding: 4vh 0;
+}
+
+#zona-botones {
+    height: 60vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-options-btn {
+    width: 80%;
+    border-radius: 25px;
+    font-size: 1.15em;
+    margin: 10px 0;
+}
+
+.login-options-btn>ion-icon {
+    margin-left: 10px;
+}

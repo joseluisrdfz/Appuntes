@@ -1,0 +1,20 @@
+<ion-content [fullscreen]="true">
+    <div id="zona-logo">
+
+        <ion-img class="logo" src="./assets/icon/icon.png" alt="Logo de Appuntes"></ion-img>
+        <h1>Appuntes</h1>
+
+    </div>
+
+    <div id="zona-botones">
+        <ion-button class="login-options-btn" fill="solid" (click)="start('/register')">Regístrate</ion-button>
+        <ion-button class="login-options-btn" fill="outline" (click)="start('/login')">Inicia sesión</ion-button>
+        <ion-button class="login-options-btn" fill="outline">Inicia sesión con google
+            <ion-icon name="logo-google"></ion-icon>
+        </ion-button>
+
+
+    </div>
+
+
+</ion-content>
