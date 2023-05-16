@@ -39,4 +39,29 @@ const newUniversidad = async(req, res = response) => {
     })
 }
 
-module.exports = { getUniversidades, newUniversidad }
+
+const getUniversidad = async(req, res = response) => {
+    const idUni = req.params.id;
+    const db = await mysqlConnection();
+    let resultado;
+
+    resultado = await db.query(`SELECT * FROM universities where id_uni = ${idUni} `)
+
+    await db.end();
+
+    console.log(resultado);
+    let messageAux = 'Se ha encontrado una universidad con ese id';
+    if (resultado.length == 0) {
+        messageAux = 'No se ha encontrado ninguna universidad con ese id';
+    }
+
+    return res.status(200).json({
+        ok: true,
+        message: messageAux,
+        id: idUni,
+        universidades: resultado
+    })
+}
+
+
+module.exports = { getUniversidades, newUniversidad, getUniversidad }

@@ -1,9 +1,11 @@
 const { Router } = require('express');
-const { getUniversidades, newUniversidad } = require('../controllers/universidades');
+const { getUniversidades, newUniversidad, getUniversidad } = require('../controllers/universidades');
 const { check } = require('express-validator');
 const { validarCampos } = require('../middleware/validarCampos');
 
 const router = Router();
+
+// base route api/uni
 
 router.get('/', [
 
@@ -14,5 +16,10 @@ router.post('/new', [
     check('address', 'Debes poner la direccion de la universidad').not().isEmpty().trim(),
     validarCampos
 ], newUniversidad)
+
+router.get('/:id', [
+
+], getUniversidad)
+
 
 module.exports = router
