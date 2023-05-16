@@ -28,7 +28,9 @@ router.get('/:id/anuncios', [
 
 //Falta comprobar token de autorización admin
 router.post('/:id/anuncios/new', [
-
+    check('id', 'La id del grado es obligatoria').not().isEmpty().trim(),
+    check('texto_anuncio', 'El texto del anuncio es obligatorio').not().isEmpty().trim(),
+    validarCampos
 ], newAnuncioDelGrado);
 
 //Falta comprobar token de autorización admin

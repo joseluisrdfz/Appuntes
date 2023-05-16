@@ -74,44 +74,53 @@ const getAnunciosDelGrado = async(req, res = response) => {
     return res.status(200).json({
         message: `Se ha recuperado los anuncios del grado ${req.params.id} `,
         total: resultado.length,
-        grados: resultado
+        anuncios: resultado
     })
 }
 
 const newGrado = async(req, res = response) => {
     const db = await mysqlConnection();
-    /* let resultado;
-
-    
-
-    resultado = await db.query(`INSERT INTO universities (name, address, logo) VALUES ('${aux1}', '${aux2}', 'none');`)
-
-    await db.end();
-
-    console.log(resultado['_rejectionHandler0']); */
 
     let gName = req.body['grado_name'];
     let gDesc = req.body['grado_description'];
     let gUni = req.body['id_uni']
     let gCursos = req.body['cursos']
 
+    let resultado;
+
+    resultado = await db.query(`INSERT INTO grados (grado_name, grado_description, cursos, id_uni) VALUES ('${gName}','${gDesc}','${gCursos}','${gUni}');`)
+
+    await db.end();
+
+    console.log(resultado);
+
     return res.status(200).json({
         ok: true,
-        gName,
-        gDesc,
-        gUni,
-        gCursos
-        /*  message: `${aux1} insertada en la base de datos.`,
-         filasAfectadas: resultado['_rejectionHandler0']['affectedRows'] */
+        message: `${gName} insertada en la base de datos.`,
+        filasAfectadas: resultado['affectedRows'],
+        insertID: resultado['insertId']
     })
 }
 
 const newAnuncioDelGrado = async(req, res = response) => {
+    const db = await mysqlConnection();
+
+    let idGrado = req.params.id;
+    let aText = req.body['texto_anuncio'];
+
+    let resultado;
+
+    resultado = await db.query(`INSERT INTO anuncios (id_grado,texto_anuncio) VALUES ('${idGrado}','${aText}');`)
+
+    await db.end();
+
+    console.log(resultado);
 
     return res.status(200).json({
-        message: 'Se han recuperado los grados',
-        total: req.params.id,
-
+        ok: true,
+        message: `Anuncio: '${aText}' de la carrera '${idGrado}' insertado en la base de datos.`,
+        filasAfectadas: resultado['affectedRows'],
+        insertID: resultado['insertId']
     })
 
 }

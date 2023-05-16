@@ -16,6 +16,7 @@ require('dotenv').config();
 
 app.use('/api/uni', require('./routes/universidades'))
 app.use('/api/grado', require('./routes/grados'))
+app.use('/api/asignaturas', require('./routes/asignaturas'))
 
 app.listen(process.env.PORT, () => {
     console.log('Servidor corriendo en el puerto ' + process.env.PORT);
