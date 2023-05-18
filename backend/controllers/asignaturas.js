@@ -10,8 +10,6 @@ const getAsignaturas = async(req, res = response) => {
 
     await db.end();
 
-    //console.log(resultado);
-
     return res.status(200).json({
         message: 'Se han recuperado las asignaturas',
         total: resultado.length,
@@ -45,26 +43,47 @@ const getAsignaturasDelGrado = async(req, res = response) => {
 }
 
 const newAsignatura = async(req, res = response) => {
-    const db = await mysqlConnection();
+    try {
 
-    let idGrado = req.params.id;
-    let aText = req.body['texto_anuncio'];
+        if (req.rolToken != 'admin') {
+            return res.status(400).json({
+                ok: false,
+                message: `Ha habido un problema en la creacion de la asignatura. No tienes permiso.`,
 
-    let resultado;
+            })
+        }
 
-    resultado = await db.query(`INSERT INTO anuncios (id_grado,texto_anuncio) VALUES ('${idGrado}','${aText}');`)
+        const db = await mysqlConnection();
 
-    await db.end();
+        let name = req.body['name'];
+        let grado = req.body['grado'];
+        let curso = req.body['curso'];
+        let description = '';
+        if (req.body['description']) {
+            description = req.body['description'];
+        }
 
-    console.log(resultado);
+        let resultado;
 
-    return res.status(200).json({
-        ok: true,
-        message: `Anuncio: '${aText}' de la carrera '${idGrado}' insertado en la base de datos.`,
-        filasAfectadas: resultado['affectedRows'],
-        insertID: resultado['insertId']
-    })
+        resultado = await db.query(`INSERT INTO asignaturas (name,grado,curso,description) VALUES ('${name}','${grado}','${curso}','${description}');`)
 
+        await db.end();
+
+        console.log(resultado);
+
+        return res.status(200).json({
+            ok: true,
+            message: `Asignatura: '${name}' de la carrera '${grado}' insertada en la base de datos.`,
+            filasAfectadas: resultado['affectedRows'],
+            insertID: resultado['insertId']
+        })
+    } catch (e) {
+        return res.status(400).json({
+            ok: false,
+            message: `Ha habido un problema en la creacion de la asignatura.`,
+            error: e
+        })
+    }
 }
 
 

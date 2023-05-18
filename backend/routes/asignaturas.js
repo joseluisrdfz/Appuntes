@@ -2,6 +2,7 @@ const { Router } = require('express');
 const { getAsignaturas, getAsignaturasDelGrado, newAsignatura } = require('../controllers/asignaturas.js');
 const { check } = require('express-validator');
 const { validarCampos } = require('../middleware/validarCampos');
+const { validarJWT } = require('../middleware/validarJWT.js');
 
 const router = Router();
 
@@ -17,10 +18,11 @@ router.get('/grado/:id', [
 
 //Falta comprobar token de autorización admin
 router.post('/new', [
-    check('grado_name', 'El nombre es obligatorio').not().isEmpty().trim(),
-    check('cursos', 'Debes añadir el numero de cursos del grado').not().isEmpty().trim(),
-    check('id_uni', 'Debes asignar el grado a una universidad').not().isEmpty().trim(),
-    check('grado_description', '').optional().trim(),
+    validarJWT,
+    check('name', 'El nombre de la asignatura es obligatorio').not().isEmpty().trim(),
+    check('grado', 'Debes indicar a que grado pertenece esta asignatura').not().isEmpty().trim(),
+    check('curso', 'Debes asignar el curso al que pertenece esta asignatura').not().isEmpty().trim(),
+    check('description', '').optional().trim(),
     validarCampos
 ], newAsignatura)
 
