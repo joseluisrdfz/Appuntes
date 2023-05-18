@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 21-04-2023 a las 16:33:04
+-- Tiempo de generación: 18-05-2023 a las 16:39:48
 -- Versión del servidor: 10.4.21-MariaDB
 -- Versión de PHP: 8.0.12
 
@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `db_appuntes`
 --
+CREATE DATABASE IF NOT EXISTS `db_appuntes` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `db_appuntes`;
 
 -- --------------------------------------------------------
 
@@ -27,11 +29,21 @@ SET time_zone = "+00:00";
 -- Estructura de tabla para la tabla `anuncios`
 --
 
+DROP TABLE IF EXISTS `anuncios`;
 CREATE TABLE `anuncios` (
   `id_anuncio` int(11) NOT NULL,
   `texto_anuncio` varchar(300) NOT NULL,
   `id_grado` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `anuncios`
+--
+
+INSERT INTO `anuncios` (`id_anuncio`, `texto_anuncio`, `id_grado`) VALUES
+(1, 'Buenas, este es un anuncio de prueba para el grado de ingeniería multimedia.', 1),
+(3, 'Proximamente se realizarán las presentaciones de los abp de este año', 1),
+(4, 'Anuncio de informatica', 3);
 
 -- --------------------------------------------------------
 
@@ -39,6 +51,7 @@ CREATE TABLE `anuncios` (
 -- Estructura de tabla para la tabla `apuntes`
 --
 
+DROP TABLE IF EXISTS `apuntes`;
 CREATE TABLE `apuntes` (
   `id_apuntes` int(11) NOT NULL,
   `filename` varchar(60) NOT NULL,
@@ -57,6 +70,7 @@ CREATE TABLE `apuntes` (
 -- Estructura de tabla para la tabla `asignaturas`
 --
 
+DROP TABLE IF EXISTS `asignaturas`;
 CREATE TABLE `asignaturas` (
   `id_asignatura` int(11) NOT NULL,
   `name` varchar(35) NOT NULL,
@@ -65,12 +79,23 @@ CREATE TABLE `asignaturas` (
   `grado` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Volcado de datos para la tabla `asignaturas`
+--
+
+INSERT INTO `asignaturas` (`id_asignatura`, `name`, `description`, `curso`, `grado`) VALUES
+(1, 'Sonido y musica por computador', '', 3, 1),
+(2, 'Gráficos por computador', '', 3, 1),
+(3, 'Técnicas avanzadas de gráficos', '', 4, 1),
+(4, 'Asignatura 1', '', 3, 3);
+
 -- --------------------------------------------------------
 
 --
 -- Estructura de tabla para la tabla `grados`
 --
 
+DROP TABLE IF EXISTS `grados`;
 CREATE TABLE `grados` (
   `id_grado` int(11) NOT NULL,
   `grado_name` varchar(50) NOT NULL,
@@ -79,12 +104,22 @@ CREATE TABLE `grados` (
   `id_uni` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Volcado de datos para la tabla `grados`
+--
+
+INSERT INTO `grados` (`id_grado`, `grado_name`, `grado_description`, `cursos`, `id_uni`) VALUES
+(1, 'Grado en Ingenieria Multimedia', 'El titulado en Ingeniería Multimedia es un profesional con sólidos conocimientos en diseño y uso de las tecnologías de soporte, y en el desarrollo de aplicaciones multimedia, siendo capaz de realizar tareas de integración tecnológica.', 4, 1),
+(3, 'Grado en Ingeniería Informatica', '', 4, 1),
+(5, 'Grado en Ingeniería Informatica', '', 4, 2);
+
 -- --------------------------------------------------------
 
 --
 -- Estructura de tabla para la tabla `preguntas`
 --
 
+DROP TABLE IF EXISTS `preguntas`;
 CREATE TABLE `preguntas` (
   `id_pregunta` int(11) NOT NULL,
   `texto_pregunta` int(11) NOT NULL,
@@ -98,6 +133,7 @@ CREATE TABLE `preguntas` (
 -- Estructura de tabla para la tabla `preguntas_apuntes`
 --
 
+DROP TABLE IF EXISTS `preguntas_apuntes`;
 CREATE TABLE `preguntas_apuntes` (
   `id_pregunta` int(11) NOT NULL,
   `id_apuntes` int(11) NOT NULL
@@ -109,6 +145,7 @@ CREATE TABLE `preguntas_apuntes` (
 -- Estructura de tabla para la tabla `preguntas_asignaturas`
 --
 
+DROP TABLE IF EXISTS `preguntas_asignaturas`;
 CREATE TABLE `preguntas_asignaturas` (
   `id_pregunta` int(11) NOT NULL,
   `id_asignatura` int(11) NOT NULL
@@ -120,6 +157,7 @@ CREATE TABLE `preguntas_asignaturas` (
 -- Estructura de tabla para la tabla `respuestas`
 --
 
+DROP TABLE IF EXISTS `respuestas`;
 CREATE TABLE `respuestas` (
   `id_respuesta` int(11) NOT NULL,
   `texto_respuesta` varchar(50) NOT NULL,
@@ -134,6 +172,7 @@ CREATE TABLE `respuestas` (
 -- Estructura de tabla para la tabla `seguir_a_asignatura`
 --
 
+DROP TABLE IF EXISTS `seguir_a_asignatura`;
 CREATE TABLE `seguir_a_asignatura` (
   `user` int(11) NOT NULL,
   `asignatura` int(11) NOT NULL
@@ -145,6 +184,7 @@ CREATE TABLE `seguir_a_asignatura` (
 -- Estructura de tabla para la tabla `seguir_a_usuario`
 --
 
+DROP TABLE IF EXISTS `seguir_a_usuario`;
 CREATE TABLE `seguir_a_usuario` (
   `user` int(11) NOT NULL,
   `user_followed` int(11) NOT NULL
@@ -156,11 +196,21 @@ CREATE TABLE `seguir_a_usuario` (
 -- Estructura de tabla para la tabla `universities`
 --
 
+DROP TABLE IF EXISTS `universities`;
 CREATE TABLE `universities` (
   `id_uni` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
-  `address` varchar(200) NOT NULL
+  `address` varchar(200) NOT NULL,
+  `logo` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `universities`
+--
+
+INSERT INTO `universities` (`id_uni`, `name`, `address`, `logo`) VALUES
+(1, 'Universidad de Alicante', 'Carr. de San Vicente del Raspeig, s/n, 03690 San Vicente del Raspeig, Alicante', 'none'),
+(2, 'Universidad de michigan', 'Michigan', 'Michigan');
 
 -- --------------------------------------------------------
 
@@ -168,9 +218,11 @@ CREATE TABLE `universities` (
 -- Estructura de tabla para la tabla `users`
 --
 
+DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `user_id` int(11) NOT NULL,
   `username` varchar(20) NOT NULL,
+  `rol` enum('administrador','normal') NOT NULL DEFAULT 'normal',
   `name` varchar(20) NOT NULL,
   `surname` varchar(30) NOT NULL,
   `email` varchar(350) NOT NULL,
@@ -281,7 +333,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `anuncios`
 --
 ALTER TABLE `anuncios`
-  MODIFY `id_anuncio` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_anuncio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `apuntes`
@@ -293,13 +345,13 @@ ALTER TABLE `apuntes`
 -- AUTO_INCREMENT de la tabla `asignaturas`
 --
 ALTER TABLE `asignaturas`
-  MODIFY `id_asignatura` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_asignatura` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `grados`
 --
 ALTER TABLE `grados`
-  MODIFY `id_grado` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_grado` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `preguntas`
@@ -317,7 +369,7 @@ ALTER TABLE `respuestas`
 -- AUTO_INCREMENT de la tabla `universities`
 --
 ALTER TABLE `universities`
-  MODIFY `id_uni` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_uni` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT de la tabla `users`
