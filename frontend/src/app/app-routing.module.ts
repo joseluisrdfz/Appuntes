@@ -8,11 +8,12 @@ const routes: Routes = [
   {
 		path: 'login',
 		loadChildren: () => import('./pages/login/login.module').then((m) => m.LoginPageModule),
-		canLoad: [IntroGuard, AutoLoginGuard] // Guards que comprueban si se muestra la pagina de introduccion o si se inicia sesion automaticamente
+		canLoad: [AutoLoginGuard] // Guards que comprueban si se muestra la pagina de introduccion o si se inicia sesion automaticamente
 	},
 	{
 		path: 'intro',
-		loadChildren: () => import('./pages/intro/intro.module').then((m) => m.IntroPageModule)
+		loadChildren: () => import('./pages/intro/intro.module').then((m) => m.IntroPageModule),
+		canLoad: [IntroGuard] // la usare para comprobar si hay un token, si lo hay manda directamente al login y el login tendra los datos
 	},
 	{
 		path: 'tabs',
@@ -22,9 +23,9 @@ const routes: Routes = [
     path: 'register',
     loadChildren: () => import('./pages/register/register.module').then( m => m.RegisterPageModule)
   },{
-		path: '',
+		path: '**',
 		redirectTo: '/intro',
-		pathMatch: 'full'
+
 	}
 ];
 @NgModule({

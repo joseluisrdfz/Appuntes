@@ -1,0 +1,121 @@
+ion-header {
+    height: 15vh;
+    display: flex;
+    align-items: last baseline;
+}
+
+ion-title {
+    text-align: center;
+}
+
+ion-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#loginInputs {
+    height: 50vh;
+    margin: 10px 0;
+    padding: 0 25px;
+}
+
+#loginInputs>form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+ion-input {
+    border: 2px solid black;
+    border-radius: 25px;
+    max-width: 80vw;
+    overflow: hidden;
+    font-size: 1.2em;
+    margin: 10px 0;
+    --border-color: none;
+}
+
+.label-input {
+    font-size: 1em!important;
+}
+
+.sc-ion-input-md-h {
+    background-color: #f5f5f5;
+    --padding-start: 10px;
+    --padding-end: 10px;
+}
+
+.sc-ion-input-ios-h {
+    background-color: #f5f5f5;
+    --padding-start: 10px;
+    --padding-end: 10px;
+}
+
+#login-btn {
+    margin-top: 40px;
+}
+
+.btn {
+    width: 80%;
+    border-radius: 25px;
+    font-size: 1.15em;
+    margin: 10px 0;
+}
+
+.btn>ion-icon {
+    margin-left: 10px;
+}
+
+#other-options {
+    height: 30vh;
+    justify-content: space-evenly;
+}
+
+.divider {
+    background-color: black;
+    height: 2px;
+    width: 80vw;
+}
+
+ion-modal#login-failed-modal {
+    color: #000000;
+    --width: fit-content;
+    --min-width: 250px;
+    --height: fit-content;
+    --border-radius: 6px;
+    --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
+}
+
+ion-modal#login-failed-modal h1 {
+    margin: 20px 20px 10px 20px;
+}
+
+ion-modal#login-failed-modal ion-icon {
+    margin-right: 6px;
+    width: 48px;
+    height: 48px;
+    padding: 4px 0;
+    color: #000000;
+}
+
+ion-modal#login-failed-modal .wrapper {
+    padding: 0px 0 20px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-width: 80vw;
+    text-align: center;
+}
+
+#closeModal {
+    width: 100%;
+    text-align: end;
+    padding: 10px 20px 0;
+    font-size: 1.3em;
+    cursor: pointer;
+}

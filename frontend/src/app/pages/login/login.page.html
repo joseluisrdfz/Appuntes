@@ -1,13 +1,45 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>login</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">login</ion-title>
-    </ion-toolbar>
-  </ion-header>
+    <ion-header collapse="condense">
+        <ion-toolbar>
+            <ion-title size="large">Iniciar sesión</ion-title>
+        </ion-toolbar>
+    </ion-header>
+
+    <ion-list id="loginInputs">
+        <form [formGroup]="loginForm" (ngSubmit)="login()">
+            <ion-item>
+                <ion-label class="label-input" position="stacked" #label1>Nombre de usuario</ion-label>
+                <ion-input id="username-input" aria-labelledby="label1" formControlName="username" errorText="Nombre de usuario invalido" required></ion-input>
+            </ion-item>
+
+            <ion-item>
+                <ion-label class="label-input" position="stacked" #label2>Contraseña</ion-label>
+                <ion-input id="password-input" errorText="Contraseña invalida" formControlName="password" aria-labelledby="label2" type="password" required></ion-input>
+            </ion-item>
+            <ion-button type="submit" id="login-btn" class="btn" fill="solid">Iniciar sesión</ion-button>
+        </form>
+    </ion-list>
+
+    <ion-list id="other-options">
+        <div class="divider"></div>
+
+
+        <ion-button class="btn" (click)="goTo('/register')" fill="solid">Registrate</ion-button>
+        <ion-button class="btn" fill="outline" (click)="openModal(!isModalOpen)">Inicia sesión con google
+            <ion-icon name="logo-google"></ion-icon>
+        </ion-button>
+
+    </ion-list>
+
+    <ion-modal id="login-failed-modal" #modal [isOpen]="isModalOpen">
+        <ng-template>
+            <div id="closeModal" (click)="openModal(!isModalOpen)"> X </div>
+            <div class="wrapper">
+                <h1>Login Fallido</h1>
+
+                <p>{{loginError}}</p>
+            </div>
+        </ng-template>
+    </ion-modal>
+
 </ion-content>
