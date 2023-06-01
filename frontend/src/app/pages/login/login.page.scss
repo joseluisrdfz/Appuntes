@@ -28,30 +28,27 @@ ion-list {
     align-items: center;
 }
 
-ion-input {
+.input {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 0.8em;
+    margin: 5px 0;
+}
+
+input {
     border: 2px solid black;
-    border-radius: 25px;
-    max-width: 80vw;
+    border-radius: 14px;
+    width: 80vw;
     overflow: hidden;
-    font-size: 1.2em;
-    margin: 10px 0;
-    --border-color: none;
+    font-size: 1em;
+    background-color: #f5f5f5;
+    padding: 2px 10px;
+    height: 40px;
 }
 
 .label-input {
     font-size: 1em!important;
-}
-
-.sc-ion-input-md-h {
-    background-color: #f5f5f5;
-    --padding-start: 10px;
-    --padding-end: 10px;
-}
-
-.sc-ion-input-ios-h {
-    background-color: #f5f5f5;
-    --padding-start: 10px;
-    --padding-end: 10px;
 }
 
 #login-btn {
@@ -61,7 +58,8 @@ ion-input {
 .btn {
     width: 80%;
     border-radius: 25px;
-    font-size: 1.15em;
+    font-size: 1em;
+    text-transform: none;
     margin: 10px 0;
 }
 
@@ -78,6 +76,10 @@ ion-input {
     background-color: black;
     height: 2px;
     width: 80vw;
+}
+
+ion-modal {
+    padding: 20vw;
 }
 
 ion-modal#login-failed-modal {
@@ -108,8 +110,8 @@ ion-modal#login-failed-modal .wrapper {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    max-width: 80vw;
     text-align: center;
+    padding: 0 20px;
 }
 
 #closeModal {

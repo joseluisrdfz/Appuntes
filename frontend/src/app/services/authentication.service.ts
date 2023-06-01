@@ -33,7 +33,7 @@ export class AuthenticationService {
 	}
 
 	logout() {
-
+    localStorage.removeItem('x-token')
 		/* return Storage.remove({ key: TOKEN_KEY }); */
 	}
 }

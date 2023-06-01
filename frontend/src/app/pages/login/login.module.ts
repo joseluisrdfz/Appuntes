@@ -10,7 +10,6 @@ import { LoginPage } from './login.page';
 
 @NgModule({
   imports: [
-    FormsModule,
     ReactiveFormsModule,
     CommonModule,
     FormsModule,

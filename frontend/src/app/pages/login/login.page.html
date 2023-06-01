@@ -7,15 +7,16 @@
 
     <ion-list id="loginInputs">
         <form [formGroup]="loginForm" (ngSubmit)="login()">
-            <ion-item>
+            <div class="input">
                 <ion-label class="label-input" position="stacked" #label1>Nombre de usuario</ion-label>
-                <ion-input id="username-input" aria-labelledby="label1" formControlName="username" errorText="Nombre de usuario invalido" required></ion-input>
-            </ion-item>
+                <input id="username-input" aria-labelledby="label1" formControlName="username" required>
+            </div>
 
-            <ion-item>
+            <div class="input">
                 <ion-label class="label-input" position="stacked" #label2>Contraseña</ion-label>
-                <ion-input id="password-input" errorText="Contraseña invalida" formControlName="password" aria-labelledby="label2" type="password" required></ion-input>
-            </ion-item>
+                <input id="password-input" formControlName="password" aria-labelledby="label2" type="password" required>
+            </div>
+
             <ion-button type="submit" id="login-btn" class="btn" fill="solid">Iniciar sesión</ion-button>
         </form>
     </ion-list>

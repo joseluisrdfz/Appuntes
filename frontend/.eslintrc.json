@@ -5,7 +5,7 @@
     {
       "files": ["*.ts"],
       "parserOptions": {
-        "project": ["Appuntes/frontend/tsconfig.json"],
+        "project": ["./frontend/tsconfig.json"],
         "createDefaultProgram": true
       },
       "extends": [

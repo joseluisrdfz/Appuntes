@@ -1,13 +1,55 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>register</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content>
+    <ion-header collapse="condense">
+        <ion-toolbar>
+            <ion-title size="large">Registrate</ion-title>
+        </ion-toolbar>
+    </ion-header>
+    <div id="registerState">
+        <div [ngClass]="{'negro': this.state>=0}"></div>
+        <div [ngClass]="{'negro': this.state>=1}"></div>
+        <div [ngClass]="{'negro': this.state>=1}"></div>
+        <div [ngClass]="{'negro': this.state>=2}"></div>
+        <div [ngClass]="{'negro': this.state>=2}"></div>
+    </div>
+    <div id="registerContent">
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">register</ion-title>
-    </ion-toolbar>
-  </ion-header>
+        <form id="registerForm">
+            <div *ngIf="this.state===0">
+                <div class="input">
+                    <ion-label class="label-input" position="stacked" #label1>Nombre de usuario</ion-label>
+                    <input id="username-input" aria-labelledby="label1" required>
+                </div>
+
+                <div class="input">
+                    <ion-label class="label-input" position="stacked" #label2>Contraseña</ion-label>
+                    <input id="password-input" aria-labelledby="label2" type="password" required>
+                </div>
+
+                <div class="input">
+                    <ion-label class="label-input" position="stacked" #label2>Contraseña</ion-label>
+                    <input id="password-input" aria-labelledby="label2" type="password" required>
+                </div>
+
+                <div class="input">
+                    <ion-label class="label-input" position="stacked" #label2>Contraseña</ion-label>
+                    <input id="password-input" aria-labelledby="label2" type="password" required>
+                </div>
+
+                <div class="input">
+                    <ion-label class="label-input" position="stacked" #label2>Contraseña</ion-label>
+                    <input id="password-input" aria-labelledby="label2" type="password" required>
+                </div>
+
+            </div>
+            <div *ngIf="this.state===1">hola tin</div>
+            <div *ngIf="this.state===2">hola tina</div>
+        </form>
+
+
+    </div>
+    <div id="registerStateButtons">
+        <ion-button color="light" *ngIf="this.state>0" (click)="changeState(-1)" fill="solid">Anterior</ion-button>
+        <ion-button color="light" *ngIf="this.state<=0" (click)="goTo('/login')" fill="solid">Iniciar Sesion</ion-button>
+        <ion-button color="dark" (click)="changeState(1)" fill="solid">Siguiente</ion-button>
+    </div>
 </ion-content>
