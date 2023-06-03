@@ -13,36 +13,80 @@
     </div>
     <div id="registerContent">
 
-        <form id="registerForm">
+        <form id="registerForm" [formGroup]="registerForm" (ngSubmit)="changeState(0)">
             <div *ngIf="this.state===0">
                 <div class="input">
-                    <ion-label class="label-input" position="stacked" #label1>Nombre de usuario</ion-label>
-                    <input id="username-input" aria-labelledby="label1" required>
+                    <ion-label class="label-input" position="stacked" #label1>Nombre</ion-label>
+                    <input id="name-input" aria-labelledby="label1" formControlName="name" required>
+                    <span class="error" *ngIf="
+                    !registerForm.get('name')?.valid &&
+                    (registerForm.get('name')?.touched || registerForm.get('name')?.dirty)">Tu nombre es necesario</span>
                 </div>
 
                 <div class="input">
-                    <ion-label class="label-input" position="stacked" #label2>Contraseña</ion-label>
-                    <input id="password-input" aria-labelledby="label2" type="password" required>
+                    <ion-label class="label-input" position="stacked" #label2>Apellidos</ion-label>
+                    <input id="surname-input" aria-labelledby="label2" formControlName="surname" required>
+                    <span class="error" *ngIf="
+                    !registerForm.get('surname')?.valid &&
+                    (registerForm.get('surname')?.touched || registerForm.get('surname')?.dirty)">Tus apellidos son necesarios</span>
                 </div>
 
                 <div class="input">
-                    <ion-label class="label-input" position="stacked" #label2>Contraseña</ion-label>
-                    <input id="password-input" aria-labelledby="label2" type="password" required>
+                    <ion-label class="label-input" position="stacked" #label3>Email</ion-label>
+                    <input id="email-input" aria-labelledby="label3" type="email" formControlName="email" required>
+                    <span class="error" *ngIf="
+                    !registerForm.get('email')?.valid &&
+                    (registerForm.get('email')?.touched || registerForm.get('email')?.dirty)">Tu email es necesario y debe ser un email</span>
                 </div>
 
                 <div class="input">
-                    <ion-label class="label-input" position="stacked" #label2>Contraseña</ion-label>
-                    <input id="password-input" aria-labelledby="label2" type="password" required>
+                    <ion-label class="label-input" position="stacked" #label4>Contraseña</ion-label>
+                    <input id="password-input" aria-labelledby="label4" type="password" formControlName="password" required>
+                    <span class="error" *ngIf="
+                    !registerForm.get('password')?.valid &&
+                    (registerForm.get('password')?.touched || registerForm.get('password')?.dirty)">La contraseña es necesaria</span>
                 </div>
 
                 <div class="input">
-                    <ion-label class="label-input" position="stacked" #label2>Contraseña</ion-label>
-                    <input id="password-input" aria-labelledby="label2" type="password" required>
+                    <ion-label class="label-input" position="stacked" #label5>Repetir contraseña</ion-label>
+                    <input id="passwordRepeat-input" aria-labelledby="label5" type="password" formControlName="passwordRepeat" required>
+                    <span class="error" *ngIf="
+                    registerForm.get('passwordRepeat')?.value!== registerForm.get('password')?.value  &&
+                    (registerForm.get('passwordRepeat')?.touched || registerForm.get('passwordRepeat')?.dirty)">Las contraseñas no coinciden</span>
                 </div>
 
             </div>
-            <div *ngIf="this.state===1">hola tin</div>
-            <div *ngIf="this.state===2">hola tina</div>
+            <div *ngIf="this.state===1">
+
+                <div class="input">
+                    <ion-label class="moreMargin label-input" position="stacked" #label6>Nombre de usuario</ion-label>
+                    <input id="username-input" aria-labelledby="label6" formControlName="username" required>
+                    <span class="error" *ngIf="
+                    !registerForm.get('username')?.valid &&
+                    (registerForm.get('username')?.touched || registerForm.get('username')?.dirty)">Tu nombre de usuario es necesario</span>
+                </div>
+
+                <div class="profilePicInput">
+                    <ion-label class="label-input" position="stacked" #label7>Imagen de perfil</ion-label>
+                    <img id="profilePic" (click)="document.getElementById('profilePic-input')?.click()" src="../../../assets/uploads/profilePics/default.webp">
+                    <input style="display: none;" type="file" id="profilePic-input" aria-labelledby="label7" (change)='changeProfilePic($event)' ref="profilePic" formControlName="profilePic">
+                    <ion-button shape="round" (click)="document.getElementById('profilePic-input')?.click()" fill="outline" id="profilePicButton">Selecciona una foto de perfil</ion-button>
+
+                </div>
+            </div>
+            <div *ngIf="this.state===2">
+
+                <div class="input">
+                    <ion-button id="open-picker">Uni : {{universidad}} , {{universidadId}}</ion-button>
+                    <ion-picker trigger="open-picker" [columns]="pickerUniColumns" [buttons]="pickerUniButtons"></ion-picker>
+                </div>
+
+                <div class="input">
+                    <ion-button id="open-picker2">Grado : {{grado}}, {{gradoId}},{{cursos}}</ion-button>
+                    <ion-picker trigger="open-picker2" [columns]="pickerGradoColumns" [buttons]="pickerGradoButtons"></ion-picker>
+                </div>
+
+            </div>
         </form>
 
 
@@ -50,6 +94,7 @@
     <div id="registerStateButtons">
         <ion-button color="light" *ngIf="this.state>0" (click)="changeState(-1)" fill="solid">Anterior</ion-button>
         <ion-button color="light" *ngIf="this.state<=0" (click)="goTo('/login')" fill="solid">Iniciar Sesion</ion-button>
-        <ion-button color="dark" (click)="changeState(1)" fill="solid">Siguiente</ion-button>
+        <ion-button color="dark" *ngIf="this.state<2" (click)="changeState(1)" fill="solid">Siguiente</ion-button>
+        <ion-button color="dark" *ngIf="this.state>=2" (click)="changeState(0)" fill="solid">Confirmar registro</ion-button>
     </div>
 </ion-content>

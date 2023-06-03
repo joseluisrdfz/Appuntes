@@ -12,7 +12,7 @@ const register = async(req, res = response) => {
     let uni = req.body['uni'];
     let grado = req.body['grado'];
 
-    let profilePic = "default.jpg";
+    let profilePic = "default.webp";
 
     try {
 

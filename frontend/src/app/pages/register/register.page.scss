@@ -9,7 +9,7 @@ ion-title {
 }
 
 #registerState {
-    height: 10vh;
+    height: 8vh;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -56,13 +56,11 @@ $bgSteps: #838383;
 }
 
 #registerContent {
-    height: 62vh;
-    background-color: greenyellow;
+    height: 64vh;
 }
 
 #registerStateButtons {
     height: 13vh;
-    background-color: blueviolet;
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
@@ -73,6 +71,19 @@ $bgSteps: #838383;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    height: 100%;
+}
+
+#registerForm>div:nth-child(1) {
+    height: 100%;
+}
+
+#registerForm>div:nth-child(1)>div {
+    height: 18%;
+}
+
+.error {
+    color: red;
 }
 
 .input {
@@ -83,6 +94,16 @@ $bgSteps: #838383;
     margin: 5px 0;
 }
 
+.profilePicInput {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    font-size: 0.8em;
+    margin: 5px 0;
+    height: 48vh!important;
+}
+
 input {
     border: 2px solid black;
     border-radius: 14px;
@@ -91,7 +112,7 @@ input {
     font-size: 1em;
     background-color: #f5f5f5;
     padding: 2px 10px;
-    height: 35px;
+    min-height: 30px;
 }
 
 .label-input {
@@ -99,6 +120,24 @@ input {
     margin-bottom: 5px;
 }
 
+.moreMargin {
+    margin-bottom: 15px;
+}
+
 ion-button {
     text-transform: none;
+}
+
+#profilePic {
+    width: 50vw;
+    height: 50vw;
+    border-radius: 100%;
+    border: 2px solid black;
+    cursor: pointer;
+    object-fit: cover;
+}
+
+#profilePicButton {
+    --padding-top: 10px;
+    --padding-bottom: 10px;
 }
