@@ -21,41 +21,55 @@ const getGrados = async(req, res = response) => {
 }
 
 const getGradoById = async(req, res = response) => {
-    const db = await mysqlConnection();
+    try {
+        const db = await mysqlConnection();
 
-    let resultado;
+        let resultado;
 
-    resultado = await db.query(`SELECT * FROM grados WHERE id_grado = ${req.params.id}`)
+        resultado = await db.query(`SELECT * FROM grados WHERE id_grado = ${req.params.id}`)
 
-    await db.end();
+        await db.end();
 
-    //console.log(resultado);
+        //console.log(resultado);
 
-    return res.status(200).json({
-        message: 'Se ha recuperado el grado',
-        total: resultado.length,
-        grados: resultado
-    })
+        return res.status(200).json({
+            message: 'Se ha recuperado el grado',
+            total: resultado.length,
+            grados: resultado
+        })
+    } catch (e) {
+        return res.status(404).json({
+            message: 'Ha habido un problema',
+            error: e
+        })
+    }
 
 }
 
 const getGradosByUniId = async(req, res = response) => {
+    try {
+        const db = await mysqlConnection();
 
-    const db = await mysqlConnection();
+        let resultado;
 
-    let resultado;
+        resultado = await db.query(`SELECT * FROM grados WHERE id_uni = ${req.params.id}`)
 
-    resultado = await db.query(`SELECT * FROM grados WHERE id_uni = ${req.params.id}`)
+        await db.end();
 
-    await db.end();
+        //console.log(resultado);
 
-    //console.log(resultado);
+        return res.status(200).json({
+            message: `Se ha recuperado los grados de la uni ${req.params.id} `,
+            total: resultado.length,
+            grados: resultado
+        })
 
-    return res.status(200).json({
-        message: `Se ha recuperado los grados de la uni ${req.params.id} `,
-        total: resultado.length,
-        grados: resultado
-    })
+    } catch (e) {
+        return res.status(404).json({
+            message: 'Ha habido un problema',
+            error: e
+        })
+    }
 
 }
 

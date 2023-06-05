@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators, ValidatorFn, AbstractControl, Valid
 import { Router } from '@angular/router';
 import { GradosService } from 'src/app/services/grados.service';
 import { UniversitiesService } from 'src/app/services/universities.service';
+import { from } from 'rxjs';
 
 @Component({
   selector: 'app-register',
@@ -10,6 +11,10 @@ import { UniversitiesService } from 'src/app/services/universities.service';
   styleUrls: ['./register.page.scss'],
 })
 export class RegisterPage implements OnInit {
+
+  isModalOpen = false;
+
+  registerError = "No se ha podido registrar al usuario";
 
   state=0;
 
@@ -25,8 +30,7 @@ export class RegisterPage implements OnInit {
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required]],
     passwordRepeat: [''],
-    username: ['', [Validators.required]],
-    profilePic:[undefined]
+    username: ['', [Validators.required]]
   }, {validators: this.checkPasswords});
 
   profilePicFile : File | undefined =  undefined;
@@ -39,6 +43,8 @@ export class RegisterPage implements OnInit {
   grado = '';
   gradoId='';
   cursos='';
+
+  curso='';
 
   pickerUniColumns:any;
 
@@ -53,7 +59,11 @@ export class RegisterPage implements OnInit {
         this.universidad = value['Universidades']['text'];
         this.universidadId = value['Universidades']['value'];
         this.getGrados();
-        //llamar a la funcion para recuperar los grados.
+        this.grado = '';
+        this.gradoId='';
+        this.cursos='';
+        this.curso='';
+        this.pickerCursosColumns = undefined;
       },
     },
   ];
@@ -68,11 +78,28 @@ export class RegisterPage implements OnInit {
     {
       text: 'Confirmar',
       handler: (value:any) => {
+
         this.grado = value['Grados']['text'];
         this.gradoId = value['Grados']['value'];
-        this.cursos = value['Grados']['cursos']
+        this.cursos = this.pickerGradoColumns[0]['options'][value['Grados']['columnIndex']].cursos
+        this.curso = '';
+        this.getCursos();
 
-        //llamar a la funcion para recuperar los grados.
+      },
+    }
+  ];
+
+  pickerCursosColumns: any;
+
+  public pickerCursosButtons = [
+    {
+      text: 'Cancelar',
+      role: 'cancel',
+    },
+    {
+      text: 'Confirmar',
+      handler: (value:any) => {
+        this.curso = value['Cursos']['value'];
       },
     },
   ];
@@ -87,21 +114,29 @@ export class RegisterPage implements OnInit {
 
     });
 
+    console.log(aux)
+
     this.pickerUniColumns = [{
       name: 'Universidades',
       options: aux,
     },]
+
+
 
     })
   }
 
   ngOnInit() {
 
-
   }
 
-  changeState(value : number){
-    this.state += value;
+  changeState(value : number, type: string){
+    if(type === 'set'){
+      this.state = value;
+    } else if(type === 'add'){
+      this.state += value;
+    }
+
   }
 
   goTo(route :any){
@@ -122,7 +157,6 @@ export class RegisterPage implements OnInit {
     this.gradoService.getGradosByUni(this.universidadId).subscribe((res) => {
       let aux : Array<any> = [];
 
-      console.log(res)
 
       res['grados'].forEach((grado : any) => {
 
@@ -135,7 +169,33 @@ export class RegisterPage implements OnInit {
       options: aux,
     },]
 
+
     })
+  }
+
+  getCursos(){
+
+    let aux : Array<any> = [];
+
+    for(let i = 0; i<Number(this.cursos) ; i++){
+      aux.push({text : i+1 , value : i+1 })
+    }
+
+    this.pickerCursosColumns = [{
+      name: 'Cursos',
+      options: aux,
+    },]
+
+  }
+
+  openModal(value : boolean){
+    this.isModalOpen = value;
+  }
+
+  registrar(){
+    if(this.registerForm.valid){
+
+    }
   }
 
 }
