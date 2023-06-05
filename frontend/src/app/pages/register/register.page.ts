@@ -52,9 +52,11 @@ export class RegisterPage implements OnInit {
     {
       text: 'Cancelar',
       role: 'cancel',
+      cssClass: 'pickerButton'
     },
     {
       text: 'Confirmar',
+      cssClass: 'pickerButton',
       handler: (value:any) => {
         this.universidad = value['Universidades']['text'];
         this.universidadId = value['Universidades']['value'];
@@ -74,9 +76,11 @@ export class RegisterPage implements OnInit {
     {
       text: 'Cancelar',
       role: 'cancel',
+      cssClass: 'pickerButton',
     },
     {
       text: 'Confirmar',
+      cssClass: 'pickerButton',
       handler: (value:any) => {
 
         this.grado = value['Grados']['text'];
@@ -95,9 +99,11 @@ export class RegisterPage implements OnInit {
     {
       text: 'Cancelar',
       role: 'cancel',
+      cssClass: 'pickerButton',
     },
     {
       text: 'Confirmar',
+      cssClass: 'pickerButton',
       handler: (value:any) => {
         this.curso = value['Cursos']['value'];
       },

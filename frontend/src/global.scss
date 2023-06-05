@@ -40,6 +40,11 @@
 
 .picker-toolbar {
     justify-content: space-between!important;
+    border-bottom: 1px solid black;
+}
+
+.pickerButton {
+    text-transform: none!important;
 }
 
 .picker-opt {
@@ -49,5 +54,18 @@
     font-size: 19px;
     contain: content;
     white-space: normal;
-    margin: 5px;
+    margin: 5px 0;
+    padding: 0px 10px;
+}
+
+.picker-opt.picker-opt-selected {
+    border-top: 1px solid rgb(74, 74, 74);
+    border-bottom: 1px solid rgb(74, 74, 74);
+}
+
+.picker-col {
+    -webkit-padding-start: 0;
+    padding-inline-start: 0;
+    -webkit-padding-end: 0;
+    padding-inline-end: 0;
 }

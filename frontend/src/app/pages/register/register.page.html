@@ -80,7 +80,7 @@
                 <div class="input">
                     <ion-label class="moreMargin label-input" position="stacked">Universidad</ion-label>
                     <button class="selector" id="open-picker">{{universidad}}</button>
-                    <ion-picker trigger="open-picker" [columns]="pickerUniColumns" [buttons]="pickerUniButtons"></ion-picker>
+                    <ion-picker mode="md" trigger="open-picker" [columns]="pickerUniColumns" [buttons]="pickerUniButtons"></ion-picker>
                     <span class="error" *ngIf="
                     !registerForm.get('username')?.valid &&
                     (registerForm.get('username')?.touched || registerForm.get('username')?.dirty)">Tu nombre de usuario es necesario</span>
@@ -89,7 +89,7 @@
                 <div class="input">
                     <ion-label class="moreMargin label-input" position="stacked">Grado</ion-label>
                     <button [disabled]="pickerGradoColumns===undefined" [ngClass]="{'disabled' : pickerGradoColumns===undefined}" class="selector" id="open-picker2">{{grado}}</button>
-                    <ion-picker trigger="open-picker2" [columns]="pickerGradoColumns" [buttons]="pickerGradoButtons"></ion-picker>
+                    <ion-picker mode="md" trigger="open-picker2" [columns]="pickerGradoColumns" [buttons]="pickerGradoButtons"></ion-picker>
 
                     <span class="error" *ngIf="
                     !registerForm.get('username')?.valid &&
@@ -99,7 +99,7 @@
                 <div class="input">
                     <ion-label class="moreMargin label-input" position="stacked">Curso</ion-label>
                     <button [disabled]="pickerCursosColumns===undefined" [ngClass]="{'disabled' : pickerCursosColumns===undefined}" class="selector" id="open-picker3">{{curso}}</button>
-                    <ion-picker trigger="open-picker3" [columns]="pickerCursosColumns" [buttons]="pickerCursosButtons"></ion-picker>
+                    <ion-picker mode="md" trigger="open-picker3" [columns]="pickerCursosColumns" [buttons]="pickerCursosButtons"></ion-picker>
 
                     <span class="error" *ngIf="
                   !registerForm.get('username')?.valid &&
