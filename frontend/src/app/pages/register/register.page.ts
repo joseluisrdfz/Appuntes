@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { GradosService } from 'src/app/services/grados.service';
 import { UniversitiesService } from 'src/app/services/universities.service';
 import { from } from 'rxjs';
+import { UsersService } from 'src/app/services/users.service';
 
 @Component({
   selector: 'app-register',
@@ -15,6 +16,10 @@ export class RegisterPage implements OnInit {
   isModalOpen = false;
 
   registerError = "No se ha podido registrar al usuario";
+
+  public alertButtons = ['OK'];
+
+  imgsrc = '../../../assets/uploads/profilePics/default.webp';
 
   state=0;
 
@@ -28,9 +33,13 @@ export class RegisterPage implements OnInit {
     name: ['', [Validators.required]],
     surname: ['', [Validators.required]],
     email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required]],
+    password: ['', [Validators.required,Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])([A-Za-z0-9]){9,}$')]],
     passwordRepeat: [''],
-    username: ['', [Validators.required]]
+    username: ['', [Validators.required]],
+    curso:['',[Validators.required]],
+    uni:['',[Validators.required]],
+    grado:['',[Validators.required]],
+    termsCheck:[false, [Validators.requiredTrue]]
   }, {validators: this.checkPasswords});
 
   profilePicFile : File | undefined =  undefined;
@@ -47,6 +56,8 @@ export class RegisterPage implements OnInit {
   curso='';
 
   pickerUniColumns:any;
+
+
 
   public pickerUniButtons = [
     {
@@ -66,6 +77,7 @@ export class RegisterPage implements OnInit {
         this.cursos='';
         this.curso='';
         this.pickerCursosColumns = undefined;
+        this.registerForm.get('uni')?.setValue(this.universidadId)
       },
     },
   ];
@@ -88,6 +100,7 @@ export class RegisterPage implements OnInit {
         this.cursos = this.pickerGradoColumns[0]['options'][value['Grados']['columnIndex']].cursos
         this.curso = '';
         this.getCursos();
+        this.registerForm.get('grado')?.setValue(this.gradoId)
 
       },
     }
@@ -106,11 +119,13 @@ export class RegisterPage implements OnInit {
       cssClass: 'pickerButton',
       handler: (value:any) => {
         this.curso = value['Cursos']['value'];
+        this.registerForm.get('curso')?.setValue(this.curso)
       },
     },
   ];
 
-  constructor(private router: Router, private formBuilder : FormBuilder , private uniService : UniversitiesService, private gradoService : GradosService ) {
+
+  constructor(private router: Router, private formBuilder : FormBuilder , private uniService : UniversitiesService, private gradoService : GradosService, private usersService: UsersService ) {
     uniService.getUniversities().subscribe((res) => {
       let aux : Array<any> = [];
 
@@ -119,8 +134,6 @@ export class RegisterPage implements OnInit {
       aux.push({text : uni.name , value : uni.id_uni })
 
     });
-
-    console.log(aux)
 
     this.pickerUniColumns = [{
       name: 'Universidades',
@@ -154,9 +167,10 @@ export class RegisterPage implements OnInit {
 
     this.profilePicFile=event.target.files[0];
 
-    const imgPP = document.getElementById('profilePic') as HTMLImageElement;
+    //const imgPP = document.getElementById('profilePic') as HTMLImageElement;
     if(this.profilePicFile)
-    imgPP.src = URL.createObjectURL(this.profilePicFile);
+    this.imgsrc = URL.createObjectURL(this.profilePicFile);
+    //imgPP.src = URL.createObjectURL(this.profilePicFile);
   }
 
   getGrados(){
@@ -199,8 +213,63 @@ export class RegisterPage implements OnInit {
   }
 
   registrar(){
-    if(this.registerForm.valid){
 
+
+
+    if(this.registerForm.valid){
+      let formData = this.registerForm.value;
+      try{
+
+      if(this.profilePicFile!= undefined){
+        formData['profilePicName'] = this.profilePicFile.name;
+
+        var reader = new FileReader();
+
+
+        reader.onloadend = () =>{
+          formData['profilePicFile'] = reader.result;
+          this.usersService.registerUser(formData).subscribe((res)=>{
+            console.log(res);
+            if(!res.ok){
+              this.registerError = res.message;
+            this.openModal(true);
+            }
+
+          })
+        }
+
+
+          console.log(this.profilePicFile);
+          reader.readAsDataURL(this.profilePicFile as Blob);
+
+      } else {
+        this.usersService.registerUser(formData).subscribe((res)=>{
+          console.log(res);
+          if(!res.ok){
+            this.registerError = res.message;
+          this.openModal(true);
+          }
+
+        })
+      }
+
+
+
+
+
+      } catch (e){
+        this.registerError = "Ha habido un error en el registro";
+        this.openModal(true);
+      }
+
+
+    } else {
+      this.registerError = "Te ha faltado un campo obligatorio por rellenar";
+      this.registerForm.markAllAsTouched();
+      if(this.curso=='' || this.universidadId=='' || this.gradoId==''){
+        this.registerError = "Te ha faltado un campo obligatorio por rellenar, debes indicar tu universidad, grado y curso.";
+      }
+      this.openModal(true);
     }
   }
 

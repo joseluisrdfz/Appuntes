@@ -1,9 +1,16 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Form } from '@angular/forms';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsersService {
 
-  constructor() { }
+  constructor(private httpclient : HttpClient) { }
+
+  registerUser(form: FormData): Observable<any> {
+		return this.httpclient.post(`http://localhost:3000/api/users/register`,form);
+	}
 }

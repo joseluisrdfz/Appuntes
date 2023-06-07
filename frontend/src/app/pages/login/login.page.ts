@@ -9,6 +9,7 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
+  public alertButtons = ['OK'];
 
   isModalOpen = false;
 

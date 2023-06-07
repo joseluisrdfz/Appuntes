@@ -3,10 +3,30 @@ const { register, getUserInfo, updateUserData, updateUserPassword, deleteUser, f
 const { check } = require('express-validator');
 const { validarCampos } = require('../middleware/validarCampos');
 const { validarJWT } = require('../middleware/validarJWT.js');
+const multer = require('multer');
+
+/* const upload = multer({
+    dest: '../../frontend/src/assets/uploads/profilePics'
+}); */
+
+var storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, '../../frontend/src/assets/uploads/profilePics')
+    },
+    filename: function(req, file, cb) {
+        cb(null, file.fieldname + '-' + Date.now())
+    }
+})
+
+const upload = multer({
+    storage: storage
+});
+
+
 
 const router = Router();
 
-//base route /api/apuntes
+//base route /api/users
 
 
 /* Tabla 46: Registro de un usuario	

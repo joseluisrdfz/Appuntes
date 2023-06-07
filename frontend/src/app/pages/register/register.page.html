@@ -13,7 +13,7 @@
     </div>
     <div id="registerContent">
 
-        <form id="registerForm" [formGroup]="registerForm" (ngSubmit)="changeState(0, 'add')">
+        <form id="registerForm" [formGroup]="registerForm" (ngSubmit)="registrar()">
             <div *ngIf="this.state===0">
                 <div class="input">
                     <ion-label class="label-input" position="stacked" #label1>Nombre</ion-label>
@@ -44,7 +44,14 @@
                     <input id="password-input" aria-labelledby="label4" type="password" formControlName="password" required>
                     <span class="error" *ngIf="
                     !registerForm.get('password')?.valid &&
-                    (registerForm.get('password')?.touched || registerForm.get('password')?.dirty)">La contraseña es necesaria</span>
+                    (registerForm.get('password')?.touched || registerForm.get('password')?.dirty)">
+                    Debes introducir una contraseña válida que cumpla lo siguiente.
+                        <ul style="margin:0;">
+                          <li>Mínimo 9 caracteres</li>
+                          <li>Una letra minúscula y otra mayúscula</li>
+                          <li>Un número</li>
+                        </ul>
+                  </span>
                 </div>
 
                 <div class="input">
@@ -68,7 +75,7 @@
 
                 <div class="profilePicInput">
                     <ion-label class="label-input" position="stacked" #label7>Imagen de perfil</ion-label>
-                    <img id="profilePic" (click)="document.getElementById('profilePic-input')?.click()" src="../../../assets/uploads/profilePics/default.webp">
+                    <img id="profilePic" (click)="document.getElementById('profilePic-input')?.click()" src="{{imgsrc}}">
                     <input style="display: none;" type="file" id="profilePic-input" aria-labelledby="label7" (change)='changeProfilePic($event)' ref="profilePic">
                     <ion-button style="--ion-color-contrast: black!important; --ion-color-base: #f5f5f5!important; --border-color:rgb(126, 126, 126); --border-style: solid; --boder-width:1px" color="ligth" shape="round" (click)="document.getElementById('profilePic-input')?.click()"
                         fill="solid" id="profilePicButton">Selecciona una foto de perfil</ion-button>
@@ -79,39 +86,36 @@
 
                 <div class="input">
                     <ion-label class="moreMargin label-input" position="stacked">Universidad</ion-label>
-                    <button class="selector" id="open-picker">{{universidad}}</button>
+                    <button type="button" class="selector" id="open-picker">{{universidad}}</button>
                     <ion-picker mode="md" trigger="open-picker" [columns]="pickerUniColumns" [buttons]="pickerUniButtons"></ion-picker>
                     <span class="error" *ngIf="
-                    !registerForm.get('username')?.valid &&
-                    (registerForm.get('username')?.touched || registerForm.get('username')?.dirty)">Tu nombre de usuario es necesario</span>
+                    (registerForm.touched && universidadId==='')">La universidad es obligatoria</span>
                 </div>
 
                 <div class="input">
                     <ion-label class="moreMargin label-input" position="stacked">Grado</ion-label>
-                    <button [disabled]="pickerGradoColumns===undefined" [ngClass]="{'disabled' : pickerGradoColumns===undefined}" class="selector" id="open-picker2">{{grado}}</button>
+                    <button type="button" [disabled]="pickerGradoColumns===undefined" [ngClass]="{'disabled' : pickerGradoColumns===undefined}" class="selector" id="open-picker2">{{grado}}</button>
                     <ion-picker mode="md" trigger="open-picker2" [columns]="pickerGradoColumns" [buttons]="pickerGradoButtons"></ion-picker>
 
                     <span class="error" *ngIf="
-                    !registerForm.get('username')?.valid &&
-                    (registerForm.get('username')?.touched || registerForm.get('username')?.dirty)">Tu nombre de usuario es necesario</span>
+                    (registerForm.touched && gradoId==='')">El grado es obligatorio</span>
                 </div>
 
                 <div class="input">
                     <ion-label class="moreMargin label-input" position="stacked">Curso</ion-label>
-                    <button [disabled]="pickerCursosColumns===undefined" [ngClass]="{'disabled' : pickerCursosColumns===undefined}" class="selector" id="open-picker3">{{curso}}</button>
+                    <button type="button" [disabled]="pickerCursosColumns===undefined" [ngClass]="{'disabled' : pickerCursosColumns===undefined}" class="selector" id="open-picker3">{{curso}}</button>
                     <ion-picker mode="md" trigger="open-picker3" [columns]="pickerCursosColumns" [buttons]="pickerCursosButtons"></ion-picker>
 
                     <span class="error" *ngIf="
-                  !registerForm.get('username')?.valid &&
-                  (registerForm.get('username')?.touched || registerForm.get('username')?.dirty)">Tu nombre de usuario es necesario</span>
+                    (registerForm.touched && curso==='')">Tu curso es obligatorio</span>
                 </div>
 
-                <div class="input">
-                    <ion-checkbox labelPlacement="end">Acepto los <span>terminos y conciciones</span></ion-checkbox>
+                <div style="margin-top: 30px;" class="input">
+                    <ion-checkbox formControlName="termsCheck" labelPlacement="end">Acepto los <span>terminos y conciciones</span></ion-checkbox>
 
                     <span class="error" *ngIf="
-                !registerForm.get('username')?.valid &&
-                (registerForm.get('username')?.touched || registerForm.get('username')?.dirty)">Tu nombre de usuario es necesario</span>
+                !registerForm.get('termsCheck')?.valid &&
+                (registerForm.get('termsCheck')?.touched || registerForm.get('termsCheck')?.dirty)">Debes aceptar los terminos y condiciones</span>
                 </div>
 
             </div>
@@ -123,19 +127,10 @@
         <ion-button color="dark" *ngIf="this.state>0" (click)="changeState(-1, 'add')" fill="outline">Anterior</ion-button>
         <ion-button color="dark" *ngIf="this.state<=0" (click)="goTo('/login')" fill="outline">Iniciar Sesión</ion-button>
         <ion-button color="dark" *ngIf="this.state<2" (click)="changeState(1, 'add')" fill="solid">Siguiente</ion-button>
-        <ion-button color="dark" *ngIf="this.state>=2" (click)="changeState(0, 'add')" fill="solid">Confirmar registro</ion-button>
+        <ion-button color="dark" *ngIf="this.state>=2" type="submit" form="registerForm" fill="solid">Confirmar registro</ion-button>
     </div>
 
 
-    <ion-modal id="register-failed-modal" #modal [isOpen]="isModalOpen">
-        <ng-template>
-            <div id="closeModal" (click)="openModal(!isModalOpen)"> X </div>
-            <div class="wrapper">
-                <h1>Registro Fallido</h1>
-
-                <p>{{registerError}}</p>
-            </div>
-        </ng-template>
-    </ion-modal>
+    <ion-alert #modal [isOpen]="isModalOpen" header="Ha habido un problema" message="{{registerError}}" [buttons]="alertButtons" (didDismiss)="openModal(false)"></ion-alert>
 
 </ion-content>

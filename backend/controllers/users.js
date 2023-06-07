@@ -1,5 +1,10 @@
 const { mysqlConnection } = require('../database/mysqldb');
 const bcrypt = require('bcryptjs');
+const fs = require('fs')
+
+const archivosValidos = {
+    fotoperfil: ['jpeg', 'jpg', 'png', 'webp'],
+}
 
 const register = async(req, res = response) => {
 
@@ -23,14 +28,41 @@ const register = async(req, res = response) => {
         if (req.body['profilePicName'] && req.body['profilePicFile']) {
             profilePic = req.body['profilePicName'];
 
-            resultado = await db.query(`SELECT * from user where profilePic = ${profilePic}`);
+            const nombrePartido = profilePic.split('.');
+            const extension = nombrePartido[nombrePartido.length - 1];
+
+            console.log(req.body)
+
+            encoding = 'base64';
+            archivo = req.body['profilePicFile'].replace(/^.+?(;base64),/, '');
+            if (!archivosValidos.fotoperfil.includes(extension)) {
+                return res.status(406).json({
+                    ok: false,
+                    msg: `El tipo de archivo '${extension}' no está permtido (${archivosValidos.fotoperfil})`
+                });
+            }
+            patharchivo = process.cwd().split('backend')[0] + 'frontend/src/assets/uploads/profilePics/' + profilePic;
+
+            //hacer que se guarde con la fecha y el id del usuario o con lo del numero aleatorio de mas abajo pero la opcion primera no es mala
+
+            fs.writeFile(patharchivo, archivo, encoding, err => {
+                /* if (err) {
+                    console.log(err);
+                    return res.status(400).json({
+                        ok: false,
+                        msg: `No se pudo subir el archivo`,
+                    });
+                } */
+            })
+
+            /* resultado = await db.query(`SELECT * from user where profilePic = ${profilePic}`);
 
             if (resultado.length != 0) {
 
                 profilePic = profilePic.split('.')[0].concat(Math.floor(Math.random() * 20000).toString()).concat('.', profilePic.split('.')[1])
 
             }
-
+ */
             //save image file
         }
 
@@ -74,6 +106,7 @@ const register = async(req, res = response) => {
             insertID: resultado['insertId']
         })
     } catch (e) {
+        console.log(e)
         return res.status(400).json({
             message: 'Ha habido un error en el registro',
             error: e
