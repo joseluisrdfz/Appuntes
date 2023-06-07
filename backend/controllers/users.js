@@ -31,7 +31,7 @@ const register = async(req, res = response) => {
             const nombrePartido = profilePic.split('.');
             const extension = nombrePartido[nombrePartido.length - 1];
 
-            console.log(req.body)
+            //console.log(req.body)
 
             encoding = 'base64';
             archivo = req.body['profilePicFile'].replace(/^.+?(;base64),/, '');
