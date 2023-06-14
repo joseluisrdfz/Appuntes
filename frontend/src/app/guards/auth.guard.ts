@@ -21,7 +21,7 @@ export class AuthGuard implements CanLoad {
 
     if (userToken) {
       //comprobar token y si es valido poner que usuario es el del tken y dar al usuario la iopcion ed iniciar sesion o no
-      console.log(userToken);
+      //console.log(userToken);
 
       return true;
     } else {

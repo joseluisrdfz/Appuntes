@@ -1,0 +1,132 @@
+ion-header {
+    height: 15vh;
+    display: flex;
+    align-items: last baseline;
+}
+
+ion-title {
+    text-align: center;
+    font-size: 8vw;
+}
+
+#apuntesForm {
+    padding: 0 10px;
+}
+
+.error {
+    margin-top: 1px;
+    color: red;
+    background-color: white;
+    z-index: 2;
+    width: 90vw;
+    text-align: center;
+}
+
+.error>ul {
+    text-align: left;
+}
+
+.input {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 0.8em;
+}
+
+input {
+    border: 2px solid black;
+    border-radius: 14px;
+    width: 80vw;
+    overflow: hidden;
+    font-size: 1em;
+    background-color: #f5f5f5;
+    padding: 2px 10px;
+    min-height: 30px;
+}
+
+.label-input {
+    font-size: 2.5vh!important;
+    margin-bottom: 10px;
+}
+
+ion-textarea#description-input {
+    border: 2px solid black;
+    border-radius: 14px;
+    width: 80vw;
+    overflow: hidden;
+    font-size: 1em;
+    background-color: #f5f5f5;
+    padding: 2px 10px;
+    min-height: 70px;
+}
+
+ion-button {
+    text-transform: none;
+}
+
+#apuntes {
+    width: 50vw;
+    height: 50vw;
+    border-radius: 100%;
+    border: 2px solid black;
+    cursor: pointer;
+    object-fit: cover;
+}
+
+#apuntesButton {
+    --padding-top: 10px;
+    --padding-bottom: 10px;
+    --ion-color-contrast: black!important;
+    --ion-color-base: #f5f5f5!important;
+    --border-color: rgb(126, 126, 126);
+    --border-style: solid;
+    --boder-width: 1px;
+    width: 38vw;
+    height: 8vh;
+    white-space: pre-wrap;
+}
+
+.apuntesInput {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    font-size: 0.8em;
+}
+
+.apuntesInput>div {
+    display: flex;
+    justify-content: space-around;
+    &>span {
+        text-align: center;
+        max-width: 45vw;
+        margin: auto 0;
+    }
+}
+
+.otherinputs {
+    display: flex;
+    justify-content: space-around;
+    & .input:nth-child(1) .selector {
+        width: 20vw;
+    }
+    & .input:nth-child(2) .selector {
+        width: 60vw;
+    }
+}
+
+.selector {
+    color: black;
+    border: 2px solid black;
+    border-radius: 14px;
+    width: 80vw;
+    overflow: hidden;
+    font-size: 1em;
+    background-color: #f5f5f5;
+    padding: 2px 10px;
+    min-height: 30px;
+}
+
+.disabled {
+    border: 2px solid rgb(179, 179, 179);
+}

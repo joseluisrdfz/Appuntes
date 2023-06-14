@@ -1,4 +1,5 @@
 const { mysqlConnection } = require('../database/mysqldb');
+const fs = require('fs')
 
 const getApuntes = async(req, res = response) => {
 
@@ -93,11 +94,10 @@ const newApuntes = async(req, res = response) => {
     try {
         const db = await mysqlConnection();
 
-        console.log(req)
+        //console.log(req)
 
         let filename = req.body['filename'];
         let titlename = req.body['titlename'];
-        let file = req.body['file'];
         let asignatura = req.body['asignatura'];
         let user = req.idToken;
 
@@ -110,13 +110,42 @@ const newApuntes = async(req, res = response) => {
 
 
 
-        resultado = await db.query(`SELECT * from apuntes where filename = ${filename}`);
+        resultado = await db.query(`SELECT * from apuntes where filename = '${filename}'`);
 
         if (resultado.length != 0) {
 
             filename = filename.split('.')[0].concat(Math.floor(Math.random() * 20000).toString()).concat('.', filename.split('.')[1])
 
         }
+
+
+        const nombrePartido = filename.split('.');
+        const extension = nombrePartido[nombrePartido.length - 1];
+
+        //console.log(req.body)
+
+        encoding = 'base64';
+        archivo = req.body['file'].replace(/^.+?(;base64),/, '');
+        if (extension != 'pdf') {
+            return res.status(406).json({
+                ok: false,
+                msg: `El tipo de archivo '${extension}' no está permitido`
+            });
+        }
+        patharchivo = process.cwd().split('backend')[0] + 'frontend/src/assets/uploads/apuntes/' + filename;
+
+        //hacer que se guarde con la fecha y el id del usuario o con lo del numero aleatorio de mas abajo pero la opcion primera no es mala
+
+        fs.writeFile(patharchivo, archivo, encoding, err => {
+            /* if (err) {
+                console.log(err);
+                return res.status(400).json({
+                    ok: false,
+                    msg: `No se pudo subir el archivo`,
+                });
+            } */
+        })
+
 
         resultado = await db.query(`INSERT INTO apuntes 
         (filename, titlename ,description, user, asignatura) VALUES 
@@ -134,6 +163,7 @@ const newApuntes = async(req, res = response) => {
             insertID: resultado['insertId']
         })
     } catch (e) {
+        console.log(e)
         return res.status(400).json({
             ok: false,
             message: `Ha habido un problema en la subida de los apuntes.`,

@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { register, getUserInfo, updateUserData, updateUserPassword, deleteUser, followUser, followAsignatura } = require('../controllers/users.js');
+const { register, getUserMyInfo, getUserInfo, updateUserData, updateUserPassword, deleteUser, followUser, followAsignatura } = require('../controllers/users.js');
 const { check } = require('express-validator');
 const { validarCampos } = require('../middleware/validarCampos');
 const { validarJWT } = require('../middleware/validarJWT.js');
@@ -51,7 +51,11 @@ router.post('/register', [
     validarCampos
 ], register);
 
-router.get('/:id', [
+router.get('/myInfo', [
+    validarJWT,
+], getUserMyInfo);
+
+router.get('/other/:id', [
     validarJWT,
 ], getUserInfo);
 

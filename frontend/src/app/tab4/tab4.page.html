@@ -1,13 +1,71 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>tab4</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content>
+    <ion-header collapse="condense">
+        <ion-toolbar>
+            <ion-title size="large">Subir apuntes</ion-title>
+        </ion-toolbar>
+    </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">tab4</ion-title>
-    </ion-toolbar>
-  </ion-header>
+
+
+    <form id="apuntesForm" [formGroup]="apuntesForm" (submit)="subirApuntes()">
+        <div class="input">
+            <ion-label class="label-input" position="stacked" #label1>Titulo de los apuntes</ion-label>
+            <input id="title-input" aria-labelledby="label1" formControlName="titlename" required>
+            <!--  <span class="error" *ngIf="
+              !apuntesForm.get('title')?.valid &&
+              (apuntesForm.get('title')?.touched || apuntesForm.get('title')?.dirty)">El título es necesario</span> -->
+
+        </div>
+
+        <div class="input">
+            <ion-label class="label-input" position="stacked" #label2>Descripcion</ion-label>
+            <!-- [counter]="true" -->
+            <ion-textarea id="description-input" mode='ios' aria-labelledby="label2" formControlName="description" [maxlength]="200"></ion-textarea>
+
+
+        </div>
+
+        <div class="input">
+            <ion-label class="label-input" position="stacked">Grado</ion-label>
+            <button type="button" class="selector" id="open-picker">{{grado}}</button>
+            <ion-picker mode="md" trigger="open-picker" [columns]="pickerGradoColumns" [buttons]="pickerGradoButtons"></ion-picker>
+            <!--  <span class="error" *ngIf="
+          (registerForm.touched && universidadId==='')">La universidad es obligatoria</span> -->
+        </div>
+
+        <div class="otherinputs">
+            <div class="input">
+                <ion-label class="label-input" position="stacked">Curso</ion-label>
+                <button type="button" [disabled]="pickerCursosColumns===undefined" [ngClass]="{'disabled' : pickerCursosColumns===undefined}" class="selector" id="open-picker2">{{curso}}</button>
+                <ion-picker mode="md" trigger="open-picker2" [columns]="pickerCursosColumns" [buttons]="pickerCursosButtons"></ion-picker>
+
+                <!--  <span class="error" *ngIf="
+        (registerForm.touched && gradoId==='')">El grado es obligatorio</span> -->
+            </div>
+
+            <div class="input">
+                <ion-label class="label-input" position="stacked">Asignatura</ion-label>
+                <button type="button" [disabled]="pickerAsigColumns===undefined" [ngClass]="{'disabled' : pickerAsigColumns===undefined}" class="selector" id="open-picker3">{{asignatura}}</button>
+                <ion-picker mode="md" trigger="open-picker3" [columns]="pickerAsigColumns" [buttons]="pickerAsigButtons"></ion-picker>
+
+                <!--    <span class="error" *ngIf="
+        (registerForm.touched && curso==='')">Tu curso es obligatorio</span> -->
+            </div>
+        </div>
+        <div class="apuntesInput">
+            <input style="display: none;" type="file" id="apuntes-input" accept=".pdf" aria-labelledby="label7" (change)='changeApuntes($event)' ref="apuntes">
+            <ion-label class="label-input" position="stacked" #label7>Apuntes a subir</ion-label>
+            <div>
+                <span>{{nombreArchivo}}</span>
+                <ion-button color="ligth" shape="round" (click)="document.getElementById('apuntes-input')?.click()" fill="solid" id="apuntesButton">Seleccionar archivo</ion-button>
+            </div>
+        </div>
+
+        <div style="display:flex; justify-content: center;">
+            <ion-button type="submit" color="dark" shape="round" fill="solid">Subir apuntes</ion-button>
+        </div>
+
+    </form>
+
+    <ion-alert #modal [isOpen]="isModalOpen" header="Ha habido un problema" message="{{subirError}}" [buttons]="alertButtons" (didDismiss)="openModal(false)"></ion-alert>
 </ion-content>

@@ -124,7 +124,27 @@ const getUserInfo = async(req, res = response) => {
 
     let resultado;
 
-    resultado = await db.query(`SELECT * from user where user_id = ${idUser}`);
+    resultado = await db.query(`SELECT * from users where user_id = ${idUser}`);
+
+    await db.end();
+
+    return res.status(200).json({
+        ok: true,
+        total: resultado.length,
+        resultado: resultado
+    })
+}
+
+const getUserMyInfo = async(req, res = response) => {
+
+    let idUser = req.idToken;
+
+
+    const db = await mysqlConnection();
+
+    let resultado;
+
+    resultado = await db.query(`SELECT * from users where user_id = ${idUser}`);
 
     await db.end();
 
@@ -394,4 +414,4 @@ const followAsignatura = async(req, res = response) => {
 
 
 
-module.exports = { register, getUserInfo, updateUserData, updateUserPassword, deleteUser, followUser, followAsignatura }
+module.exports = { register, getUserInfo, getUserMyInfo, updateUserData, updateUserPassword, deleteUser, followUser, followAsignatura }

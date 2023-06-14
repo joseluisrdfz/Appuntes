@@ -14,18 +14,11 @@ export class AuthenticationService {
 
 
   constructor(private httpclient: HttpClient) {
-    this.loadToken();
+
   }
 
-  async loadToken() {
-   /*  const token = await Storage.get({ key: TOKEN_KEY });
-		if (token && token.value) {
-			console.log('set token: ', token.value);
-			this.token = token.value;
-			this.isAuthenticated.next(true);
-		} else {
-			this.isAuthenticated.next(false);
-		} */
+  gettoken(){
+   return localStorage.getItem('token');
   }
 
   login(credentials: { username:any ; password:any }): Observable<any> {
