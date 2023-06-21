@@ -1,17 +1,106 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Tab 2
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content>
+    <ion-header collapse="condense">
+        <ion-toolbar>
+            <ion-title (click)='reload()' size="large">Feed</ion-title>
+        </ion-toolbar>
+    </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 2</ion-title>
-    </ion-toolbar>
-  </ion-header>
 
-  <app-explore-container name="Tab 2 page"></app-explore-container>
+    <div class="feedNormalContainer">
+        <div *ngFor="let item of list; index as i">
+            <div *ngIf="item.type==='APUNTES'" (click)="goto('/apuntes/' + item.id_apuntes)" class="feedElement">
+                <!-- item["id_apuntes"]
+          item["filename"]
+          item["titlename"]
+          item["visualizacion"]
+          item["downloads"]
+          item["description"]
+          item["upload_datetime"]
+          item["user"]
+          item["asignatura_id"]
+          item["asignatura_name"]
+          item["grado_name"]
+          item["preguntas"]
+          item["type"] = "APUNTES"
+    },
+    }]  -->
+
+                <div class="header">
+                    <div>
+                        <span>{{item["grado_name"]}}</span>
+                        <span>{{item["asignatura_name"]}}</span>
+                    </div>
+                    <span>{{item["fechaFormateada"]}}</span>
+                </div>
+                <div class="content">
+                    <span class="title">{{item["titlename"]}}</span>
+                    <span class="description">{{item["description"]}}</span>
+                </div>
+                <div class="footer">
+                    <div class="user">
+                        <img [src]="'../../assets/uploads/profilePics/' + item['profilePic']">
+                        <span>{{item['username']}}</span>
+                    </div>
+                    <div class="icons">
+                        <div>
+                            <ion-icon name="eye-outline"></ion-icon>
+                            <span>{{item["visualizaciones"]}}</span>
+                        </div>
+                        <div>
+                            <ion-icon name="download-outline"></ion-icon>
+                            <span>{{item["downloads"]}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="item.type==='PREGUNTAS'" (click)="goto('/preguntas/' + item.id_pregunta)" class="feedElement">
+
+
+                <!--  [
+
+        item["id_pregunta"]
+        item["texto_pregunta"]
+        item["upload_datetime"]
+        item["user_id"]
+        item["respuestas"]
+        item["asignatura_name"]
+        item["asignatura_id"]
+        item["grado_name"]
+        item["apuntes_title"]
+        item["apuntes_id"]
+        item["type": "PREGUNTAS"
+   -->
+
+                <div class="header">
+                    <div>
+                        <span>{{item["grado_name"]}}</span>
+                        <span>{{item["asignatura_name"]}}</span>
+                    </div>
+                    <span>{{item["fechaFormateada"]}}</span>
+                </div>
+                <div class="content">
+                    <span class="title">{{item["texto_pregunta"]}} </span>
+                    <span class="description">{{item["apuntes_title"]}}</span>
+                </div>
+                <div class="footer">
+                    <div class="user">
+                        <img [src]="'../../assets/uploads/profilePics/' + item['profilePic']">
+                        <span>{{item['username']}}</span>
+                    </div>
+                    <div class="icons">
+                        <div>
+                            <ion-icon name="alert"></ion-icon>
+                            <span>{{item['respuestas']}}</span>
+                        </div>
+                        <div></div>
+                        <!-- <div>
+                            <ion-icon name="download-outline"></ion-icon>
+                            <span>34</span>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </ion-content>

@@ -1,8 +1,7 @@
 ion-header {
-    height: 19vh;
+    height: 15vh;
     display: flex;
-    flex-direction: column;
-    justify-content: end;
+    align-items: last baseline;
 }
 
 ion-title {

@@ -12,4 +12,8 @@ export class UniversitiesService {
   getUniversities(): Observable<any> {
 		return this.httpclient.get(`http://localhost:3000/api/uni/`);
 	}
+
+  getUniId(id:any): Observable<any> {
+		return this.httpclient.get(`http://localhost:3000/api/uni/${id}`);
+	}
 }

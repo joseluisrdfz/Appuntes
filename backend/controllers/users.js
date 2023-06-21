@@ -124,7 +124,13 @@ const getUserInfo = async(req, res = response) => {
 
     let resultado;
 
-    resultado = await db.query(`SELECT * from users where user_id = ${idUser}`);
+    resultado = await db.query(`SELECT username,	
+    profilePic,	rol, name, surname,	email, register_dateTime, lastConexion, curso, uni,	grado,
+    (Select count(*) from preguntas as p WHERE p.user_id =  ${idUser}) as preguntas,
+    (Select count(*) from respuestas as r WHERE r.user =  ${idUser}) as respuestas ,
+    (Select count(*) from seguir_a_usuario as seg WHERE seg.user_followed =  ${idUser}) as seguidores,
+    (Select count(*) from apuntes as ap WHERE ap.user =  ${idUser}) as apuntes
+    FROM users WHERE users.user_id = ${idUser}`);
 
     await db.end();
 
@@ -144,14 +150,20 @@ const getUserMyInfo = async(req, res = response) => {
 
     let resultado;
 
-    resultado = await db.query(`SELECT * from users where user_id = ${idUser}`);
+    resultado = await db.query(`SELECT username,	
+    profilePic,	rol, name, surname,	email, register_dateTime, lastConexion, curso, uni,	grado,
+    (Select count(*) from preguntas as p WHERE p.user_id =  ${idUser}) as preguntas,
+    (Select count(*) from respuestas as r WHERE r.user =  ${idUser}) as respuestas ,
+    (Select count(*) from seguir_a_usuario as seg WHERE seg.user_followed =  ${idUser}) as seguidores,
+    (Select count(*) from apuntes as ap WHERE ap.user =  ${idUser}) as apuntes
+    FROM users WHERE users.user_id = ${idUser}`);
 
     await db.end();
 
     return res.status(200).json({
         ok: true,
         total: resultado.length,
-        resultado: resultado
+        userinfo: resultado
     })
 }
 
@@ -208,6 +220,25 @@ const updateUserData = async(req, res = response) => {
         }
 
 
+        resultado = await db.query(`SELECT * FROM users where username = '${req.body['username']}'`);
+
+        if (resultado.length != 0) {
+            await db.end();
+            return res.status(400).json({
+                ok: false,
+                message: 'Este nombre de usuario ya existe en la base de datos',
+            })
+        }
+
+        resultado = await db.query(`SELECT * FROM users where email = '${req.body['email']}'`);
+
+        if (resultado.length != 0) {
+            await db.end();
+            return res.status(400).json({
+                ok: false,
+                message: 'Este email ya existe en la base de datos',
+            })
+        }
 
         if (req.body['profilePicName'] && req.body['profilePicFile']) {
             let profilePic = req.body['profilePicName'];
@@ -231,25 +262,7 @@ const updateUserData = async(req, res = response) => {
 
 
 
-        resultado = await db.query(`SELECT * FROM users where username = '${req.body['username']}'`);
 
-        if (resultado.length != 0) {
-            await db.end();
-            return res.status(400).json({
-                ok: false,
-                message: 'Este nombre de usuario ya existe en la base de datos',
-            })
-        }
-
-        resultado = await db.query(`SELECT * FROM users where email = '${req.body['email']}'`);
-
-        if (resultado.length != 0) {
-            await db.end();
-            return res.status(400).json({
-                ok: false,
-                message: 'Este email ya existe en la base de datos',
-            })
-        }
 
         resultado = await db.query(`UPDATE users SET ${campos} where user_id = ${idUser}`);
 
@@ -273,6 +286,7 @@ const updateUserData = async(req, res = response) => {
 const updateUserPassword = async(req, res = response) => {
 
     let user_id = req.idToken;
+
     let oldPassword = req.body['oldPasword'];
     let newPassword = req.body['newPassword'];
 
@@ -295,7 +309,7 @@ const updateUserPassword = async(req, res = response) => {
         const salt = bcrypt.genSaltSync();
         const cpassword = bcrypt.hashSync(newPassword, salt);
 
-        resultado = await db.query(`UPDATE users set password = ${cpassword} where user_id = '${user_id}'`);
+        resultado = await db.query(`UPDATE users set password = "${cpassword}" where user_id = '${user_id}'`);
 
         await db.end();
 
@@ -412,6 +426,88 @@ const followAsignatura = async(req, res = response) => {
 
 }
 
+const getFeed = async(req, res = response) => {
+
+    /* asignaturas que sigues (apuntes, preguntas), comienzas siguiendo a todas las asignsturas de tu grado y curso
+
+    usuario que sigues (apuntes, preguntas) 
+    
+    */
+
+    /* consulta apuntees 
+    select apuntes.* from apuntes,seguir_a_asignatura as asig, seguir_a_usuario as usr 
+    where (asig.user = ${idUser} and asig.asignatura = apuntes.asignatura)
+     or ( usr.user = ${idUser} and usr.user_followed = apuntes.user )
+
+ consulta preguntas 
+
+ select DISTINCT preguntas.* from preguntas, preguntas_asignaturas as preasig, seguir_a_asignatura as sasig, seguir_a_usuario as sus 
+ where (sasig.user = 1 and preasig.id_asignatura = sasig.asignatura and preasig.id_pregunta = preguntas.id_pregunta)
+  or (sus.user = 1 and sus.user_followed = preguntas.user_id);
+    */
 
 
-module.exports = { register, getUserInfo, getUserMyInfo, updateUserData, updateUserPassword, deleteUser, followUser, followAsignatura }
+    try {
+
+
+        let idUser = req.idToken;
+
+        const db = await mysqlConnection();
+
+        let resultado;
+
+        resultado = await db.query(`
+            select DISTINCT 
+            apuntes.id_apuntes,apuntes.filename,apuntes.titlename,apuntes.visualizaciones,apuntes.downloads,
+            apuntes.description,apuntes.upload_datetime ,apuntes.user , apuntes.asignatura as asignatura_id,
+            (Select asignaturas.name from asignaturas where asignaturas.id_asignatura = apuntes.asignatura) as asignatura_name, 
+            (Select grados.grado_name from asignaturas, grados where asignaturas.grado = grados.id_grado and asignaturas.id_asignatura = apuntes.asignatura ) as grado_name ,
+            (Select count(*) from preguntas_apuntes as p WHERE p.id_apuntes = apuntes.id_apuntes ) as preguntas, 
+            (SELECT users.username FROM users WHERE users.user_id = apuntes.user) as username,
+            (SELECT users.profilePic FROM users WHERE users.user_id = apuntes.user) as profilePic
+            FROM apuntes,seguir_a_asignatura as asig, seguir_a_usuario as usr where (asig.user = ${idUser} and asig.asignatura = apuntes.asignatura) or ( usr.user = ${idUser} and usr.user_followed = apuntes.user );`);
+
+        let resultado2;
+        resultado2 = await db.query(`
+        SELECT DISTINCT preguntas.*, (SELECT COUNT(*) FROM respuestas where respuestas.pregunta = preguntas.id_pregunta ) as respuestas,
+
+        (SELECT asignaturas.name FROM asignaturas,preguntas_asignaturas WHERE asignaturas.id_asignatura = preguntas_asignaturas.id_asignatura and preguntas.id_pregunta = preguntas_asignaturas.id_pregunta) as asignatura_name,
+
+        (SELECT asignaturas.id_asignatura FROM asignaturas,preguntas_asignaturas WHERE asignaturas.id_asignatura = preguntas_asignaturas.id_asignatura and preguntas.id_pregunta = preguntas_asignaturas.id_pregunta) as asignatura_id,
+
+        (SELECT grados.grado_name FROM grados,asignaturas, preguntas_asignaturas WHERE grados.id_grado = asignaturas.grado and asignaturas.id_asignatura = preguntas_asignaturas.id_asignatura and preguntas.id_pregunta = preguntas_asignaturas.id_pregunta) as grado_name,
+
+        (SELECT apuntes.titlename FROM apuntes, preguntas_apuntes WHERE apuntes.id_apuntes = preguntas_apuntes.id_apuntes and preguntas_apuntes.id_pregunta = preguntas.id_pregunta) as apuntes_title,
+
+        (SELECT apuntes.id_apuntes FROM apuntes, preguntas_apuntes WHERE apuntes.id_apuntes = preguntas_apuntes.id_apuntes and preguntas_apuntes.id_pregunta = preguntas.id_pregunta) as apuntes_id,
+        (SELECT asignaturas.name FROM asignaturas WHERE asignaturas.id_asignatura = (SELECT apuntes.asignatura FROM apuntes, preguntas_apuntes WHERE apuntes.id_apuntes = preguntas_apuntes.id_apuntes and preguntas_apuntes.id_pregunta = preguntas.id_pregunta)) as apuntes_asignatura,
+
+(SELECT grados.grado_name FROM grados WHERE grados.id_grado = (SELECT asignaturas.grado FROM asignaturas WHERE asignaturas.id_asignatura = (SELECT apuntes.asignatura FROM apuntes, preguntas_apuntes WHERE apuntes.id_apuntes = preguntas_apuntes.id_apuntes and preguntas_apuntes.id_pregunta = preguntas.id_pregunta))) as apuntes_grado,
+
+        (SELECT users.username FROM users WHERE users.user_id = preguntas.user_id) as username,
+        (SELECT users.profilePic FROM users WHERE users.user_id = preguntas.user_id) as profilePic
+
+        FROM preguntas, preguntas_asignaturas as preasig, seguir_a_asignatura as sasig, seguir_a_usuario as sus 
+        
+        WHERE (sasig.user = ${idUser} and preasig.id_asignatura = sasig.asignatura and preasig.id_pregunta = preguntas.id_pregunta) OR (sus.user = ${idUser} and sus.user_followed = preguntas.user_id);`);
+
+        await db.end();
+
+        return res.status(200).json({
+            ok: true,
+            total: resultado.length,
+            apuntes: resultado,
+            preguntas: resultado2
+        })
+    } catch (e) {
+        return res.status(400).json({
+            ok: false,
+            error: e,
+        })
+    }
+
+}
+
+
+
+module.exports = { register, getUserInfo, getUserMyInfo, updateUserData, updateUserPassword, deleteUser, followUser, followAsignatura, getFeed }

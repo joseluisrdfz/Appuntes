@@ -17,9 +17,16 @@ export class UsersService {
 
   getUserMyInfo(){
 
-    return this.httpclient.get('http://localhost:3000/api/users/myInfo',this.cabeceras);
+    return this.httpclient.get('http://localhost:3000/api/users/info',this.cabeceras);
   }
 
+  getUserInfoId(id:any){
+    return this.httpclient.get(`http://localhost:3000/api/users/info/${id}`,this.cabeceras);
+  }
+
+  getFeed(){
+    return this.httpclient.get('http://localhost:3000/api/users/feed',this.cabeceras);
+  }
 
   get cabeceras() {
     return {

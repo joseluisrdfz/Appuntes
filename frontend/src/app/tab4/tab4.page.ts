@@ -112,9 +112,9 @@ export class Tab4Page implements OnInit {
   constructor(private router: Router, private formBuilder : FormBuilder, private gradoService : GradosService, private asigService : AsignaturaService ,private usersService: UsersService , private apuntesService : ApuntesService) {
 
     usersService.getUserMyInfo().subscribe((res:any)=>{
-      this.universidadId = res['resultado'][0]['uni'];
-      this.gradoId = res['resultado'][0]['grado'];
-      this.cursouser = res['resultado'][0]['curso'];
+      this.universidadId = res['userinfo'][0]['uni'];
+      this.gradoId = res['userinfo'][0]['grado'];
+      this.cursouser = res['userinfo'][0]['curso'];
       this.gradoService.getGradosByUni(this.universidadId).subscribe((res:any) => {
         let aux : Array<any> = [];
         let selectedGrado = 0;
@@ -141,7 +141,7 @@ export class Tab4Page implements OnInit {
   }
 
   changeApuntes(event:any){
-    console.log(event);
+    //console.log(event);
 
     this.apuntesFile=event.target.files[0];
     if(this.apuntesFile?.name)

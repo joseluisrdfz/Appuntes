@@ -28,9 +28,11 @@ const routes: Routes = [
         loadChildren: () => import('../tab5/tab5.module').then(m => m.Tab5PageModule)
       },
       {
-        path: '',
-        redirectTo: '/tabs/tab1',
-        pathMatch: 'full'
+        path: 'apuntes/:id',
+        loadChildren: () => import('../pages/elements/apuntes/apuntes.module').then((m) => m.ApuntesPageModule)
+      },{
+        path: 'preguntas/:id',
+        loadChildren: () => import('../pages/elements/preguntas/preguntas.module').then((m) => m.PreguntasPageModule)
       }
     ]
   },

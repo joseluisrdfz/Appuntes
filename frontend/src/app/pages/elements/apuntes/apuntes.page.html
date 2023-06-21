@@ -1,0 +1,50 @@
+<ion-content>
+    <ion-header collapse="condense">
+        <ion-toolbar>
+            <ion-button class="backButton" color="dark" shape="outline" (click)="goBack()">
+                <ion-icon name="chevron-back"></ion-icon>
+            </ion-button>
+        </ion-toolbar>
+        <ion-toolbar>
+            <ion-title size="large">apuntes</ion-title>
+        </ion-toolbar>
+
+    </ion-header>
+
+    <div class="apuntesContent">
+        <div class="header">
+            <div>
+                <span>Grado en ingenieria multimedia</span>
+                <span>Sonido y musica</span>
+            </div>
+            <span>2 h</span>
+        </div>
+        <div class="content">
+            <span>Titulo apunte</span>
+            <span>desc apunte</span>
+        </div>
+        <div class="footer">
+            <div>
+                <img src="../../../../assets/uploads/profilePics/default.webp" alt="foto de perfil del usuario">
+                <span>Usuario1</span>
+            </div>
+            <span> iconos y tal</span>
+        </div>
+
+    </div>
+    <div class="questionSection">
+        <ion-button color="dark"> Añadir nueva pregunta</ion-button>
+        <div class="questions">
+            <ion-button (click)="goto('a')"> Pregunta</ion-button>
+        </div>
+
+    </div>
+
+
+
+    <span>prev:
+      {{previousUrl}}
+    </span>
+
+
+</ion-content>

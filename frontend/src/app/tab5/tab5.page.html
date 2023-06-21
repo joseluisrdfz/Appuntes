@@ -1,7 +1,51 @@
 <ion-content>
     <ion-header collapse="condense">
         <ion-toolbar>
-            <ion-title size="large">Panel de control</ion-title>
+            <ion-title size="large">Perfil</ion-title>
         </ion-toolbar>
     </ion-header>
+
+    <div class="section1">
+        <img class="profilePic" [src]="src">
+        <div class="userdata">
+            <span>{{name_surname}}</span>
+            <span>@{{username}}</span>
+            <span>{{grado}}</span>
+            <span>{{uni}}</span>
+        </div>
+    </div>
+
+    <div class="data">
+        <div>
+            <ion-icon name="people"></ion-icon>
+            <span>Seguidores</span>
+            <span>{{followers}}</span>
+        </div>
+        <div>
+            <ion-icon name="document-text"></ion-icon>
+            <span>Apuntes</span>
+            <span>{{apuntes}}</span>
+        </div>
+        <div>
+            <ion-icon name="help"></ion-icon>
+            <span>Preguntas</span>
+            <span>{{preguntas}}</span>
+        </div>
+        <div>
+            <ion-icon name="alert"></ion-icon>
+            <span>Respuestas</span>
+            <span>{{respuestas}}</span>
+        </div>
+    </div>
+    <div style="display:flex; justify-content: center;">
+        <ion-button ngClass="profileBtn" color="dark" shape="round" fill="solid">Ver perfil publico</ion-button>
+
+    </div>
+    <div class="otherBtns">
+        <ion-button ngClass="profileBtn" color="dark" shape="round" fill="outline">Editar perfil</ion-button>
+        <ion-button ngClass="profileBtn" color="dark" shape="round" fill="outline">Seguridad</ion-button>
+        <ion-button ngClass="profileBtn" color="dark" shape="round" fill="outline">Contacto</ion-button>
+        <ion-button ngClass="profileBtn" color="dark" shape="round" fill="outline">Terminos y condiciones</ion-button>
+        <ion-button (click)="logout()" ngClass="profileBtn" color="dark" shape="round" fill="solid">Cerrar sesión</ion-button>
+    </div>
 </ion-content>

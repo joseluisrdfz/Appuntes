@@ -8,3 +8,86 @@ ion-title {
     text-align: center;
     font-size: 8vw;
 }
+
+ion-content>div {
+    margin-top: 10px;
+    padding: 0 10px;
+}
+
+.section1 {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.profilePic {
+    width: 30vw;
+    height: 30vw;
+    border-radius: 100%;
+    border: 2px solid black;
+    object-fit: cover;
+}
+
+.userdata {
+    display: flex;
+    flex-direction: column;
+    padding-left: 10px;
+    &>*:nth-child(1) {
+        font-size: 7vw;
+        font-weight: 600;
+    }
+    &>*:nth-child(2) {
+        margin: 0px 0px 4px;
+        font-size: 6vw;
+        color: rgb(89, 89, 89);
+    }
+    &>*:nth-child(3) {
+        margin: 4px 0px 1px;
+        font-size: 4.2vw;
+        font-weight: 600;
+    }
+    &>*:nth-child(4) {
+        font-size: 4.2vw;
+        font-weight: 600;
+    }
+}
+
+.data {
+    display: flex;
+    flex: row;
+    justify-content: space-evenly;
+    &>div {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    &>div>*:nth-child(1) {
+        font-size: 8.5vw;
+    }
+    &>div>*:nth-child(2) {
+        font-size: 4vw;
+    }
+    &>div>*:nth-child(3) {
+        font-size: 6vw;
+    }
+}
+
+.profileBtn {
+    height: 7vh;
+    text-transform: none;
+}
+
+.otherBtns {
+    padding: 0!important;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    &>* {
+        width: 100%;
+    }
+}

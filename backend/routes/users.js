@@ -1,28 +1,8 @@
 const { Router } = require('express');
-const { register, getUserMyInfo, getUserInfo, updateUserData, updateUserPassword, deleteUser, followUser, followAsignatura } = require('../controllers/users.js');
+const { register, getUserMyInfo, getUserInfo, updateUserData, updateUserPassword, deleteUser, followUser, followAsignatura, getFeed } = require('../controllers/users.js');
 const { check } = require('express-validator');
 const { validarCampos } = require('../middleware/validarCampos');
 const { validarJWT } = require('../middleware/validarJWT.js');
-const multer = require('multer');
-
-/* const upload = multer({
-    dest: '../../frontend/src/assets/uploads/profilePics'
-}); */
-
-var storage = multer.diskStorage({
-    destination: function(req, file, cb) {
-        cb(null, '../../frontend/src/assets/uploads/profilePics')
-    },
-    filename: function(req, file, cb) {
-        cb(null, file.fieldname + '-' + Date.now())
-    }
-})
-
-const upload = multer({
-    storage: storage
-});
-
-
 
 const router = Router();
 
@@ -51,11 +31,11 @@ router.post('/register', [
     validarCampos
 ], register);
 
-router.get('/myInfo', [
+router.get('/info', [
     validarJWT,
 ], getUserMyInfo);
 
-router.get('/other/:id', [
+router.get('/info/:id', [
     validarJWT,
 ], getUserInfo);
 
@@ -81,5 +61,9 @@ router.post('/followUser/:id', [
 router.post('/followAsignatura/:id', [
     validarJWT,
 ], followAsignatura);
+
+router.get('/feed', [
+    validarJWT,
+], getFeed);
 
 module.exports = router
