@@ -43,29 +43,53 @@ const getApuntesDeAsignatura = async(req, res = response) => {
 
 const getApuntesById = async(req, res = response) => {
 
-    let id_apuntes = req.params.id;
+    try {
+        let id_apuntes = req.params.id;
 
-    const db = await mysqlConnection();
+        const db = await mysqlConnection();
 
-    let resultado;
+        let resultado;
 
-    resultado = await db.query(`SELECT * from apuntes where id_apuntes = ${id_apuntes}`);
+        resultado = await db.query(`SELECT apuntes.*, (SELECT asignaturas.name FROM asignaturas WHERE asignaturas.id_asignatura = apuntes.asignatura) as asignatura_name,
+    (SELECT grados.grado_name FROM grados WHERE grados.id_grado =
+     (SELECT asignaturas.grado FROM asignaturas WHERE asignaturas.id_asignatura = apuntes.asignatura)) as grado,
+     (SELECT grados.id_grado FROM grados WHERE grados.id_grado =
+        (SELECT asignaturas.grado FROM asignaturas WHERE asignaturas.id_asignatura = apuntes.asignatura)) as gradoId,
+        (SELECT users.username FROM users WHERE users.user_id = apuntes.user) as user_username,
+    (SELECT users.profilePic FROM users WHERE users.user_id = apuntes.user) as user_profilePic
+    FROM apuntes WHERE id_apuntes =  ${id_apuntes}`);
 
-    let views = resultado[0]['visualizaciones'] + 1;
+        let views = resultado[0]['visualizaciones'] + 1;
 
-    resultado[0]['visualizaciones'] = resultado[0]['visualizaciones'] + 1;
+        resultado[0]['visualizaciones'] = resultado[0]['visualizaciones'] + 1;
 
-    let resultado2;
+        let resultado2;
 
-    resultado2 = await db.query(`UPDATE apuntes set visualizaciones = ${views}  where id_apuntes = ${id_apuntes}`);
+        resultado2 = await db.query(`UPDATE apuntes set visualizaciones = ${views}  where id_apuntes = ${id_apuntes}`);
 
-    await db.end();
+        let resultado3;
 
-    return res.status(200).json({
-        ok: true,
-        total: resultado.length,
-        resultado: resultado
-    })
+        resultado3 = await db.query(`SELECT preguntas.*, (SELECT count(*) from respuestas where preguntas.id_pregunta = respuestas.pregunta) as respuestas,
+    (SELECT users.username FROM users WHERE users.user_id = preguntas.user_id) as user_username,
+    (SELECT users.profilePic FROM users WHERE users.user_id = preguntas.user_id) as user_profilePic
+    
+    FROM preguntas,preguntas_apuntes WHERE preguntas.id_pregunta = preguntas_apuntes.id_pregunta AND preguntas_apuntes.id_apuntes = ${id_apuntes};`);
+
+        await db.end();
+
+        return res.status(200).json({
+            ok: true,
+            message: 'apuntes recuperados',
+            apuntes: resultado[0],
+            preguntas: resultado3
+        })
+    } catch (error) {
+        return res.status(400).json({
+            ok: false,
+            message: 'Algo ha fallado',
+            error: error
+        })
+    }
 }
 
 const descargarApuntes = async(req, res = response) => {

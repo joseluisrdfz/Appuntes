@@ -1,4 +1,4 @@
-ion-header {
+ion-header.header {
     height: 15vh;
     display: flex;
     align-items: last baseline;
@@ -10,18 +10,14 @@ ion-header {
     }
 }
 
-ion-title {
+ion-header.header ion-title {
     text-align: left;
     font-size: 8vw;
 }
 
-
-/* ion-toolbar:nth-child(1){
-    display: flex;
-    flex-direction: row;
-    align-items: baseline;
-    justify-content: flex-start;
-} */
+ion-button {
+    text-transform: none;
+}
 
 .backButton {
     --padding-start: 2vw;
@@ -29,4 +25,136 @@ ion-title {
     width: 16vw;
     height: 16vw;
     --border-style: none;
+}
+
+.apuntesContent {
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    /*  border-bottom: 1.4px solid rgb(98, 98, 98); */
+}
+
+.apuntesContent .header {
+    display: flex;
+    justify-content: space-between;
+    &>*:nth-child(1) {
+        display: flex;
+        flex-direction: column;
+        width: fit-content;
+        &>*:nth-child(1) {
+            font-size: 4.5vw;
+            color: rgb(55, 55, 55);
+        }
+        &>*:nth-child(2) {
+            font-size: 5vw;
+        }
+    }
+}
+
+.apuntesContent .content {
+    margin: 15px 0;
+    display: flex;
+    flex-direction: column;
+    &>* {
+        margin-top: 15px 0;
+    }
+    &>*:nth-child(1) {
+        margin-bottom: 10px;
+        font-size: 6.4vw;
+        font-weight: 600;
+    }
+    &>*:nth-child(2) {
+        font-size: 4.7;
+        margin-bottom: 10px;
+    }
+    &>*:nth-child(3) {
+        font-size: 4.5vw;
+    }
+}
+
+.apuntesContent .footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.apuntesContent .footer div:nth-child(1) {
+    display: flex;
+    align-items: center;
+    &>* {
+        margin-right: 7px;
+    }
+}
+
+.apuntesContent .footer div:nth-child(2) {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    &>*:nth-child(2),
+     :nth-child(4) {
+        margin-right: 10px;
+    }
+    &>*:nth-child(odd) {
+        margin-right: 3px;
+    }
+}
+
+.apuntesContent .footer img {
+    width: 16vw;
+    height: 16vw;
+    object-fit: cover;
+    border-radius: 100%;
+}
+
+.questionSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.questionSection>ion-button {
+    width: 80vw;
+    height: 7vh;
+    text-align: center;
+}
+
+.questions {
+    margin-top: 15px;
+    width: 100%;
+}
+
+.questions>div {
+    padding: 10px 20px;
+    border-top: 1px solid black;
+    display: flex;
+    flex-direction: column;
+}
+
+.questions>div>*:nth-child(1) {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    & img {
+        width: 12vw;
+        height: 12vw;
+        object-fit: cover;
+        border-radius: 100%;
+        margin-right: 7px;
+    }
+    & div {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+}
+
+.questions>div>*:nth-child(2) {
+    margin-top: 5px;
+    text-align: center;
+}
+
+.questions>div>*:nth-child(3) {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
 }

@@ -1,12 +1,12 @@
 <ion-content>
-    <ion-header collapse="condense">
+    <ion-header class="header" collapse="condense">
         <ion-toolbar>
             <ion-button class="backButton" color="dark" shape="outline" (click)="goBack()">
                 <ion-icon name="chevron-back"></ion-icon>
             </ion-button>
         </ion-toolbar>
         <ion-toolbar>
-            <ion-title size="large">apuntes</ion-title>
+            <ion-title size="large">Apuntes</ion-title>
         </ion-toolbar>
 
     </ion-header>
@@ -14,37 +14,81 @@
     <div class="apuntesContent">
         <div class="header">
             <div>
-                <span>Grado en ingenieria multimedia</span>
-                <span>Sonido y musica</span>
+                <span>{{grado}}</span>
+                <span>{{asignatura_name}}</span>
             </div>
-            <span>2 h</span>
+            <span>{{fechaFormateada}}</span>
         </div>
         <div class="content">
-            <span>Titulo apunte</span>
-            <span>desc apunte</span>
+            <span>{{titleName}}</span>
+            <span>{{descripcion}}</span>
+            <span>{{filename}}</span>
         </div>
         <div class="footer">
             <div>
-                <img src="../../../../assets/uploads/profilePics/default.webp" alt="foto de perfil del usuario">
-                <span>Usuario1</span>
+                <img src={{profilePicsrc}} alt="foto de perfil del usuario">
+                <span>{{userName}}</span>
             </div>
-            <span> iconos y tal</span>
+            <div>
+                <ion-icon name="help"></ion-icon>
+                <span>{{preguntas.length}}</span>
+                <ion-icon name="eye"></ion-icon>
+                <span>{{visualizaciones}}</span>
+                <ion-icon name="download-outline"></ion-icon>
+                <span>{{downloads}}</span>
+            </div>
         </div>
 
     </div>
     <div class="questionSection">
-        <ion-button color="dark"> Añadir nueva pregunta</ion-button>
+        <ion-button color="dark" id="open-modal" expand="block">Añadir nueva pregunta</ion-button>
+        <!-- <p>{{ message }}</p> -->
+        <ion-modal trigger="open-modal" (willDismiss)="onWillDismiss($event)">
+            <ng-template>
+                <ion-header>
+                    <ion-toolbar>
+                        <ion-buttons slot="start">
+                            <ion-button (click)="cancel()">Cancelar</ion-button>
+                        </ion-buttons>
+                        <ion-buttons slot="end">
+                            <ion-button (click)="confirm()" [strong]="true">Confirmar</ion-button>
+                        </ion-buttons>
+                    </ion-toolbar>
+                </ion-header>
+                <ion-content class="ion-padding">
+                    <span>Añadir una pregunta</span>
+                    <ion-item>
+                        <ion-label #label1 position="stacked">Escribe tu pregunta</ion-label>
+                        <ion-input aria-labelledby="label1" type="text" placeholder="Escribe aqui" [(ngModel)]="question"></ion-input>
+                    </ion-item>
+                </ion-content>
+            </ng-template>
+        </ion-modal>
         <div class="questions">
-            <ion-button (click)="goto('a')"> Pregunta</ion-button>
+            <div *ngFor="let item of preguntas" (click)="goto(item.id_pregunta)">
+                <div class="header">
+                    <div>
+                        <img src={{item.user_profilePic}} alt="foto de perfil de usuario">
+                        <span>{{item.user_username}}</span>
+                    </div>
+                    <span>{{item.fechaFormateada}}</span>
+                </div>
+                <span>
+                  {{item.texto_pregunta}}
+              </span>
+                <div>
+                    <ion-icon name="alert"></ion-icon>
+                    <span>{{item.respuestas}}</span>
+                </div>
+            </div>
         </div>
-
     </div>
 
 
 
-    <span>prev:
+    <!--  <span>prev:
       {{previousUrl}}
-    </span>
+    </span> -->
 
 
 </ion-content>

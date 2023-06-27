@@ -29,7 +29,7 @@ router.get('/apuntes/:id', [
 ], getPreguntasApuntes);
 
 //En esta peticion se devuelven todos los datos de la pregunta asi como las respuestas
-router.get('/:id/respuestas', [
+router.get('/:id', [
     validarJWT,
 ], getPregunta);
 

@@ -5,16 +5,16 @@ import { Form } from '@angular/forms';
 @Injectable({
   providedIn: 'root'
 })
-export class ApuntesService {
+export class PreguntasService {
 
   constructor(private httpclient: HttpClient) { }
 
-  postApuntes(form : Form){
-    return this.httpclient.post(`http://localhost:3000/api/apuntes/new`, form, this.cabeceras);
+  postPreguntaApuntes(idApuntes : any , form : any){
+    return this.httpclient.post(`http://localhost:3000/api/preguntas/apuntes/${idApuntes}/new`, form, this.cabeceras);
   }
 
-  getApuntesById(id:any){
-    return this.httpclient.get(`http://localhost:3000/api/apuntes/${id}`, this.cabeceras);
+  getPreguntaId(id : any){
+    return this.httpclient.get(`http://localhost:3000/api/preguntas/${id}`, this.cabeceras);
   }
 
   get cabeceras() {

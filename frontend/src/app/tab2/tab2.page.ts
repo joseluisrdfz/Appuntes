@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { UsersService } from '../services/users.service';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs';
 
 
 @Component({
@@ -86,6 +87,17 @@ export class Tab2Page {
 
   }
 
+  ngOnInit(){
+    this.router.events.pipe(
+      filter((event) => event instanceof NavigationEnd)
+  ).subscribe((event:any) => {
+
+    if(event.url.includes('/tabs/tabs/tab2')){
+      this.reload();
+    }
+  });
+  }
+
     compareDates (a : any, b : any) {
     if (Date.parse(a['upload_datetime']) > Date.parse(b['upload_datetime'])) {
       //a es menor que b según criterio de ordenamiento
@@ -99,6 +111,8 @@ export class Tab2Page {
     return 0;
   }
 
+
+
   formatDate(date: Date){
 
     let fechaSalida = '';
@@ -110,6 +124,9 @@ export class Tab2Page {
         1.1574074074074074×10-8 dias
 
         la fechar en formato dd-mm-aaaa
+        let date : Date = new Date(element.upload_datetime);
+
+        element.fechaFormateada = this.formatDate(date);
 
     */
     const aux = Date.now() - date.getTime();

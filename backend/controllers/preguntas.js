@@ -41,25 +41,39 @@ const getPreguntasApuntes = async(req, res = response) => {
 }
 const getPregunta = async(req, res = response) => {
 
-    const id_preg = req.params.id;
+    try {
+        const id_preg = req.params.id;
 
-    const db = await mysqlConnection();
+        const db = await mysqlConnection();
 
-    let resultado;
+        let resultado;
 
-    let resultado2;
+        let resultado2;
 
-    resultado = await db.query(`SELECT * FROM preguntas where id_pregunta = ${id_preg}`);
+        resultado = await db.query(`SELECT preguntas.*, 
+    (SELECT count(*) from respuestas where respuestas.pregunta = preguntas.id_pregunta) as n_respuestas,
+    (SELECT users.username from users where users.user_id = preguntas.user_id) as username,
+    (SELECT users.profilePic from users where users.user_id = preguntas.user_id) as profilePic
+    FROM preguntas WHERE preguntas.id_pregunta = ${id_preg}`);
 
-    resultado2 = await db.query(`SELECT * FROM respuestas where pregunta = ${id_preg}`);
+        resultado2 = await db.query(`SELECT respuestas.*, 
+    (SELECT users.username from users where users.user_id = respuestas.user) as username,
+    (SELECT users.profilePic from users where users.user_id = respuestas.user) as profilePic
+    FROM respuestas WHERE respuestas.pregunta = ${id_preg}`);
 
-    await db.end();
+        await db.end();
 
-    return res.status(200).json({
-        message: 'Se han recuperado los datos de la pregunta',
-        pregunta: resultado,
-        respuestas: resultado2
-    })
+        return res.status(200).json({
+            message: 'Se han recuperado los datos de la pregunta',
+            pregunta: resultado[0],
+            respuestas: resultado2
+        })
+    } catch (err) {
+        return res.status(400).json({
+            message: 'ha habido un error',
+            error: err
+        })
+    }
 
 }
 const postPreguntaAsignatura = async(req, res = response) => {
