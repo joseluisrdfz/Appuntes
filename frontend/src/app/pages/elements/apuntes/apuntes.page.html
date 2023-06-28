@@ -25,7 +25,7 @@
             <span>{{filename}}</span>
         </div>
         <div class="footer">
-            <div>
+            <div (click)="goto('/user/'+user_id)">
                 <img src={{profilePicsrc}} alt="foto de perfil del usuario">
                 <span>{{userName}}</span>
             </div>
@@ -65,18 +65,18 @@
             </ng-template>
         </ion-modal>
         <div class="questions">
-            <div *ngFor="let item of preguntas" (click)="goto(item.id_pregunta)">
+            <div *ngFor="let item of preguntas">
                 <div class="header">
-                    <div>
+                    <div (click)="goto('/user/'+item.user_id)">
                         <img src={{item.user_profilePic}} alt="foto de perfil de usuario">
                         <span>{{item.user_username}}</span>
                     </div>
-                    <span>{{item.fechaFormateada}}</span>
+                    <span (click)="goto('/preguntas/' + item.id_pregunta)">{{item.fechaFormateada}}</span>
                 </div>
-                <span>
+                <span (click)="goto('/preguntas/' + item.id_pregunta)">
                   {{item.texto_pregunta}}
               </span>
-                <div>
+                <div (click)="goto('/preguntas/' + item.id_pregunta)">
                     <ion-icon name="alert"></ion-icon>
                     <span>{{item.respuestas}}</span>
                 </div>

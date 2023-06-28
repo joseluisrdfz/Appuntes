@@ -8,7 +8,7 @@
 
     <div class="feedNormalContainer">
         <div *ngFor="let item of list; index as i">
-            <div *ngIf="item.type==='APUNTES'" (click)="goto('/apuntes/' + item.id_apuntes)" class="feedElement">
+            <div *ngIf="item.type==='APUNTES'" class="feedElement">
                 <!-- item["id_apuntes"]
           item["filename"]
           item["titlename"]
@@ -25,19 +25,19 @@
     },
     }]  -->
 
-                <div class="header">
+                <div class="header" (click)="goto('/apuntes/' + item.id_apuntes)">
                     <div>
                         <span>{{item["grado_name"]}}</span>
                         <span>{{item["asignatura_name"]}}</span>
                     </div>
                     <span>{{item["fechaFormateada"]}}</span>
                 </div>
-                <div class="content">
+                <div class="content" (click)="goto('/apuntes/' + item.id_apuntes)">
                     <span class="title">{{item["titlename"]}}</span>
                     <span class="description">{{item["description"]}}</span>
                 </div>
                 <div class="footer">
-                    <div class="user">
+                    <div (click)="goto('/user/'+ item.user)" class="user">
                         <img [src]="'../../assets/uploads/profilePics/' + item['profilePic']">
                         <span>{{item['username']}}</span>
                     </div>
@@ -53,7 +53,7 @@
                     </div>
                 </div>
             </div>
-            <div *ngIf="item.type==='PREGUNTAS'" (click)="goto('/preguntas/' + item.id_pregunta)" class="feedElement">
+            <div *ngIf="item.type==='PREGUNTAS'" class="feedElement">
 
 
                 <!--  [
@@ -71,19 +71,19 @@
         item["type": "PREGUNTAS"
    -->
 
-                <div class="header">
+                <div class="header" (click)="goto('/preguntas/' + item.id_pregunta)">
                     <div>
                         <span>{{item["grado_name"]}}</span>
                         <span>{{item["asignatura_name"]}}</span>
                     </div>
                     <span>{{item["fechaFormateada"]}}</span>
                 </div>
-                <div class="content">
+                <div class="content" (click)="goto('/preguntas/' + item.id_pregunta)">
                     <span class="title">{{item["texto_pregunta"]}} </span>
                     <span class="description">{{item["apuntes_title"]}}</span>
                 </div>
                 <div class="footer">
-                    <div class="user">
+                    <div (click)="goto('/user/'+ item.user_id)" class="user">
                         <img [src]="'../../assets/uploads/profilePics/' + item['profilePic']">
                         <span>{{item['username']}}</span>
                     </div>
@@ -92,7 +92,7 @@
                             <ion-icon name="alert"></ion-icon>
                             <span>{{item['respuestas']}}</span>
                         </div>
-                        <div></div>
+
                         <!-- <div>
                             <ion-icon name="download-outline"></ion-icon>
                             <span>34</span>

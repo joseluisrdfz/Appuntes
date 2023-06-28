@@ -33,12 +33,16 @@ const routes: Routes = [
       },{
         path: 'preguntas/:id',
         loadChildren: () => import('../pages/elements/preguntas/preguntas.module').then((m) => m.PreguntasPageModule)
+      },
+      {
+        path: 'user/:id',
+        loadChildren: () => import('../pages/user/user.module').then( m => m.UserPageModule)
       }
     ]
   },
   {
     path: '**',
-    redirectTo: '/tabs/tab1'
+    redirectTo: '/tabs/tab3'
   }
 ];
 

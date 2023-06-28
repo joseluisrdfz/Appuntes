@@ -23,7 +23,7 @@
             <span>{{texto_pregunta}}</span>
         </div>
         <div class="footer">
-            <div>
+            <div (click)="goto('/user/'+user)">
                 <img src={{profilePic}} alt="foto de perfil del usuario">
                 <span>{{username}}</span>
             </div>
@@ -62,7 +62,7 @@
         <div class="answers">
             <div *ngFor="let item of respuestas">
                 <div class="header">
-                    <div>
+                    <div (click)="goto('/user/'+item.user)">
                         <img src={{item.profilePic}} alt="foto de perfil de usuario">
                         <span>{{item.username}}</span>
                     </div>

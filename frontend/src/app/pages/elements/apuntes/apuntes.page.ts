@@ -58,7 +58,7 @@ export class ApuntesPage implements OnInit {
     filename ='';
     visualizaciones = '';
 
-    userId='';
+    user_id='';
     userName='';
 
     baseSrc='../../../../assets/uploads/profilePics/';
@@ -123,7 +123,7 @@ reload(){
     this.downloads=res['apuntes'].downloads;
     this.visualizaciones = res['apuntes'].visualizaciones;
     this.filename =res['apuntes'].filename;
-    this.userId=res['apuntes'].user;
+    this.user_id=res['apuntes'].user;
     this.userName=res['apuntes'].user_username;
     this.profilePicsrc= this.baseSrc + res['apuntes'].user_profilePic;
 
@@ -144,7 +144,7 @@ reload(){
 
     goto(url:any){
       console.log('goto'+url,  '   prevUrl:', "/tabs/tabs/apuntes" + this.id_apuntes)
-      this.router.navigateByUrl(`/tabs/tabs/preguntas/${url}`,  {state: { prevUrl : "/tabs/tabs/apuntes/" + this.id_apuntes, changePrev : 'yes'}})
+      this.router.navigateByUrl(`/tabs/tabs${url}`,  {state: { prevUrl : "/tabs/tabs/apuntes/" + this.id_apuntes, changePrev : 'yes'}})
 
     }
 

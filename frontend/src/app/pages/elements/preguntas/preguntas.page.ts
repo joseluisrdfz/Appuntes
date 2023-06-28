@@ -4,6 +4,7 @@ import { IonModal } from '@ionic/angular';
 import { filter } from 'rxjs/operators';
 import { PreguntasService } from 'src/app/services/preguntas.service';
 import { OverlayEventDetail } from '@ionic/core/components';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-preguntas',
@@ -14,6 +15,8 @@ export class PreguntasPage implements OnInit {
       previousUrl: string = '';
       currentUrl: string = '';
 
+      routerSubs : Subscription | undefined = undefined;
+
       @ViewChild(IonModal) modal: IonModal | undefined;
 
       message = 'This modal example uses triggers to automatically open a modal when the button is clicked.';
@@ -22,6 +25,7 @@ export class PreguntasPage implements OnInit {
       id_pregunta : string = '';
       n_respuestas : string = '';
       profilePic : string = '';
+      user : string = '';
       username : string = '';
       texto_pregunta : string = '';
       fechaFormateada : string = '';
@@ -41,7 +45,7 @@ export class PreguntasPage implements OnInit {
 
         this.id_pregunta = this.route.snapshot.params['id'];
 
-        this.router.events.pipe(
+        this.routerSubs = this.router.events.pipe(
           filter((event) => event instanceof NavigationEnd)
         ).subscribe((event:any) => {
 
@@ -64,7 +68,7 @@ export class PreguntasPage implements OnInit {
 
       ngOnDestroy(){
         console.log('me voy de la pregunta', this.id_pregunta)
-
+        this.routerSubs?.unsubscribe();
       }
 
       cancel() {
@@ -99,6 +103,7 @@ export class PreguntasPage implements OnInit {
           this.profilePic = this.baseSrc + res.pregunta.profilePic;
           this.texto_pregunta = res.pregunta['texto_pregunta'];
           this.fechaFormateada = this.formatDate(new Date (res.pregunta.upload_datetime));
+          this.user = res.pregunta.user_id;
           this.respuestas = res.respuestas;
 
           this.respuestas.forEach((resp : any) =>{
@@ -161,6 +166,13 @@ export class PreguntasPage implements OnInit {
 
       goBack(){
         this.router.navigateByUrl(this.previousUrl , {state: { prevUrl : "/tabs/tabs/preguntas", changePrev : 'no'}});
+      }
+
+      goto(url:any){
+        console.log('goto'+url,  '   prevUrl:', "/tabs/tabs/pregnutas/"+this.id_pregunta)
+
+        this.router.navigateByUrl('/tabs/tabs'+url,  {state: { prevUrl : `/tabs/tabs/preguntas/${this.id_pregunta}`, changePrev : 'yes'}})
+
       }
 
 

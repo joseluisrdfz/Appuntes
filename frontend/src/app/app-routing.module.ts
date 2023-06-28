@@ -22,19 +22,12 @@ const routes: Routes = [
 	},{
     path: 'register',
     loadChildren: () => import('./pages/register/register.module').then( m => m.RegisterPageModule)
-  },{
-    path: 'tabs',
-		loadChildren: () => import('./tabs/tabs.module').then((m) => m.TabsPageModule),
-		canLoad: [AuthGuard]
   },
   {
 		path: '**',
 		redirectTo: '/intro',
 
-	},  {
-    path: 'user',
-    loadChildren: () => import('./pages/user/user.module').then( m => m.UserPageModule)
-  }
+	}
 
 ];
 @NgModule({
