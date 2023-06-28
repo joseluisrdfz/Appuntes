@@ -20,6 +20,12 @@ export class PreguntasPage implements OnInit {
       answer: string = '';
 
       id_pregunta : string = '';
+      n_respuestas : string = '';
+      profilePic : string = '';
+      username : string = '';
+      texto_pregunta : string = '';
+      fechaFormateada : string = '';
+      baseSrc='../../../../assets/uploads/profilePics/';
 
       respuestas : any[] = [];
 
@@ -31,6 +37,7 @@ export class PreguntasPage implements OnInit {
 
       ngOnInit() {
         console.log('me inicio pregunta')
+
 
         this.id_pregunta = this.route.snapshot.params['id'];
 
@@ -74,21 +81,32 @@ export class PreguntasPage implements OnInit {
           let auxform = {
             texto_respuesta : this.answer
           }
-        /*  this.preguntasService.postPreguntaApuntes(this.id_pregunta,auxform).subscribe((res :any)=>{
+          this.preguntasService.postRespuestaOnPreguntaId(this.id_pregunta,auxform).subscribe((res :any)=>{
             console.log(res)
             this.answer = '';
+            this.reload();
             //this.goto(res['insertID'])
-          }) */
+          })
         }
       }
 
 
       reload(){
         this.preguntasService.getPreguntaId(this.id_pregunta).subscribe((res:any)=>{
-          console.log(res)
-      /*    let date : Date = new Date(res['apuntes'].upload_datetime);
+          console.log(res);
+          this.n_respuestas = res.pregunta['n_respuestas'];
+          this.username = res.pregunta.username;
+          this.profilePic = this.baseSrc + res.pregunta.profilePic;
+          this.texto_pregunta = res.pregunta['texto_pregunta'];
+          this.fechaFormateada = this.formatDate(new Date (res.pregunta.upload_datetime));
+          this.respuestas = res.respuestas;
 
-          this.fechaFormateada = this.formatDate(date); */
+          this.respuestas.forEach((resp : any) =>{
+            resp.profilePic = this.baseSrc + resp.profilePic;
+            resp.fechaFormateada =this.formatDate(new Date ( resp.upload_datetime ));
+          })
+
+          this.respuestas = this.respuestas.sort(this.compareDates)
 
         })
       }

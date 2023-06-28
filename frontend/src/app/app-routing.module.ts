@@ -31,7 +31,11 @@ const routes: Routes = [
 		path: '**',
 		redirectTo: '/intro',
 
-	}
+	},  {
+    path: 'user',
+    loadChildren: () => import('./pages/user/user.module').then( m => m.UserPageModule)
+  }
+
 ];
 @NgModule({
   imports: [

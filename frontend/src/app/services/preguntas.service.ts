@@ -17,6 +17,10 @@ export class PreguntasService {
     return this.httpclient.get(`http://localhost:3000/api/preguntas/${id}`, this.cabeceras);
   }
 
+  postRespuestaOnPreguntaId(id :any, form : any){
+    return this.httpclient.post(`http://localhost:3000/api/preguntas/${id}/respuestas/new`, form, this.cabeceras);
+  }
+
   get cabeceras() {
     return {
       headers: {
