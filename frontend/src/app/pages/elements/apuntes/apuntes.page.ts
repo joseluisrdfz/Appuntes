@@ -37,7 +37,7 @@ export class ApuntesPage implements OnInit {
       this.preguntasService.postPreguntaApuntes(this.id_apuntes,auxform).subscribe((res :any)=>{
         console.log(res)
         this.question = '';
-        this.goto(res['insertID'])
+        this.goto('/preguntas/' + res['insertID'])
       })
     }
   }
@@ -174,7 +174,7 @@ reload(){
         fechaSalida = Math.floor(aux*(1.1574074074074074 * Math.pow(10, -8)))+ ' d';
 
       } else {
-        fechaSalida = date.getDay()   + '-' + date.getMonth() +'-' + date.getFullYear();
+        fechaSalida = date.getDate()   + '-' + date.getMonth() +'-' + date.getFullYear();
       }
 
 

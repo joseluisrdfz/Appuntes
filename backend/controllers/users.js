@@ -117,28 +117,94 @@ const register = async(req, res = response) => {
 
 const getUserInfo = async(req, res = response) => {
 
-    let idUser = req.params.id;
+    try {
+        let idUser = req.params.id;
+
+        let idUsertoken = req.idToken;
 
 
-    const db = await mysqlConnection();
+        const db = await mysqlConnection();
 
-    let resultado;
+        let resultado;
 
-    resultado = await db.query(`SELECT username,	
-    profilePic,	rol, name, surname,	email, register_dateTime, lastConexion, curso, uni,	grado,
-    (Select count(*) from preguntas as p WHERE p.user_id =  ${idUser}) as preguntas,
-    (Select count(*) from respuestas as r WHERE r.user =  ${idUser}) as respuestas ,
-    (Select count(*) from seguir_a_usuario as seg WHERE seg.user_followed =  ${idUser}) as seguidores,
-    (Select count(*) from apuntes as ap WHERE ap.user =  ${idUser}) as apuntes
-    FROM users WHERE users.user_id = ${idUser}`);
+        resultado = await db.query(`SELECT username,	
+            profilePic,	rol, name, surname,	email, register_dateTime, lastConexion, curso, uni,	grado,
+            (Select count(*) from preguntas as p WHERE p.user_id =  ${idUser}) as preguntas,
+            (Select count(*) from respuestas as r WHERE r.user =  ${idUser}) as respuestas ,
+            (Select count(*) from seguir_a_usuario as seg WHERE seg.user_followed =  ${idUser}) as seguidores,
+            (Select count(*) from apuntes as ap WHERE ap.user =  ${idUser}) as apuntes,
+            (SELECT grados.grado_name from grados where grados.id_grado = users.grado ) as grado_name,
+            (SELECT universities.name from universities where universities.id_uni = users.uni ) as uni_name
+            FROM users WHERE users.user_id = ${idUser}`);
 
-    await db.end();
+        let apuntes;
 
-    return res.status(200).json({
-        ok: true,
-        total: resultado.length,
-        resultado: resultado
-    })
+        apuntes = await db.query(`select DISTINCT apuntes.id_apuntes,apuntes.filename,apuntes.titlename,apuntes.visualizaciones,apuntes.downloads, apuntes.description,apuntes.upload_datetime ,apuntes.user , apuntes.asignatura as asignatura_id,
+         (Select asignaturas.name from asignaturas where asignaturas.id_asignatura = apuntes.asignatura) as asignatura_name, 
+         (Select grados.grado_name from asignaturas, grados where asignaturas.grado = grados.id_grado and asignaturas.id_asignatura = apuntes.asignatura ) as grado_name ,
+          (Select count(*) from preguntas_apuntes as p WHERE p.id_apuntes = apuntes.id_apuntes ) as preguntas,
+           (SELECT users.username FROM users WHERE users.user_id = apuntes.user) as username,
+            (SELECT users.profilePic FROM users WHERE users.user_id = apuntes.user) as profilePic FROM apuntes where apuntes.user = ${idUser}`);
+
+        let preguntas;
+
+        preguntas = await db.query(`SELECT DISTINCT preguntas.*, (SELECT COUNT(*) FROM respuestas where respuestas.pregunta = preguntas.id_pregunta ) as respuestas,
+
+        (SELECT asignaturas.name FROM asignaturas,preguntas_asignaturas WHERE asignaturas.id_asignatura = preguntas_asignaturas.id_asignatura and preguntas.id_pregunta = preguntas_asignaturas.id_pregunta) as asignatura_name,
+
+        (SELECT asignaturas.id_asignatura FROM asignaturas,preguntas_asignaturas WHERE asignaturas.id_asignatura = preguntas_asignaturas.id_asignatura and preguntas.id_pregunta = preguntas_asignaturas.id_pregunta) as asignatura_id,
+
+        (SELECT grados.grado_name FROM grados,asignaturas, preguntas_asignaturas WHERE grados.id_grado = asignaturas.grado and asignaturas.id_asignatura = preguntas_asignaturas.id_asignatura and preguntas.id_pregunta = preguntas_asignaturas.id_pregunta) as grado_name,
+
+        (SELECT apuntes.titlename FROM apuntes, preguntas_apuntes WHERE apuntes.id_apuntes = preguntas_apuntes.id_apuntes and preguntas_apuntes.id_pregunta = preguntas.id_pregunta) as apuntes_title,
+
+        (SELECT apuntes.id_apuntes FROM apuntes, preguntas_apuntes WHERE apuntes.id_apuntes = preguntas_apuntes.id_apuntes and preguntas_apuntes.id_pregunta = preguntas.id_pregunta) as apuntes_id,
+        (SELECT asignaturas.name FROM asignaturas WHERE asignaturas.id_asignatura = (SELECT apuntes.asignatura FROM apuntes, preguntas_apuntes WHERE apuntes.id_apuntes = preguntas_apuntes.id_apuntes and preguntas_apuntes.id_pregunta = preguntas.id_pregunta)) as apuntes_asignatura,
+
+        (SELECT grados.grado_name FROM grados WHERE grados.id_grado = (SELECT asignaturas.grado FROM asignaturas WHERE asignaturas.id_asignatura = (SELECT apuntes.asignatura FROM apuntes, preguntas_apuntes WHERE apuntes.id_apuntes = preguntas_apuntes.id_apuntes and preguntas_apuntes.id_pregunta = preguntas.id_pregunta))) as apuntes_grado,
+
+        (SELECT users.username FROM users WHERE users.user_id = preguntas.user_id) as username,
+        (SELECT users.profilePic FROM users WHERE users.user_id = preguntas.user_id) as profilePic
+
+        FROM preguntas WHERE preguntas.user_id = ${idUser}`);
+
+        let respuestas;
+
+        respuestas = await db.query(`SELECT respuestas.*, 
+        (SELECT users.username from users where users.user_id = respuestas.user) as username,
+        (SELECT users.profilePic from users where users.user_id = respuestas.user) as profilePic
+        FROM respuestas WHERE respuestas.user = ${idUser}`);
+
+        let seguido;
+
+        seguido = await db.query(`Select count(*) as seguido from seguir_a_usuario WHERE seguir_a_usuario.user = ${idUsertoken} and seguir_a_usuario.user_followed = ${idUser};`);
+
+
+        await db.end();
+
+        let perfilpropio = false;
+        if (idUser == idUsertoken) {
+            perfilpropio = true;
+
+        }
+
+        return res.status(200).json({
+            ok: true,
+            message: 'se ha recuperado al usuario',
+            datos: resultado[0],
+            apuntes: apuntes,
+            preguntas: preguntas,
+            respuestas: respuestas,
+            perfilpropio,
+            seguido: seguido[0]
+        })
+    } catch (err) {
+        return res.status(200).json({
+            ok: true,
+            message: 'se ha recuperado al usuario',
+            datos: resultado[0]
+        })
+    }
 }
 
 const getUserMyInfo = async(req, res = response) => {
@@ -150,7 +216,7 @@ const getUserMyInfo = async(req, res = response) => {
 
     let resultado;
 
-    resultado = await db.query(`SELECT username,	
+    resultado = await db.query(`SELECT user_id , username,	
     profilePic,	rol, name, surname,	email, register_dateTime, lastConexion, curso, uni,	grado,
     (Select count(*) from preguntas as p WHERE p.user_id =  ${idUser}) as preguntas,
     (Select count(*) from respuestas as r WHERE r.user =  ${idUser}) as respuestas ,
@@ -364,21 +430,46 @@ const followUser = async(req, res = response) => {
 
     let user2Follow = req.params.id;
 
+    let message = '';
+
     try {
         const db = await mysqlConnection();
 
+        let seguido;
+
+        seguido = await db.query(`SELECT count(*) from seguir_a_usuario WHERE seguir_a_usuario.user = ${user_id} and seguir_a_usuario.user_followed = ${user2Follow}`)
+
         let resultado;
 
-        resultado = await db.query(`INSERT INTO seguir_a_usuario 
-        (user, user_followed) 
-        VALUES ('${user_id}','${user2Follow}');'`);
+        let seguidoBool = false;
 
+        console.log(seguido[0]['count(*)'])
+
+
+        if (seguido[0]['count(*)'] === 0) {
+
+
+            resultado = await db.query(`INSERT INTO seguir_a_usuario (user, user_followed) VALUES ('${user_id}','${user2Follow}');`);
+
+            message = `El usuario ${user_id} ahora sigue al usuario ${user2Follow}`;
+
+            seguidoBool = true;
+
+        } else {
+
+            resultado = await db.query(`DELETE FROM seguir_a_usuario WHERE seguir_a_usuario.user = ${user_id} and seguir_a_usuario.user_followed = ${user2Follow};`);
+
+            message = `El usuario ${user_id} ha dejado de seguir al usuario ${user2Follow}`;
+
+            seguidoBool = false;
+        }
 
         await db.end();
 
         return res.status(200).json({
             ok: true,
-            message: `El usuario ${user_id} ahora sigue al usuario ${user2Follow}`
+            message: message,
+            seguidoBool
         });
 
 

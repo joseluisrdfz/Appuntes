@@ -38,7 +38,7 @@
         </div>
     </div>
     <div style="display:flex; justify-content: center;">
-        <ion-button ngClass="profileBtn" color="dark" shape="round" fill="solid">Ver perfil publico</ion-button>
+        <ion-button ngClass="profileBtn" (click)="goto('/user/' + user_id )" color="dark" shape="round" fill="solid">Ver perfil publico</ion-button>
 
     </div>
     <div class="otherBtns">

@@ -19,6 +19,7 @@ export class Tab5Page implements OnInit {
   username = '';
   grado='';
   uni='';
+  user_id = '';
 
   uniId='';
   gradoId='';
@@ -32,6 +33,7 @@ export class Tab5Page implements OnInit {
   constructor(private router : Router, private usersService : UsersService, private gradoService : GradosService, private uniService: UniversitiesService, private authService: AuthenticationService) {
     this.usersService.getUserMyInfo().subscribe((res:any)=>{
       this.userinfo = res['userinfo'][0];
+      this.user_id = res['userinfo'][0]['user_id'];
       this.name_surname=`${res['userinfo'][0]['name']} ${res['userinfo'][0]['surname']}`;
       this.username = res['userinfo'][0]['username'];
       this.followers=res['userinfo'][0]['seguidores'];
@@ -58,6 +60,10 @@ export class Tab5Page implements OnInit {
   logout(){
     this.authService.logout();
     this.router.navigateByUrl('/intro', { replaceUrl:true });
+  }
+
+  goto(url :any){
+    this.router.navigateByUrl(`/tabs/tabs${url}`,  {state: { prevUrl : "/tabs/tabs/tab5", changePrev : 'yes'}})
   }
 
 }

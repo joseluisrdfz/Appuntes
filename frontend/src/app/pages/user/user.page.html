@@ -14,7 +14,7 @@
         <div class="userdata">
             <span>{{name_surname}}</span>
             <span>@{{username}}</span>
-            <span>{{grado}}</span>
+            <span>{{grado}}--{{curso}}</span>
             <span>{{uni}}</span>
         </div>
     </div>
@@ -28,17 +28,104 @@
         <div>
             <ion-icon name="document-text"></ion-icon>
             <span>Apuntes</span>
-            <span>{{apuntes}}</span>
+            <span>{{napuntes}}</span>
         </div>
         <div>
             <ion-icon name="help"></ion-icon>
             <span>Preguntas</span>
-            <span>{{preguntas}}</span>
+            <span>{{npreguntas}}</span>
         </div>
         <div>
             <ion-icon name="alert"></ion-icon>
             <span>Respuestas</span>
-            <span>{{respuestas}}</span>
+            <span>{{nrespuestas}}</span>
+        </div>
+    </div>
+
+    <div *ngIf="!perfilprofio" style="display:flex; justify-content: center;">
+        <ion-button (click)="followUser()" ngClass="profileBtn" color="dark" shape="round" fill={{seguido}}>{{messageBtn}}</ion-button>
+    </div>
+
+    <div class="userContent">
+        <div><span [ngClass]="{'selected' : menuState === 1 }" (click)="changeState(1)">Apuntes</span><span [ngClass]="{'selected' : menuState === 2 }" (click)="changeState(2)">Preguntas</span><span [ngClass]="{'selected' : menuState === 3 }" (click)="changeState(3)">Respuestas</span></div>
+        <div *ngIf="menuState === 1">
+            <div *ngFor="let item of apuntes" class="feedElement">
+                <div class="header" (click)="goto('/apuntes/' + item.id_apuntes)">
+                    <div>
+                        <span>{{item["grado_name"]}}</span>
+                        <span>{{item["asignatura_name"]}}</span>
+                    </div>
+                    <span>{{item["fechaFormateada"]}}</span>
+                </div>
+                <div class="content" (click)="goto('/apuntes/' + item.id_apuntes)">
+                    <span class="title">{{item["titlename"]}}</span>
+                    <span class="description">{{item["description"]}}</span>
+                </div>
+                <div class="footer">
+                    <div (click)="goto('/user/'+ item.user)" class="user">
+                        <img [src]="'../../assets/uploads/profilePics/' + item['profilePic']">
+                        <span>{{item['username']}}</span>
+                    </div>
+                    <div class="icons">
+                        <div>
+                            <ion-icon name="eye-outline"></ion-icon>
+                            <span>{{item["visualizaciones"]}}</span>
+                        </div>
+                        <div>
+                            <ion-icon name="download-outline"></ion-icon>
+                            <span>{{item["downloads"]}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="menuState === 2">
+            <div *ngFor="let item of preguntas" class="feedElement">
+                <div class="header" (click)="goto('/preguntas/' + item.id_pregunta)">
+                    <div>
+                        <span>{{item["grado_name"]}}</span>
+                        <span>{{item["asignatura_name"]}}</span>
+                    </div>
+                    <span>{{item["fechaFormateada"]}}</span>
+                </div>
+                <div class="content" (click)="goto('/preguntas/' + item.id_pregunta)">
+                    <span class="title">{{item["texto_pregunta"]}} </span>
+                    <span class="description">{{item["apuntes_title"]}}</span>
+                </div>
+                <div class="footer">
+                    <div (click)="goto('/user/'+ item.user_id)" class="user">
+                        <img [src]="'../../assets/uploads/profilePics/' + item['profilePic']">
+                        <span>{{item['username']}}</span>
+                    </div>
+                    <div class="icons">
+                        <div>
+                            <ion-icon name="alert"></ion-icon>
+                            <span>{{item['respuestas']}}</span>
+                        </div>
+
+                        <!-- <div>
+                      <ion-icon name="download-outline"></ion-icon>
+                      <span>34</span>
+                  </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="menuState === 3" class="answers">
+            <div *ngFor="let item of respuestas">
+
+                <div class="header">
+                    <div (click)="goto('/user/'+item.user)">
+                        <img src={{item.profilePic}} alt="foto de perfil de usuario">
+                        <span>{{item.username}}</span>
+                    </div>
+                    <span>{{item.fechaFormateada}}</span>
+                </div>
+                <span>
+                  {{item.texto_respuesta}}
+                </span>
+                <ion-button ngClass="profileBtn" (click)="goto('/preguntas/' + item.pregunta )" color="dark" shape="square" fill="solid">Ir a la pregunta</ion-button>
+            </div>
         </div>
     </div>
 </ion-content>

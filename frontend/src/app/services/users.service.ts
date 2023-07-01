@@ -28,6 +28,10 @@ export class UsersService {
     return this.httpclient.get('http://localhost:3000/api/users/feed',this.cabeceras);
   }
 
+  followUser(id:any){
+    return this.httpclient.post(`http://localhost:3000/api/users/followUser/${id}`, '',this.cabeceras);
+  }
+
   get cabeceras() {
     return {
       headers: {

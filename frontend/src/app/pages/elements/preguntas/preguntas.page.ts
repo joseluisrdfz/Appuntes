@@ -143,7 +143,7 @@ export class PreguntasPage implements OnInit {
           fechaSalida = Math.floor(aux*(1.1574074074074074 * Math.pow(10, -8)))+ ' d';
 
         } else {
-          fechaSalida = date.getDay()   + '-' + date.getMonth() +'-' + date.getFullYear();
+          fechaSalida = date.getDate()   + '-' + date.getMonth() +'-' + date.getFullYear();
         }
 
 
