@@ -37,7 +37,12 @@ const routes: Routes = [
       {
         path: 'user/:id',
         loadChildren: () => import('../pages/user/user.module').then( m => m.UserPageModule)
+      },
+      {
+        path: 'asignatura/:id',
+        loadChildren: () => import('../pages/elements/asignatura/asignatura.module').then( m => m.AsignaturaPageModule)
       }
+
     ]
   },
   {

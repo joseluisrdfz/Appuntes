@@ -573,7 +573,11 @@ const getFeed = async(req, res = response) => {
         (SELECT apuntes.id_apuntes FROM apuntes, preguntas_apuntes WHERE apuntes.id_apuntes = preguntas_apuntes.id_apuntes and preguntas_apuntes.id_pregunta = preguntas.id_pregunta) as apuntes_id,
         (SELECT asignaturas.name FROM asignaturas WHERE asignaturas.id_asignatura = (SELECT apuntes.asignatura FROM apuntes, preguntas_apuntes WHERE apuntes.id_apuntes = preguntas_apuntes.id_apuntes and preguntas_apuntes.id_pregunta = preguntas.id_pregunta)) as apuntes_asignatura,
 
-(SELECT grados.grado_name FROM grados WHERE grados.id_grado = (SELECT asignaturas.grado FROM asignaturas WHERE asignaturas.id_asignatura = (SELECT apuntes.asignatura FROM apuntes, preguntas_apuntes WHERE apuntes.id_apuntes = preguntas_apuntes.id_apuntes and preguntas_apuntes.id_pregunta = preguntas.id_pregunta))) as apuntes_grado,
+        (SELECT grados.grado_name FROM grados WHERE grados.id_grado = (SELECT asignaturas.grado FROM asignaturas WHERE asignaturas.id_asignatura = (SELECT apuntes.asignatura FROM apuntes, preguntas_apuntes WHERE apuntes.id_apuntes = preguntas_apuntes.id_apuntes and preguntas_apuntes.id_pregunta = preguntas.id_pregunta))) as apuntes_grado,
+
+        (SELECT asignaturas.grado FROM asignaturas WHERE asignaturas.id_asignatura = (SELECT apuntes.asignatura FROM apuntes, preguntas_apuntes WHERE apuntes.id_apuntes = preguntas_apuntes.id_apuntes and preguntas_apuntes.id_pregunta = preguntas.id_pregunta)) as apuntes_grado_id,
+
+        (SELECT apuntes.asignatura FROM apuntes, preguntas_apuntes WHERE apuntes.id_apuntes = preguntas_apuntes.id_apuntes and preguntas_apuntes.id_pregunta = preguntas.id_pregunta) as apuntes_asignatura_id,
 
         (SELECT users.username FROM users WHERE users.user_id = preguntas.user_id) as username,
         (SELECT users.profilePic FROM users WHERE users.user_id = preguntas.user_id) as profilePic

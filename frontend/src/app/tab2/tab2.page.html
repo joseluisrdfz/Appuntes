@@ -25,7 +25,7 @@
     },
     }]  -->
 
-                <div class="header" (click)="goto('/apuntes/' + item.id_apuntes)">
+                <div class="header" (click)="goto('/asignatura/' + item.asignatura_id)">
                     <div>
                         <span>{{item["grado_name"]}}</span>
                         <span>{{item["asignatura_name"]}}</span>
@@ -71,7 +71,7 @@
         item["type": "PREGUNTAS"
    -->
 
-                <div class="header" (click)="goto('/preguntas/' + item.id_pregunta)">
+                <div class="header" (click)="goto('/asignatura/' + item.asignatura_id)">
                     <div>
                         <span>{{item["grado_name"]}}</span>
                         <span>{{item["asignatura_name"]}}</span>

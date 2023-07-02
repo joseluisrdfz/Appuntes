@@ -161,7 +161,7 @@ export class Tab2Page {
   reload(){
     let aux : any[]= [];
     this.userService.getFeed().subscribe((res:any)=>{
-      //console.log(res)
+      console.log(res)
 
       res['apuntes'].forEach((apunte : any ) =>{
         apunte.type = 'APUNTES';
@@ -180,6 +180,7 @@ export class Tab2Page {
         if(pregunta.asignatura_name==null && pregunta.grado_name==null){
           pregunta.asignatura_name = pregunta.apuntes_asignatura
           pregunta.grado_name=pregunta.apuntes_grado
+          pregunta.asignatura_id = pregunta.apuntes_asignatura_id
         }
       })
 

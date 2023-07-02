@@ -1,0 +1,104 @@
+ion-header.header {
+    height: 15vh;
+    display: flex;
+    align-items: last baseline;
+    & ion-toolbar:nth-child(1) {
+        width: 37vw;
+    }
+    & ion-toolbar.ios:nth-child(2) {
+        padding-bottom: 10px;
+    }
+}
+
+ion-header.header ion-title {
+    text-align: left;
+    font-size: 8vw;
+}
+
+ion-button {
+    text-transform: none;
+}
+
+.backButton {
+    --padding-start: 2vw;
+    --padding-end: 2vw;
+    width: 16vw;
+    height: 16vw;
+    --border-style: none;
+}
+
+.asigData {
+    padding: 0px 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    &>span:nth-child(1) {
+        margin: 10px 0px 0px;
+        font-size: 4.5vw;
+        color: rgb(83, 83, 83);
+    }
+    &>span:nth-child(2) {
+        margin: 5px 0px 0px;
+        font-size: 5vw;
+        color: rgb(83, 83, 83);
+    }
+    &>span:nth-child(3) {
+        font-size: 6vw;
+        margin: 15px 0px 0px;
+        font-weight: 600;
+    }
+    &>span:nth-child(4) {
+        font-size: 5vw;
+        margin: 15px 0px 0px;
+        font-weight: 400;
+        text-align: center;
+    }
+}
+
+.asigData>div {
+    width: 95%;
+    margin: 20px 0px 15px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    &>div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        &>*:nth-child(2) {
+            font-size: 4.4vw;
+        }
+        &>*:nth-child(3) {
+            font-size: 5vw;
+        }
+    }
+}
+
+.profileBtn {
+    height: 7vh;
+    text-transform: none;
+}
+
+.asigContent {
+    margin-top: 10px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.asigContent .menu {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    padding: 7px;
+    color: grey
+}
+
+.asigContent .menu>* {
+    margin-bottom: 3px;
+}
+
+.asigContent .menu>*.selected {
+    color: black;
+    border-bottom: solid black 2px;
+}

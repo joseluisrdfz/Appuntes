@@ -1,0 +1,47 @@
+<ion-content>
+    <ion-header class="header" collapse="condense">
+        <ion-toolbar>
+            <ion-button class="backButton" color="dark" shape="outline" (click)="goBack()">
+                <ion-icon name="chevron-back"></ion-icon>
+            </ion-button>
+        </ion-toolbar>
+        <ion-toolbar>
+            <ion-title size="large">Asignatura</ion-title>
+        </ion-toolbar>
+
+    </ion-header>
+    <div class="asigData">
+        <span>Univerisidad de Alicante</span>
+        <span>Garado en ingenieria Multimedia--3</span>
+        <span>Sonido y musica por computador{{id_asig}}</span>
+        <span>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Incidunt, nam?</span>
+        <div>
+            <div>
+                <ion-icon name="people"></ion-icon>
+                <span>Seguidores</span>
+                <span>9</span>
+            </div>
+            <div>
+                <ion-icon name="document-text"></ion-icon>
+                <span>Apuntes</span>
+                <span>4</span>
+            </div>
+            <div>
+                <ion-icon name="help"></ion-icon>
+                <span>Preguntas</span>
+                <span>4</span>
+            </div>
+        </div>
+        <ion-button ngClass="profileBtn" color="dark" shape="round" fill="solid">Seguir asignatura</ion-button>
+    </div>
+
+    <div class="asigContent">
+        <div class="menu">
+            <span>Apuntes</span><span>Preguntas</span>
+        </div>
+        <div class="apuntes">
+
+        </div>
+        <div class="Preguntas"> </div>
+    </div>
+</ion-content>
