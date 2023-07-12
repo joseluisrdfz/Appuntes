@@ -22,11 +22,19 @@ const getGrados = async(req, res = response) => {
 
 const getGradoById = async(req, res = response) => {
     try {
+        const idGrado = req.params.id;
+
         const db = await mysqlConnection();
 
-        let resultado;
+        let grado_data;
 
-        resultado = await db.query(`SELECT * FROM grados WHERE id_grado = ${req.params.id}`)
+        grado_data = await db.query(`SELECT grados.*, 
+        (SELECT universities.name FROM universities WHERE universities.id_uni = grados.id_uni) as uni_name
+        FROM grados WHERE id_grado = ${idGrado}`);
+
+        let asignaturas;
+
+        asignaturas = await db.query(`SELECT * FROM asignaturas WHERE grado = ${idGrado}`);
 
         await db.end();
 
@@ -34,8 +42,8 @@ const getGradoById = async(req, res = response) => {
 
         return res.status(200).json({
             message: 'Se ha recuperado el grado',
-            total: resultado.length,
-            grados: resultado
+            grado_data: grado_data[0],
+            asignaturas
         })
     } catch (e) {
         return res.status(404).json({

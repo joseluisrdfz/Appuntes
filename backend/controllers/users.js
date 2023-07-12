@@ -603,6 +603,112 @@ const getFeed = async(req, res = response) => {
 
 }
 
+const getBusqueda = async(req, res = response) => {
+    try {
+        let idUsertoken = req.idToken;
+
+        let query = req.query.query;
 
 
-module.exports = { register, getUserInfo, getUserMyInfo, updateUserData, updateUserPassword, deleteUser, followUser, followAsignatura, getFeed }
+        const db = await mysqlConnection();
+
+        let usuarios;
+
+        usuarios = await db.query(`SELECT username,	
+            profilePic,	rol, name, surname,	email, register_dateTime, lastConexion, curso, uni,	grado,
+            (Select count(*) from preguntas as p WHERE p.user_id = users.user_id) as preguntas,
+            (Select count(*) from respuestas as r WHERE r.user =  users.user_id) as respuestas ,
+            (Select count(*) from seguir_a_usuario as seg WHERE seg.user_followed = users.user_id) as seguidores,
+            (Select count(*) from apuntes as ap WHERE ap.user = users.user_id) as apuntes,
+            (SELECT grados.grado_name from grados where grados.id_grado = users.grado ) as grado_name,
+            (SELECT universities.name from universities where universities.id_uni = users.uni ) as uni_name
+            FROM users WHERE users.username LIKE '%${query}%'`);
+
+        let grados;
+
+        grados = await db.query(`SELECT grados.*, 
+            (SELECT universities.name FROM universities WHERE universities.id_uni = grados.id_uni) as uni_name
+            FROM grados WHERE grado_name LIKE '%${query}%'`);
+
+        let universidades;
+
+        universidades = await db.query(`SELECT * FROM universities where name LIKE '%${query}%' `);
+
+        let apuntes;
+
+        apuntes = await db.query(`SELECT apuntes.*, (SELECT asignaturas.name FROM asignaturas WHERE asignaturas.id_asignatura = apuntes.asignatura) as asignatura_name,
+            (SELECT grados.grado_name FROM grados WHERE grados.id_grado =
+            (SELECT asignaturas.grado FROM asignaturas WHERE asignaturas.id_asignatura = apuntes.asignatura)) as grado,
+            (SELECT grados.id_grado FROM grados WHERE grados.id_grado =
+            (SELECT asignaturas.grado FROM asignaturas WHERE asignaturas.id_asignatura = apuntes.asignatura)) as gradoId,
+            (SELECT users.username FROM users WHERE users.user_id = apuntes.user) as user_username,
+            (SELECT users.profilePic FROM users WHERE users.user_id = apuntes.user) as user_profilePic,
+            (SELECT count(*) FROM preguntas_apuntes WHERE preguntas_apuntes.id_apuntes = apuntes.id_apuntes) as preguntas
+            FROM apuntes WHERE titlename LIKE '%${query}%'`);
+
+        let preguntas;
+
+        preguntas = await db.query(`SELECT preguntas.*, 
+        preguntas.*, (SELECT COUNT(*) FROM respuestas where respuestas.pregunta = preguntas.id_pregunta ) as respuestas,
+
+        (SELECT asignaturas.name FROM asignaturas,preguntas_asignaturas WHERE asignaturas.id_asignatura = preguntas_asignaturas.id_asignatura and preguntas.id_pregunta = preguntas_asignaturas.id_pregunta) as asignatura_name,
+
+        (SELECT asignaturas.id_asignatura FROM asignaturas,preguntas_asignaturas WHERE asignaturas.id_asignatura = preguntas_asignaturas.id_asignatura and preguntas.id_pregunta = preguntas_asignaturas.id_pregunta) as asignatura_id,
+
+        (SELECT grados.grado_name FROM grados,asignaturas, preguntas_asignaturas WHERE grados.id_grado = asignaturas.grado and asignaturas.id_asignatura = preguntas_asignaturas.id_asignatura and preguntas.id_pregunta = preguntas_asignaturas.id_pregunta) as grado_name,
+
+        (SELECT apuntes.titlename FROM apuntes, preguntas_apuntes WHERE apuntes.id_apuntes = preguntas_apuntes.id_apuntes and preguntas_apuntes.id_pregunta = preguntas.id_pregunta) as apuntes_title,
+
+        (SELECT apuntes.id_apuntes FROM apuntes, preguntas_apuntes WHERE apuntes.id_apuntes = preguntas_apuntes.id_apuntes and preguntas_apuntes.id_pregunta = preguntas.id_pregunta) as apuntes_id,
+        (SELECT asignaturas.name FROM asignaturas WHERE asignaturas.id_asignatura = (SELECT apuntes.asignatura FROM apuntes, preguntas_apuntes WHERE apuntes.id_apuntes = preguntas_apuntes.id_apuntes and preguntas_apuntes.id_pregunta = preguntas.id_pregunta)) as apuntes_asignatura,
+
+        (SELECT grados.grado_name FROM grados WHERE grados.id_grado = (SELECT asignaturas.grado FROM asignaturas WHERE asignaturas.id_asignatura = (SELECT apuntes.asignatura FROM apuntes, preguntas_apuntes WHERE apuntes.id_apuntes = preguntas_apuntes.id_apuntes and preguntas_apuntes.id_pregunta = preguntas.id_pregunta))) as apuntes_grado,
+
+        (SELECT asignaturas.grado FROM asignaturas WHERE asignaturas.id_asignatura = (SELECT apuntes.asignatura FROM apuntes, preguntas_apuntes WHERE apuntes.id_apuntes = preguntas_apuntes.id_apuntes and preguntas_apuntes.id_pregunta = preguntas.id_pregunta)) as apuntes_grado_id,
+
+        (SELECT apuntes.asignatura FROM apuntes, preguntas_apuntes WHERE apuntes.id_apuntes = preguntas_apuntes.id_apuntes and preguntas_apuntes.id_pregunta = preguntas.id_pregunta) as apuntes_asignatura_id,
+
+        (SELECT users.username FROM users WHERE users.user_id = preguntas.user_id) as username,
+        (SELECT users.profilePic FROM users WHERE users.user_id = preguntas.user_id) as profilePic
+        FROM preguntas WHERE preguntas.texto_pregunta LIKE '%${query}%'`);
+
+        let respuestas;
+
+        respuestas = await db.query(`SELECT respuestas.*, 
+            (SELECT users.username from users where users.user_id = respuestas.user) as username,
+            (SELECT users.profilePic from users where users.user_id = respuestas.user) as profilePic
+            FROM respuestas WHERE respuestas.texto_respuesta LIKE '%${query}%'`);
+
+        let asignaturas;
+
+        asignaturas = await db.query(`SELECT asignaturas.*,
+            (SELECT grados.grado_name FROM grados WHERE asignaturas.grado = grados.id_grado) as grado_name,
+            (SELECT universities.id_uni FROM universities WHERE universities.id_uni = (SELECT grados.id_uni FROM grados WHERE asignaturas.grado = grados.id_grado)) as uni_id,
+            (SELECT universities.name FROM universities WHERE universities.id_uni = (SELECT grados.id_uni FROM grados WHERE asignaturas.grado = grados.id_grado)) as uni_name,
+            (SELECT count(*) FROM seguir_a_asignatura WHERE seguir_a_asignatura.asignatura = asignaturas.id_asignatura) as seguidores
+            FROM asignaturas WHERE asignaturas.name LIKE '%${query}%'`);
+
+        return res.status(200).json({
+            ok: true,
+            message: 'Se ha recuperado el resultado de la búsqueda',
+            query,
+            usuarios,
+            grados,
+            universidades,
+            apuntes,
+            respuestas,
+            preguntas,
+            asignaturas
+        })
+    } catch (e) {
+        return res.status(400).json({
+            ok: false,
+            error: e,
+        })
+    }
+
+}
+
+
+
+module.exports = { register, getUserInfo, getUserMyInfo, updateUserData, updateUserPassword, deleteUser, followUser, followAsignatura, getFeed, getBusqueda }

@@ -1,0 +1,102 @@
+ion-header.header {
+    height: 15vh;
+    display: flex;
+    align-items: last baseline;
+    & ion-toolbar:nth-child(1) {
+        width: 37vw;
+    }
+    & ion-toolbar.ios:nth-child(2) {
+        padding-bottom: 10px;
+    }
+}
+
+ion-header.header ion-title {
+    text-align: left;
+    font-size: 8vw;
+}
+
+ion-button {
+    text-transform: none;
+}
+
+.backButton {
+    --padding-start: 2vw;
+    --padding-end: 2vw;
+    width: 16vw;
+    height: 16vw;
+    --border-style: none;
+}
+
+.gradoData {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    &>p {
+        margin: 10px 0px;
+    }
+    &>p:nth-child(1) {
+        font-size: 5vw;
+        color: rgb(83, 83, 83);
+    }
+    &>p:nth-child(2) {
+        font-size: 6vw;
+        font-weight: 600;
+    }
+}
+
+.selectorCurso {
+    width: min-content;
+}
+
+.containerSelect {
+    display: flex;
+    flex-direction: row;
+    padding: 10px 0px;
+    justify-content: space-evenly;
+}
+
+.nonVisible {
+    display: none!important;
+}
+
+.hideDesc {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.descContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    & p {
+        font-size: 5vw;
+        font-weight: 400;
+        text-align: justify;
+        width: 80%;
+    }
+}
+
+.descBtn {
+    transform: rotate(180deg)
+}
+
+.asignaturaContainer {
+    border-top: 1px solid black;
+}
+
+.asignatura {
+    padding: 10px;
+    border-bottom: 2px solid black;
+    & p:nth-child(2) {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 5vw;
+        color: rgb(83, 83, 83);
+    }
+}

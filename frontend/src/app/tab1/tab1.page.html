@@ -4,9 +4,146 @@
             <ion-title size="large">Busqueda</ion-title>
         </ion-toolbar>
         <ion-toolbar>
-            <ion-searchbar mode="ios" search-icon="search-circle" animated="true" placeholder="Busca algo"></ion-searchbar>
+            <ion-searchbar [debounce]="1000" (ionInput)="buscar($event)" mode="ios" search-icon="search-circle" animated="true" placeholder="Busca algo"></ion-searchbar>
         </ion-toolbar>
     </ion-header>
 
+    <div class="searchResult">
+        <ion-segment [scrollable]="true" [value]="segmentValue" (ionChange)="changeSegment($event)">
+            <ion-segment-button value="all">
+                Todo
+            </ion-segment-button>
+            <ion-segment-button value="apuntes">
+                Apuntes
+            </ion-segment-button>
+            <ion-segment-button value="preguntas">
+                Preguntas
+            </ion-segment-button>
+            <ion-segment-button value="respuestas">
+                Respuestas
+            </ion-segment-button>
+            <ion-segment-button value="usuarios">
+                Usuarios
+            </ion-segment-button>
+            <ion-segment-button value="universidades">
+                Universidades
+            </ion-segment-button>
+            <ion-segment-button value="grados">
+                Grados
+            </ion-segment-button>
+            <ion-segment-button value="asignaturas">
+                Asignaturas
+            </ion-segment-button>
+        </ion-segment>
+        <div class="resultContainer">
+            <div *ngFor="let item of result">
+                <ng-container *ngIf="item.type === 'apuntes' && (segmentValue === 'all' || segmentValue === item.type) ">
+                    <div class="feedElement">
+                        <div class="header" (click)="goto('/asignatura/' + item.asignatura_id)">
+                            <div>
+                                <span>{{item["grado_name"]}}</span>
+                                <span>{{item["asignatura_name"]}}</span>
+                            </div>
+                            <span>{{item["fechaFormateada"]}}</span>
+                        </div>
+                        <div class="content" (click)="goto('/apuntes/' + item.id_apuntes)">
+                            <span class="title">{{item["titlename"]}}</span>
+                            <span class="description">{{item["description"]}}</span>
+                        </div>
+                        <div class="footer">
+                            <div (click)="goto('/user/'+ item.user)" class="user">
+                                <img [src]="'../../assets/uploads/profilePics/' + item['user_profilePic']">
+                                <span>{{item.user_username}}</span>
+                            </div>
+                            <div class="icons">
+                                <div>
+                                    <ion-icon name="help"></ion-icon>
+                                    <span>{{item["preguntas"]}}</span>
+                                </div>
+                                <div>
+                                    <ion-icon name="eye-outline"></ion-icon>
+                                    <span>{{item["visualizaciones"]}}</span>
+                                </div>
+                                <div>
+                                    <ion-icon name="download-outline"></ion-icon>
+                                    <span>{{item["downloads"]}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="item.type === 'preguntas' && (segmentValue === 'all' || segmentValue === item.type) ">
+                    <div class="feedElement">
+                        <div class="header" (click)="goto('/asignatura/' + item.asignatura_id)">
+                            <div>
+                                <span>{{item["grado_name"]}}</span>
+                                <span>{{item["asignatura_name"]}}</span>
+                            </div>
+                            <span>{{item["fechaFormateada"]}}</span>
+                        </div>
+                        <div class="content" (click)="goto('/preguntas/' + item.id_pregunta)">
+                            <span class="title">{{item["texto_pregunta"]}} </span>
+                            <span class="description">{{item["apuntes_title"]}}</span>
+                        </div>
+                        <div class="footer">
+                            <div (click)="goto('/user/'+ item.user_id)" class="user">
+                                <img [src]="'../../assets/uploads/profilePics/' + item['profilePic']">
+                                <span>{{item['username']}}</span>
+                            </div>
+                            <div class="icons">
+                                <div>
+                                    <ion-icon name="alert"></ion-icon>
+                                    <span>{{item['respuestas']}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="item.type === 'respuestas' && (segmentValue === 'all' || segmentValue === item.type) ">
+                    <div class="answer">
+                        <div class="header">
+                            <div (click)="goto('/user/'+item.user)">
+                                <img [src]="'../../assets/uploads/profilePics/' + item.profilePic" alt="foto de perfil de usuario">
+                                <span>{{item.username}}</span>
+                            </div>
+                            <span>{{item.fechaFormateada}}</span>
+                        </div>
+                        <span>{{item.texto_respuesta}}</span>
+                        <ion-button ngClass="profileBtn" (click)="goto('/preguntas/' + item.pregunta )" color="dark" shape="square" fill="solid">Ir a la pregunta</ion-button>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="item.type === 'usuarios' && (segmentValue === 'all' || segmentValue === item.type) ">usr</ng-container>
+                <ng-container *ngIf="item.type === 'universidades' && (segmentValue === 'all' || segmentValue === item.type) ">
+                    <div (click)="goto('/uni/'+item.id_uni)" class="uni">
+                        <img [src]="'../../assets/uploads/logos/' + item.logo" alt="logo universidad" onerror="this.onerror=null; this.src='../../assets/uploads/logos/business-outline.svg'">
+                        <p class="name">{{item.name}}</p>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="item.type === 'grados' && (segmentValue === 'all' || segmentValue === item.type) ">
+                    <div (click)="goto('/grado/'+item.id_grado)" class="grado">
+                        <div>
+                            <p>{{item.uni_name}}</p>
+                        </div>
+                        <p class="name">{{item.grado_name}}</p>
+                        <p class="desc">{{item.grado_description}}</p>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="item.type === 'asignaturas' && (segmentValue === 'all' || segmentValue === item.type) ">
+                    <div (click)="goto('/asignatura/'+item.id_asignatura)" class="asignatura">
+                        <div>
+                            <p>{{item.uni_name}}</p>
+                            <p>{{item.grado_name}}__{{item.curso}}</p>
+                        </div>
+                        <p class="name">{{item.name}}</p>
+                        <p class="desc">{{item.description}} </p>
+                        <div class="icon">
+                            <ion-icon name="people"></ion-icon>
+                            <span>{{item.seguidores}}</span>
+                        </div>
+                    </div>
+                </ng-container>
 
+            </div>
+        </div>
+    </div>
 </ion-content>

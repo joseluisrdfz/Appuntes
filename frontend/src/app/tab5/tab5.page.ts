@@ -47,7 +47,7 @@ export class Tab5Page implements OnInit {
       this.uniService.getUniId(this.uniId).subscribe((res)=>{
         this.uni = res['universidades'][0]['name'];
         this.gradoService.getGradoId(this.gradoId).subscribe((res:any)=>{
-          this.grado =  res['grados'][0]['grado_name'];
+          this.grado =  res['grado_data']['grado_name'];
         })
       })
     })

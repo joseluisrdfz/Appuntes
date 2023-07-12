@@ -1,0 +1,38 @@
+<ion-content>
+    <ion-header class="header" collapse="condense">
+        <ion-toolbar>
+            <ion-button class="backButton" color="dark" shape="outline" (click)="goBack()">
+                <ion-icon name="chevron-back"></ion-icon>
+            </ion-button>
+        </ion-toolbar>
+        <ion-toolbar>
+            <ion-title size="large">Grado</ion-title>
+        </ion-toolbar>
+
+    </ion-header>
+    <div class="gradoData">
+        <p (click)="goto('/uni/'+ uni_id)">{{uni}}</p>
+        <p>{{grado}}</p>
+        <div *ngIf="descripcion!=='' && descripcion!==undefined" class="descContainer">
+            <p [ngClass]="{hideDesc: !showDesc}">{{descripcion}}</p>
+            <ion-button class="backButton" style="width:50vw" color="dark" shape="outline" (click)="showDesc = !showDesc">
+                <span *ngIf="!showDesc">Mostrar más</span><span *ngIf="showDesc">Mostrar menos</span>
+                <ion-icon [ngClass]="{descBtn: !showDesc}" name="chevron-up"></ion-icon>
+            </ion-button>
+        </div>
+    </div>
+    <div class="containerSelect">
+        <p>Asignaturas del curso :</p>
+        <ion-select fill='outline' class="selectorCurso" aria-label="Curso" (ionChange)="handleChange($event)">
+            <ion-select-option *ngFor="let item of [].constructor(cursos).fill(0), let i = index" value="{{i + 1}}">{{i+1}}</ion-select-option>
+        </ion-select>
+    </div>
+    <div class="asignaturaContainer">
+        <div *ngFor="let item of asig2Show" (click)="goto('/asignatura/'+item.id_asignatura)" class="asignatura">
+            <p>{{item.name}}</p>
+            <p>{{item.description}}</p>
+        </div>
+    </div>
+
+
+</ion-content>

@@ -1,0 +1,28 @@
+ion-header.header {
+    height: 15vh;
+    display: flex;
+    align-items: last baseline;
+    & ion-toolbar:nth-child(1) {
+        width: 37vw;
+    }
+    & ion-toolbar.ios:nth-child(2) {
+        padding-bottom: 10px;
+    }
+}
+
+ion-header.header ion-title {
+    text-align: left;
+    font-size: 8vw;
+}
+
+ion-button {
+    text-transform: none;
+}
+
+.backButton {
+    --padding-start: 2vw;
+    --padding-end: 2vw;
+    width: 16vw;
+    height: 16vw;
+    --border-style: none;
+}

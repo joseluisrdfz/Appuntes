@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { getAsignaturas, getAsignaturasDelGrado, newAsignatura } = require('../controllers/asignaturas.js');
+const { getAsignaturas, getAsignaturasDelGrado, newAsignatura, getAsignaturaId, followAsig } = require('../controllers/asignaturas.js');
 const { check } = require('express-validator');
 const { validarCampos } = require('../middleware/validarCampos');
 const { validarJWT } = require('../middleware/validarJWT.js');
@@ -11,6 +11,14 @@ const router = Router();
 router.get('/', [
 
 ], getAsignaturas);
+
+router.get('/:id', [
+    validarJWT,
+], getAsignaturaId);
+
+router.post('/followAsig/:id', [
+    validarJWT,
+], followAsig);
 
 router.get('/grado/:id', [
 

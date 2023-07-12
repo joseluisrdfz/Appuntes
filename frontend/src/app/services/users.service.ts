@@ -32,6 +32,10 @@ export class UsersService {
     return this.httpclient.post(`http://localhost:3000/api/users/followUser/${id}`, '',this.cabeceras);
   }
 
+  getBusqueda(busqueda:any){
+    return this.httpclient.get(`http://localhost:3000/api/users/busqueda?query=${busqueda}`,this.cabeceras);
+  }
+
   get cabeceras() {
     return {
       headers: {

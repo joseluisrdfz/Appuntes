@@ -185,13 +185,6 @@ export class Tab2Page {
       })
 
       aux = aux.sort(this.compareDates);
-     /*
-
-      let aux = new Date (590000)
-
-      aux.setUTCMilliseconds(0)
-
-      //console.log(aux) */
 
       aux.forEach((element:any)=>{
 

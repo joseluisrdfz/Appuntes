@@ -88,7 +88,7 @@ ion-button {
 
 .apuntesContent .footer div:nth-child(2) {
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
     align-items: center;
     &>*:nth-child(2),
      :nth-child(4) {

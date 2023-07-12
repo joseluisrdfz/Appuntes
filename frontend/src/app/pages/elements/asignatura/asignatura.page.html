@@ -11,37 +11,96 @@
 
     </ion-header>
     <div class="asigData">
-        <span>Univerisidad de Alicante</span>
-        <span>Garado en ingenieria Multimedia--3</span>
-        <span>Sonido y musica por computador{{id_asig}}</span>
-        <span>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Incidunt, nam?</span>
+        <span (click)="goto('/uni/' + uni_id)">{{uni_name}}</span>
+        <span (click)="goto('/grado/' + grado_id)">{{grado_name}}--{{curso}}</span>
+        <span>{{asig_name}}</span>
+        <span>{{description}}</span>
         <div>
             <div>
                 <ion-icon name="people"></ion-icon>
                 <span>Seguidores</span>
-                <span>9</span>
+                <span>{{seguidores}}</span>
             </div>
             <div>
                 <ion-icon name="document-text"></ion-icon>
                 <span>Apuntes</span>
-                <span>4</span>
+                <span>{{apuntes_n}}</span>
             </div>
             <div>
                 <ion-icon name="help"></ion-icon>
                 <span>Preguntas</span>
-                <span>4</span>
+                <span>{{preguntas_n}}</span>
             </div>
         </div>
-        <ion-button ngClass="profileBtn" color="dark" shape="round" fill="solid">Seguir asignatura</ion-button>
+        <ion-button (click)="followAsig()" ngClass="profileBtn" color="dark" shape="round" fill="{{fillbtn}}">{{msgbtn}}</ion-button>
     </div>
 
     <div class="asigContent">
         <div class="menu">
-            <span>Apuntes</span><span>Preguntas</span>
+            <span [ngClass]="{'selected' : menuState === 1 }" (click)="changeState(1)">Apuntes</span><span [ngClass]="{'selected' : menuState === 2 }" (click)="changeState(2)">Preguntas</span>
         </div>
-        <div class="apuntes">
+        <div *ngIf="menuState === 1" class="apuntes">
+            <div *ngFor="let item of apuntes" class="feedElement">
+                <div class="header" (click)="goto('/apuntes/' + item.id_apuntes)">
+                    <div>
+                        <span>{{item["grado_name"]}}</span>
+                        <span>{{item["asignatura_name"]}}</span>
+                    </div>
+                    <span>{{item["fechaFormateada"]}}</span>
+                </div>
+                <div class="content" (click)="goto('/apuntes/' + item.id_apuntes)">
+                    <span class="title">{{item["titlename"]}}</span>
+                    <span class="description">{{item["description"]}}</span>
+                </div>
+                <div class="footer">
+                    <div (click)="goto('/user/'+ item.user)" class="user">
+                        <img [src]="'../../assets/uploads/profilePics/' + item['profilePic']">
+                        <span>{{item['username']}}</span>
+                    </div>
+                    <div class="icons">
+                        <div>
+                            <ion-icon name="eye-outline"></ion-icon>
+                            <span>{{item["visualizaciones"]}}</span>
+                        </div>
+                        <div>
+                            <ion-icon name="download-outline"></ion-icon>
+                            <span>{{item["downloads"]}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="menuState === 2" class="Preguntas">
+            <div *ngFor="let item of preguntas" class="feedElement">
+                <div class="header" (click)="goto('/preguntas/' + item.id_pregunta)">
+                    <div>
+                        <span>{{item["grado_name"]}}</span>
+                        <span>{{item["asignatura_name"]}}</span>
+                    </div>
+                    <span>{{item["fechaFormateada"]}}</span>
+                </div>
+                <div class="content" (click)="goto('/preguntas/' + item.id_pregunta)">
+                    <span class="title">{{item["texto_pregunta"]}} </span>
+                    <span class="description">{{item["apuntes_title"]}}</span>
+                </div>
+                <div class="footer">
+                    <div (click)="goto('/user/'+ item.user_id)" class="user">
+                        <img [src]="'../../assets/uploads/profilePics/' + item['profilePic']">
+                        <span>{{item['username']}}</span>
+                    </div>
+                    <div class="icons">
+                        <div>
+                            <ion-icon name="alert"></ion-icon>
+                            <span>{{item['respuestas']}}</span>
+                        </div>
 
+                        <!-- <div>
+                  <ion-icon name="download-outline"></ion-icon>
+                  <span>34</span>
+              </div> -->
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="Preguntas"> </div>
     </div>
 </ion-content>

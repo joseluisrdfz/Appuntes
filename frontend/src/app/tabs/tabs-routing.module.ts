@@ -41,6 +41,14 @@ const routes: Routes = [
       {
         path: 'asignatura/:id',
         loadChildren: () => import('../pages/elements/asignatura/asignatura.module').then( m => m.AsignaturaPageModule)
+      },
+      {
+        path: 'grado/:id',
+        loadChildren: () => import('../pages/elements/grado/grado.module').then( m => m.GradoPageModule)
+      },
+      {
+        path: 'uni/:id',
+        loadChildren: () => import('../pages/elements/uni/uni.module').then( m => m.UniPageModule)
       }
 
     ]

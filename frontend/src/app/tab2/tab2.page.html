@@ -9,21 +9,6 @@
     <div class="feedNormalContainer">
         <div *ngFor="let item of list; index as i">
             <div *ngIf="item.type==='APUNTES'" class="feedElement">
-                <!-- item["id_apuntes"]
-          item["filename"]
-          item["titlename"]
-          item["visualizacion"]
-          item["downloads"]
-          item["description"]
-          item["upload_datetime"]
-          item["user"]
-          item["asignatura_id"]
-          item["asignatura_name"]
-          item["grado_name"]
-          item["preguntas"]
-          item["type"] = "APUNTES"
-    },
-    }]  -->
 
                 <div class="header" (click)="goto('/asignatura/' + item.asignatura_id)">
                     <div>
@@ -43,6 +28,10 @@
                     </div>
                     <div class="icons">
                         <div>
+                            <ion-icon name="help"></ion-icon>
+                            <span>{{item["preguntas"]}}</span>
+                        </div>
+                        <div>
                             <ion-icon name="eye-outline"></ion-icon>
                             <span>{{item["visualizaciones"]}}</span>
                         </div>
@@ -54,22 +43,6 @@
                 </div>
             </div>
             <div *ngIf="item.type==='PREGUNTAS'" class="feedElement">
-
-
-                <!--  [
-
-        item["id_pregunta"]
-        item["texto_pregunta"]
-        item["upload_datetime"]
-        item["user_id"]
-        item["respuestas"]
-        item["asignatura_name"]
-        item["asignatura_id"]
-        item["grado_name"]
-        item["apuntes_title"]
-        item["apuntes_id"]
-        item["type": "PREGUNTAS"
-   -->
 
                 <div class="header" (click)="goto('/asignatura/' + item.asignatura_id)">
                     <div>
