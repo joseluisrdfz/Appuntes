@@ -233,3 +233,58 @@ $border-color:rgba(33, 33, 33, 0.389);
     align-items: center;
     justify-content: flex-end;
 }
+
+.userCard {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    border-top: 1px solid $border-color;
+    &>div:nth-child(1) {
+        display: flex;
+        flex-direction: column;
+        font-size: 5vw;
+        color: rgb(83, 83, 83);
+        &>p {
+            margin: 6px 0;
+        }
+        margin-bottom: 4px;
+    }
+    &>div:nth-child(2) {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        &>img {
+            width: 40px;
+            height: 40px;
+            object-fit: cover;
+            border-radius: 100%;
+            margin-right: 7px;
+            border: 1px solid black;
+        }
+        &>span>*.name {
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            max-width: 66vw;
+        }
+        &>span>*:nth-child(2) {
+            color: rgb(42, 42, 42);
+        }
+        & p {
+            margin: 5px 0px
+        }
+    }
+    &>div:nth-child(3) {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin: 7px 10px;
+        justify-content: flex-end;
+        &>div {
+            margin: 0px 4px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+    }
+}

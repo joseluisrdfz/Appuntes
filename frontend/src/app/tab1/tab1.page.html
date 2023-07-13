@@ -112,7 +112,39 @@
                         <ion-button ngClass="profileBtn" (click)="goto('/preguntas/' + item.pregunta )" color="dark" shape="square" fill="solid">Ir a la pregunta</ion-button>
                     </div>
                 </ng-container>
-                <ng-container *ngIf="item.type === 'usuarios' && (segmentValue === 'all' || segmentValue === item.type) ">usr</ng-container>
+                <ng-container *ngIf="item.type === 'usuarios' && (segmentValue === 'all' || segmentValue === item.type) ">
+                    <div (click)="goto('/user/'+item.user_id)" class="userCard">
+                        <div>
+                            <p>{{item.uni_name}}</p>
+                            <p>{{item.grado_name}}__{{item.curso}}</p>
+                        </div>
+                        <div>
+                            <img [src]="'../../assets/uploads/profilePics/' + item.profilePic">
+                            <span>
+                              <p class="name">{{item.name}} {{item.surname}}</p>
+                              <p class="">@{{item.username}} </p>
+                            </span>
+                        </div>
+                        <div class="icons">
+                            <div>
+                                <ion-icon name="people"></ion-icon>
+                                <span>{{item.seguidores}}</span>
+                            </div>
+                            <div>
+                                <ion-icon name="document-text-outline"></ion-icon>
+                                <span>{{item['apuntes']}}</span>
+                            </div>
+                            <div>
+                                <ion-icon name="help"></ion-icon>
+                                <span>{{item['preguntas']}}</span>
+                            </div>
+                            <div>
+                                <ion-icon name="alert"></ion-icon>
+                                <span>{{item['respuestas']}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
                 <ng-container *ngIf="item.type === 'universidades' && (segmentValue === 'all' || segmentValue === item.type) ">
                     <div (click)="goto('/uni/'+item.id_uni)" class="uni">
                         <img [src]="'../../assets/uploads/logos/' + item.logo" alt="logo universidad" onerror="this.onerror=null; this.src='../../assets/uploads/logos/business-outline.svg'">

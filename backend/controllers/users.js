@@ -614,7 +614,7 @@ const getBusqueda = async(req, res = response) => {
 
         let usuarios;
 
-        usuarios = await db.query(`SELECT username,	
+        usuarios = await db.query(`SELECT username, user_id,	
             profilePic,	rol, name, surname,	email, register_dateTime, lastConexion, curso, uni,	grado,
             (Select count(*) from preguntas as p WHERE p.user_id = users.user_id) as preguntas,
             (Select count(*) from respuestas as r WHERE r.user =  users.user_id) as respuestas ,
