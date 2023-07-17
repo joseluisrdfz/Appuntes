@@ -1,8 +1,52 @@
 <ion-content>
     <ion-header collapse="condense">
-        <ion-toolbar>
-            <ion-title size="large">Inicio</ion-title>
+        <ion-toolbar class="welcome">
+            <span>
+              <img src="../../assets/uploads/logos/business-outline.svg" class="profilePic">
+              <p> Bienvenido,  {{nameUser}}</p>
+            </span>
         </ion-toolbar>
     </ion-header>
+    <!-- (ionInput)="buscar($event)" -->
+    <ion-searchbar [debounce]="1000" mode="ios" inputmode="search" search-icon="search-circle" animated="true" placeholder="Busca algo"></ion-searchbar>
+    <div class="anuncios">
+        <div>
+            <p>Tablón de anuncios del</p>
+            <p>{{nameGrado}}</p>
+        </div>
 
+        <swiper-container loop="true" navigation="true">
+            <swiper-slide>
+                <div class="slideContent">
+                    <p>titulo1</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque eveniet eos delectus veritatis, autem voluptates.</p>
+                </div>
+            </swiper-slide>
+            <swiper-slide>
+                <div class="slideContent">
+                    <p>titulo2</p>
+                    <p>Autem molestiae ducimus sit, distinctio odit facilis sapiente at inventore, suscipit labore nesciunt. Enim, qui.</p>
+                </div>
+            </swiper-slide>
+            <swiper-slide>
+                <div class="slideContent">
+                    <p>titulo3</p>
+                    <p>Doloribus consequuntur dolorem nostrum adipisci eos sint quasi hic eveniet dolores. Obcaecati ea quia illo.</p>
+                </div>
+            </swiper-slide>
+            <swiper-slide>
+                <div class="slideContent">
+                    <p>titulo4</p>
+                    <p>Nulla, unde rerum, minima labore consequuntur voluptate velit ab, quibusdam aperiam autem quod maiores enim?</p>
+                </div>
+            </swiper-slide>
+        </swiper-container>
+        <div class="moreAnuncios">
+            <!-- (click)="goto('/user/' + user_id )" -->
+            <ion-button ngClass="moreAnBtn" color="dark" shape="round" fill="solid">Ver todos los anuncios</ion-button>
+        </div>
+    </div>
+    <div class="feedContent">
+
+    </div>
 </ion-content>

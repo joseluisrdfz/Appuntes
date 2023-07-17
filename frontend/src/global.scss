@@ -33,6 +33,10 @@
     src: url('./assets/fonts/Outfit.ttf');
 }
 
+:host {
+    --swiper-navigation-size: 15px;
+}
+
 * {
     font-family: 'Outfit'!important;
     font-weight: 500;
