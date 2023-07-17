@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { register, getUserMyInfo, getUserInfo, updateUserData, updateUserPassword, deleteUser, followUser, followAsignatura, getFeed, getBusqueda } = require('../controllers/users.js');
+const { register, getUserMyInfo, getUserInfo, updateUserData, updateUserPassword, deleteUser, followUser, followAsignatura, getFeed, getBusqueda, getHomeInfo } = require('../controllers/users.js');
 const { check } = require('express-validator');
 const { validarCampos } = require('../middleware/validarCampos');
 const { validarJWT } = require('../middleware/validarJWT.js');
@@ -69,5 +69,9 @@ router.get('/feed', [
 router.get('/busqueda', [
     validarJWT,
 ], getBusqueda);
+
+router.get('/homeInfo', [
+    validarJWT,
+], getHomeInfo);
 
 module.exports = router

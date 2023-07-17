@@ -2,7 +2,7 @@
     <ion-header collapse="condense">
         <ion-toolbar class="welcome">
             <span>
-              <img src="../../assets/uploads/logos/business-outline.svg" class="profilePic">
+              <img [src]="'../../assets/uploads/profilePics/' + profilePic" class="profilePic">
               <p> Bienvenido,  {{nameUser}}</p>
             </span>
         </ion-toolbar>
@@ -16,30 +16,25 @@
         </div>
 
         <swiper-container loop="true" navigation="true">
-            <swiper-slide>
-                <div class="slideContent">
-                    <p>titulo1</p>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque eveniet eos delectus veritatis, autem voluptates.</p>
-                </div>
-            </swiper-slide>
-            <swiper-slide>
-                <div class="slideContent">
-                    <p>titulo2</p>
-                    <p>Autem molestiae ducimus sit, distinctio odit facilis sapiente at inventore, suscipit labore nesciunt. Enim, qui.</p>
-                </div>
-            </swiper-slide>
-            <swiper-slide>
-                <div class="slideContent">
-                    <p>titulo3</p>
-                    <p>Doloribus consequuntur dolorem nostrum adipisci eos sint quasi hic eveniet dolores. Obcaecati ea quia illo.</p>
-                </div>
-            </swiper-slide>
-            <swiper-slide>
-                <div class="slideContent">
-                    <p>titulo4</p>
-                    <p>Nulla, unde rerum, minima labore consequuntur voluptate velit ab, quibusdam aperiam autem quod maiores enim?</p>
-                </div>
-            </swiper-slide>
+            <ng-container *ngIf="anuncios.length>0">
+                <swiper-slide *ngFor="let item of anuncios">
+                    <div class="slideContent">
+                        <p>{{item.titulo_anuncio}}</p>
+                        <p>{{item.texto_anuncio}}</p>
+                    </div>
+                </swiper-slide>
+            </ng-container>
+
+            <ng-container>
+                <swiper-slide *ngIf="anuncios.length===0">
+                    <div class="slideContent">
+                        <p>No hay anuncios</p>
+                        <p>Tu grado no ha publicado ningún anuncio todavía</p>
+                    </div>
+                </swiper-slide>
+            </ng-container>
+
+
         </swiper-container>
         <div class="moreAnuncios">
             <!-- (click)="goto('/user/' + user_id )" -->

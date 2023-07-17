@@ -709,6 +709,42 @@ const getBusqueda = async(req, res = response) => {
 
 }
 
+const getHomeInfo = async(req, res = response) => {
+    try {
+        let idUsertoken = req.idToken;
+
+        const db = await mysqlConnection();
+
+        let resultado;
+
+        resultado = await db.query(`SELECT user_id , username,	
+        profilePic,	rol, name, surname,	email, register_dateTime, lastConexion, curso, uni,	grado,
+        (SELECT grados.grado_name from grados where grados.id_grado = users.grado ) as grado_name
+        FROM users WHERE users.user_id = ${idUsertoken}`);
+
+        let anuncios;
+
+        anuncios = await db.query(`SELECT * FROM anuncios where anuncios.id_grado = ${resultado[0].grado}`);
+
+        await db.end();
+
+        return res.status(200).json({
+            ok: true,
+            total: resultado.length,
+            userinfo: resultado[0],
+            anuncios
+
+        })
 
 
-module.exports = { register, getUserInfo, getUserMyInfo, updateUserData, updateUserPassword, deleteUser, followUser, followAsignatura, getFeed, getBusqueda }
+    } catch (e) {
+        return res.status(400).json({
+            ok: false,
+            error: e,
+        })
+    }
+}
+
+
+
+module.exports = { register, getUserInfo, getUserMyInfo, updateUserData, updateUserPassword, deleteUser, followUser, followAsignatura, getFeed, getBusqueda, getHomeInfo }

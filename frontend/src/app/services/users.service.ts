@@ -36,6 +36,10 @@ export class UsersService {
     return this.httpclient.get(`http://localhost:3000/api/users/busqueda?query=${busqueda}`,this.cabeceras);
   }
 
+  getHomeInfo(){
+    return this.httpclient.get(`http://localhost:3000/api/users/homeInfo`,this.cabeceras);
+  }
+
   get cabeceras() {
     return {
       headers: {
