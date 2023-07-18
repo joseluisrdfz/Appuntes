@@ -4,7 +4,7 @@
             <ion-title size="large">Busqueda</ion-title>
         </ion-toolbar>
         <ion-toolbar>
-            <ion-searchbar [debounce]="1000" (ionInput)="buscar($event)" mode="ios" search-icon="search-circle" animated="true" placeholder="Busca algo"></ion-searchbar>
+            <ion-searchbar id='searchBar' [debounce]="1000" (ionInput)="buscar($event)" mode="ios" search-icon="search-circle" animated="true" placeholder="Busca algo"></ion-searchbar>
         </ion-toolbar>
     </ion-header>
 

@@ -7,8 +7,7 @@
             </span>
         </ion-toolbar>
     </ion-header>
-    <!-- (ionInput)="buscar($event)" -->
-    <ion-searchbar [debounce]="1000" mode="ios" inputmode="search" search-icon="search-circle" animated="true" placeholder="Busca algo"></ion-searchbar>
+    <ion-searchbar #searchBar [debounce]="1500" mode="ios" (ionInput)="buscar($event)" inputmode="search" search-icon="search-circle" animated="true" placeholder="Busca algo"></ion-searchbar>
     <div class="anuncios">
         <div>
             <p>Tablón de anuncios del</p>
@@ -37,11 +36,13 @@
 
         </swiper-container>
         <div class="moreAnuncios">
-            <!-- (click)="goto('/user/' + user_id )" -->
-            <ion-button ngClass="moreAnBtn" color="dark" shape="round" fill="solid">Ver todos los anuncios</ion-button>
+            <ion-button ngClass="moreAnBtn" color="dark" (click)="goto('/grado/' + grado )" shape="round" fill="solid">Ver todos los anuncios</ion-button>
         </div>
     </div>
     <div class="feedContent">
-
+        Tienes nuevo contenido en tu feed corre a verlo
+        <div class="moreAnuncios">
+            <ion-button ngClass="moreAnBtn" color="dark" (click)="goto('/tab2' )" shape="round" fill="solid">Ir al feed</ion-button>
+        </div>
     </div>
 </ion-content>

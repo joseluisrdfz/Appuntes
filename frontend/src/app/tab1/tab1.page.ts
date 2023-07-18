@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { AuthenticationService } from '../services/authentication.service';
 import { UsersService } from '../services/users.service';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs';
+import { IonSearchbar } from '@ionic/angular';
 
 @Component({
   selector: 'app-tab1',
@@ -10,11 +12,36 @@ import { Router } from '@angular/router';
 })
 export class Tab1Page {
 
+
   segmentValue = 'all';
 
   result : any[] = [];
 
+  queryFromOtherPage = '';
+
   constructor(private authService : AuthenticationService, private userService: UsersService, private router : Router) {}
+
+  ngOnInit(){
+    this.router.events.pipe(
+        filter((event) => event instanceof NavigationEnd)
+    ).subscribe((event:any) => {
+
+      if(event.url.includes('/tabs/tabs/tab1')){
+        if(this.router.getCurrentNavigation()?.extras?.state){
+          let aux : any = this.router.getCurrentNavigation()?.extras?.state;
+          let searchBar = document.getElementById('searchBar') as any;
+          searchBar.value = aux.query2search;
+          aux.query2search = undefined;
+          let event = {
+            target : {
+              value : searchBar.value
+            }
+          }
+          this.buscar(event)
+        }
+      }
+    });
+  }
 
   logout(){
     this.authService.logout();
