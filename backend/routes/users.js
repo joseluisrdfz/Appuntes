@@ -52,6 +52,8 @@ router.put('/updatePassword', [
 
 router.delete('/deleteUser', [
     validarJWT,
+    check('password', 'La contraseña es obligatoria').not().isEmpty().trim(),
+    validarCampos,
 ], deleteUser);
 
 router.post('/followUser/:id', [

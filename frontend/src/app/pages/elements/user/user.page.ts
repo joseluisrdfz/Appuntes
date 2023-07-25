@@ -10,7 +10,7 @@ import { UsersService } from 'src/app/services/users.service';
 })
 export class UserPage implements OnInit {
 
-  base_src = '../../assets/uploads/profilePics/';
+  base_src = '../../../../assets/uploads/profilePics/';
   profilePic = 'default.webp';
   src = this.base_src + this.profilePic;
   name_surname='';

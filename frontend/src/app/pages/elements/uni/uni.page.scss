@@ -26,3 +26,49 @@ ion-button {
     height: 16vw;
     --border-style: none;
 }
+
+$border-color:rgba(33, 33, 33, 0.389);
+.uni {
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    &>div:nth-child(1) {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: space-evenly;
+        &>img {
+            margin-right: 15px;
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 100%;
+            border: 1px solid black;
+        }
+    }
+}
+
+.gradosList>h5 {
+    text-align: center;
+}
+
+.grado {
+    padding: 10px;
+    border-top: 1px solid $border-color;
+    &>div:first-child {
+        font-size: 5vw;
+        color: rgb(83, 83, 83);
+        &>p {
+            margin: 6px 0;
+        }
+        margin-bottom: 4px;
+    }
+    & p.desc {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 5vw;
+        color: rgb(83, 83, 83);
+    }
+}

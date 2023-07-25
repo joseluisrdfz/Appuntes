@@ -35,7 +35,7 @@ export class LoginPage implements OnInit {
         if(res.ok){
           //successfull
           localStorage.setItem('x-token', res.token);
-          this.router.navigateByUrl('/tabs/tabs/tab1', { replaceUrl:true });
+          this.router.navigateByUrl('/tabs/tabs/tab3', { replaceUrl:true });
         }
       }, (e) =>{
         console.log(e)

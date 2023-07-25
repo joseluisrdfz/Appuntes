@@ -14,6 +14,18 @@ export class UniversitiesService {
 	}
 
   getUniId(id:any): Observable<any> {
-		return this.httpclient.get(`http://localhost:3000/api/uni/${id}`);
+		return this.httpclient.get(`http://localhost:3000/api/uni/${id}`, this.cabeceras);
 	}
+
+
+  get cabeceras() {
+    return {
+      headers: {
+        'x-token': this.token
+      }};
+  }
+
+  get token(): string {
+    return localStorage.getItem('x-token') || '';
+  }
 }

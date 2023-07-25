@@ -101,49 +101,72 @@ const getAnunciosDelGrado = async(req, res = response) => {
 }
 
 const newGrado = async(req, res = response) => {
-    const db = await mysqlConnection();
+    try {
+        if (req.rolToken === 'admin') {
+            const db = await mysqlConnection();
 
-    let gName = req.body['grado_name'];
-    let gDesc = req.body['grado_description'];
-    let gUni = req.body['id_uni']
-    let gCursos = req.body['cursos']
+            let gName = req.body['grado_name'];
+            let gDesc = req.body['grado_description'];
+            let gUni = req.body['id_uni']
+            let gCursos = req.body['cursos']
 
-    let resultado;
+            let resultado;
 
-    resultado = await db.query(`INSERT INTO grados (grado_name, grado_description, cursos, id_uni) VALUES ('${gName}','${gDesc}','${gCursos}','${gUni}');`)
+            resultado = await db.query(`INSERT INTO grados (grado_name, grado_description, cursos, id_uni) VALUES ('${gName}','${gDesc}','${gCursos}','${gUni}');`)
 
-    await db.end();
+            await db.end();
 
-    console.log(resultado);
+            console.log(resultado);
 
-    return res.status(200).json({
-        ok: true,
-        message: `${gName} insertada en la base de datos.`,
-        filasAfectadas: resultado['affectedRows'],
-        insertID: resultado['insertId']
-    })
+            return res.status(200).json({
+                ok: true,
+                message: `${gName} insertada en la base de datos.`,
+                filasAfectadas: resultado['affectedRows'],
+                insertID: resultado['insertId']
+            })
+        }
+    } catch (e) {
+        return res.status(400).json({
+            ok: false,
+            message: 'Ha habido un error',
+            error: e
+        })
+    }
+
 }
 
 const newAnuncioDelGrado = async(req, res = response) => {
-    const db = await mysqlConnection();
+    try {
+        if (req.rolToken === 'admin') {
+            const db = await mysqlConnection();
 
-    let idGrado = req.params.id;
-    let aText = req.body['texto_anuncio'];
+            let idGrado = req.params.id;
+            let aText = req.body['texto_anuncio'];
+            let TText = req.body['titulo_anuncio'];
 
-    let resultado;
+            let resultado;
 
-    resultado = await db.query(`INSERT INTO anuncios (id_grado,texto_anuncio) VALUES ('${idGrado}','${aText}');`)
+            resultado = await db.query(`INSERT INTO anuncios (id_grado,titulo_anuncio,texto_anuncio) VALUES ('${idGrado}','${TText}','${aText}');`)
 
-    await db.end();
+            await db.end();
 
-    console.log(resultado);
+            console.log(resultado);
 
-    return res.status(200).json({
-        ok: true,
-        message: `Anuncio: '${aText}' de la carrera '${idGrado}' insertado en la base de datos.`,
-        filasAfectadas: resultado['affectedRows'],
-        insertID: resultado['insertId']
-    })
+            return res.status(200).json({
+                ok: true,
+                message: `Anuncio: '${aText}' de la carrera '${idGrado}' insertado en la base de datos.`,
+                filasAfectadas: resultado['affectedRows'],
+                insertID: resultado['insertId']
+            })
+        }
+    } catch (e) {
+        return res.status(400).json({
+            ok: false,
+            message: 'Ha habido un error',
+            error: e
+        })
+    }
+
 
 }
 

@@ -2,6 +2,7 @@ const { Router } = require('express');
 const { getGrados, getGradoById, newGrado, getAnunciosDelGrado, getGradosByUniId, newAnuncioDelGrado } = require('../controllers/grados.js');
 const { check } = require('express-validator');
 const { validarCampos } = require('../middleware/validarCampos');
+const { validarJWT } = require('../middleware/validarJWT');
 
 const router = Router();
 
@@ -13,7 +14,7 @@ router.get('/', [
 
 //falta token de autorizacion
 router.get('/:id', [
-
+    validarJWT
 ], getGradoById);
 
 
@@ -28,6 +29,7 @@ router.get('/:id/anuncios', [
 
 //Falta comprobar token de autorización admin
 router.post('/:id/anuncios/new', [
+    validarJWT,
     check('id', 'La id del grado es obligatoria').not().isEmpty().trim(),
     check('texto_anuncio', 'El texto del anuncio es obligatorio').not().isEmpty().trim(),
     validarCampos

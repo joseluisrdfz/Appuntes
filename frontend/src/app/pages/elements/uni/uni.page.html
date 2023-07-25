@@ -11,9 +11,24 @@
 
     </ion-header>
 
-    <h5> uni {{id_uni}}</h5>
-    <h5>logo</h5>
-    <h5>direccion</h5>
-    <h5>lista de grados</h5>
+    <div class="uni">
+        <div>
+            <p>{{uni}}</p>
+            <img [src]="'../../../../assets/uploads/logos/' + logo " alt="logo de universidad">
+        </div>
+        <p>Dirección: {{address}}</p>
+    </div>
+    <div class="gradosList">
+        <h5>Grados</h5>
+        <ng-container *ngFor="let item of grados">
+            <div (click)="goto('/grado/'+item.id_grado)" class="grado">
+                <div>
+                    <p>{{item.uni_name}}</p>
+                </div>
+                <p class="name">{{item.grado_name}}</p>
+                <p class="desc">{{item.grado_description}}</p>
+            </div>
+        </ng-container>
+    </div>
 
 </ion-content>

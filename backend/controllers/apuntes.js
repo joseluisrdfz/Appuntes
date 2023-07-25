@@ -108,6 +108,8 @@ const descargarApuntes = async(req, res = response) => {
 
     await db.end();
 
+    //res.headers.contentType
+
     return res.status(200).json({
         ok: true,
         filasAfectadas: resultado['affectedRows'],

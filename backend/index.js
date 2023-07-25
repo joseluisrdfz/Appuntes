@@ -2,10 +2,6 @@ const express = require('express');
 const cors = require('cors');
 const { mysqlConnection } = require('./database/mysqldb');
 const fileUpload = require("express-fileupload");
-const bodyParser = require('body-parser');
-
-
-
 
 const app = express();
 

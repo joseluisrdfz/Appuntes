@@ -25,6 +25,10 @@ export class AuthenticationService {
 		return this.httpclient.post(`http://localhost:3000/api/auth/login`, credentials);
 	}
 
+  checkToken(){
+
+  }
+
 	logout() {
     localStorage.removeItem('x-token')
 		/* return Storage.remove({ key: TOKEN_KEY }); */

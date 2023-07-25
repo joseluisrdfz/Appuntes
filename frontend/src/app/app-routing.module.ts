@@ -13,7 +13,6 @@ const routes: Routes = [
 	{
 		path: 'intro',
 		loadChildren: () => import('./pages/intro/intro.module').then((m) => m.IntroPageModule),
-		canLoad: [IntroGuard] // la usare para comprobar si hay un token, si lo hay manda directamente al login y el login tendra los datos
 	},
 	{
 		path: 'tabs',
