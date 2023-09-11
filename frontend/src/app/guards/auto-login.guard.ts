@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanLoad, Route, Router, UrlSegment, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
+import { AuthenticationService } from '../services/authentication.service';
 
 
 @Injectable({
@@ -8,7 +9,7 @@ import { Observable } from 'rxjs';
 })
 export class AutoLoginGuard implements CanLoad {
 
-  constructor (private router : Router){
+  constructor (private authSrv : AuthenticationService , private router : Router){
   }
 
   canLoad(
@@ -20,14 +21,16 @@ export class AutoLoginGuard implements CanLoad {
 
 
   async check(){
-
     const userToken = await localStorage.getItem('x-token');
-
     if (userToken) {
-      //comprobar token y si es valido poner que usuario es el del tken y dar al usuario la iopcion ed iniciar sesion o no
-      //console.log(userToken);
-      this.router.navigateByUrl('/tabs/tabs/tab3', { replaceUrl:true });
-      return true;
+      this.authSrv.checkToken().subscribe((res:any)=>{
+        console.log('valido')
+        this.router.navigateByUrl('/tabs/tabs/tab3', { replaceUrl:true });
+      }, (err)=>{
+        localStorage.removeItem('x-token')
+      })
+
+      return true
     } else {
 
       return true;

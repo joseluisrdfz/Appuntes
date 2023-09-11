@@ -10,8 +10,6 @@ import { BehaviorSubject, from, Observable, Subject } from 'rxjs';
 export class AuthenticationService {
 
   isAuthenticated: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-	token = '';
-
 
   constructor(private httpclient: HttpClient) {
 
@@ -26,13 +24,24 @@ export class AuthenticationService {
 	}
 
   checkToken(){
-
+    return this.httpclient.get(`http://localhost:3000/api/auth/renovar`, this.cabeceras);
   }
 
 	logout() {
     localStorage.removeItem('x-token')
 		/* return Storage.remove({ key: TOKEN_KEY }); */
 	}
+
+  get cabeceras() {
+    return {
+      headers: {
+        'x-token': this.token
+      }};
+  }
+
+  get token(): string {
+    return localStorage.getItem('x-token') || '';
+  }
 }
 
 

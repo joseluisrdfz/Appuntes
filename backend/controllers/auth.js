@@ -1,6 +1,7 @@
 const { mysqlConnection } = require('../database/mysqldb');
 const bcrypt = require('bcryptjs');
 const { generarJWT } = require('../helpers/jwt');
+const { infoToken } = require('../helpers/infotoken');
 
 const login = async(req, res = response) => {
 
@@ -61,22 +62,27 @@ const login = async(req, res = response) => {
 
 const renovarToken = async(req, res = response) => {
 
-    let id_asignatura = req.params.id;
+    const token = req.header('x-token') || req.query.token;
 
+    if (!token) {
+        return res.status(401).json({
+            ok: false,
+            msg: 'Falta el token de autorización'
+        });
+    }
 
-    const db = await mysqlConnection();
-
-    let resultado;
-
-    resultado = await db.query(`SELECT * from apuntes where asignatura = ${id_asignatura}`);
-
-    await db.end();
-
-    return res.status(200).json({
-        ok: true,
-        total: resultado.length,
-        resultado: resultado
-    })
+    try {
+        const infotoken = infoToken(token);
+        return res.status(200).json({
+            ok: true,
+            msg: 'El token es válido'
+        })
+    } catch (err) {
+        return res.status(401).json({
+            ok: false,
+            msg: 'Token no válido'
+        })
+    }
 }
 
 
