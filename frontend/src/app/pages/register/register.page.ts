@@ -241,8 +241,8 @@ export class RegisterPage implements OnInit {
         }
 
 
-          console.log(this.profilePicFile);
-          reader.readAsDataURL(this.profilePicFile as Blob);
+        console.log(this.profilePicFile);
+        reader.readAsDataURL(this.profilePicFile as Blob);
 
       } else {
         this.usersService.registerUser(formData).subscribe((res)=>{

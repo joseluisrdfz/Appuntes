@@ -46,13 +46,9 @@ const register = async(req, res = response) => {
             //hacer que se guarde con la fecha y el id del usuario o con lo del numero aleatorio de mas abajo pero la opcion primera no es mala
 
             fs.writeFile(patharchivo, archivo, encoding, err => {
-                /* if (err) {
+                if (err) {
                     console.log(err);
-                    return res.status(400).json({
-                        ok: false,
-                        msg: `No se pudo subir el archivo`,
-                    });
-                } */
+                }
             })
 
             /* resultado = await db.query(`SELECT * from user where profilePic = ${profilePic}`);
