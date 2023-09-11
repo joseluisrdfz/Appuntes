@@ -23,6 +23,7 @@
             <span>{{titleName}}</span>
             <span>{{descripcion}}</span>
             <span>{{filename}}</span>
+            <ion-button id="open-apuntes" expand="block">Visualizar apuntes</ion-button>
         </div>
         <div class="footer">
             <div (click)="goto('/user/'+user_id)">
@@ -38,7 +39,6 @@
                 <span>{{downloads}}</span>
             </div>
         </div>
-
     </div>
     <div class="questionSection">
         <ion-button color="dark" id="open-modal" expand="block">Añadir nueva pregunta</ion-button>
@@ -84,11 +84,19 @@
         </div>
     </div>
 
-
-
-    <!--  <span>prev:
-      {{previousUrl}}
-    </span> -->
-
-
+    <ion-modal #apmodal trigger="open-apuntes">
+        <ng-template>
+            <ion-header>
+                <ion-toolbar>
+                    <ion-title>{{filename}}</ion-title>
+                    <ion-buttons slot="end">
+                        <ion-button (click)="apmodal?.dismiss()" [strong]="true">Cerrar</ion-button>
+                    </ion-buttons>
+                </ion-toolbar>
+            </ion-header>
+            <ion-content>
+                <pdf-viewer [src]="'../../../../assets/uploads/apuntes/'  + filename" [render-text]="true" [original-size]="false" [zoom-scale]="'page-fit'" [show-borders]="true" style="width: 90vw; height: 90vh"></pdf-viewer>
+            </ion-content>
+        </ng-template>
+    </ion-modal>
 </ion-content>

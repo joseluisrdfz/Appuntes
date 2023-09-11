@@ -233,6 +233,8 @@ export class RegisterPage implements OnInit {
             if(!res.ok){
               this.registerError = res.message;
             this.openModal(true);
+            } else{
+              this.goTo('/intro')
             }
 
           })
@@ -247,16 +249,13 @@ export class RegisterPage implements OnInit {
           console.log(res);
           if(!res.ok){
             this.registerError = res.message;
-          this.openModal(true);
+            this.openModal(true);
+          } else{
+            this.goTo('/intro')
           }
 
         })
       }
-
-
-
-
-
       } catch (e){
         this.registerError = "Ha habido un error en el registro";
         this.openModal(true);

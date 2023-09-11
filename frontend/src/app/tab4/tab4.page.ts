@@ -206,6 +206,8 @@ export class Tab4Page implements OnInit {
             if(!res.ok){
               this.subirError = res.message;
             this.openModal(true);
+            } else{
+              this.router.navigateByUrl(`/tabs/tabs/apuntes/${res.insertID}`,  {state: { prevUrl : "/tabs/tabs/tab3/", changePrev : 'yes'}})
             }
 
           })

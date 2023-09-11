@@ -8,11 +8,14 @@ import { ApuntesPageRoutingModule } from './apuntes-routing.module';
 
 import { ApuntesPage } from './apuntes.page';
 
+import { PdfViewerModule } from 'ng2-pdf-viewer';
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    PdfViewerModule,
     ApuntesPageRoutingModule
   ],
   declarations: [ApuntesPage]

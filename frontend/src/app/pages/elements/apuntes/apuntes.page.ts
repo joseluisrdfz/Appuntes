@@ -62,6 +62,7 @@ export class ApuntesPage implements OnInit {
     userName='';
 
     baseSrc='../../../../assets/uploads/profilePics/';
+
     profilePicsrc= this.baseSrc + 'default.webp';
 
 
