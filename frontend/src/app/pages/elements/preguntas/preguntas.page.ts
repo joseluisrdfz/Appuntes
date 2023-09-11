@@ -1,10 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { IonModal } from '@ionic/angular';
+import { IonModal, ModalController } from '@ionic/angular';
 import { filter } from 'rxjs/operators';
 import { PreguntasService } from 'src/app/services/preguntas.service';
 import { OverlayEventDetail } from '@ionic/core/components';
 import { Subscription } from 'rxjs';
+import { AnswerModalComponent } from 'src/app/modals/answer-modal/answer-modal.component';
 
 @Component({
   selector: 'app-preguntas',
@@ -17,11 +18,6 @@ export class PreguntasPage implements OnInit {
 
       routerSubs : Subscription | undefined = undefined;
 
-      @ViewChild(IonModal) modal: IonModal | undefined;
-
-      message = 'This modal example uses triggers to automatically open a modal when the button is clicked.';
-      answer: string = '';
-
       id_pregunta : string = '';
       n_respuestas : string = '';
       profilePic : string = '';
@@ -33,7 +29,7 @@ export class PreguntasPage implements OnInit {
 
       respuestas : any[] = [];
 
-      constructor(private router: Router, private route : ActivatedRoute, private preguntasService : PreguntasService) {
+      constructor(private router: Router, private route : ActivatedRoute, private preguntasService : PreguntasService, private modalCtrl: ModalController) {
         //console.log(this.router.getCurrentNavigation())
 
       }
@@ -69,29 +65,6 @@ export class PreguntasPage implements OnInit {
       ngOnDestroy(){
         console.log('me voy de la pregunta', this.id_pregunta)
         this.routerSubs?.unsubscribe();
-      }
-
-      cancel() {
-        this.modal?.dismiss(null, 'cancel');
-      }
-
-      confirm() {
-        this.modal?.dismiss(this.answer, 'confirm');
-      }
-
-      onWillDismiss(event: Event) {
-        const ev = event as CustomEvent<OverlayEventDetail<string>>;
-        if (ev.detail.role === 'confirm') {
-          let auxform = {
-            texto_respuesta : this.answer
-          }
-          this.preguntasService.postRespuestaOnPreguntaId(this.id_pregunta,auxform).subscribe((res :any)=>{
-            console.log(res)
-            this.answer = '';
-            this.reload();
-            //this.goto(res['insertID'])
-          })
-        }
       }
 
 
@@ -175,6 +148,22 @@ export class PreguntasPage implements OnInit {
 
       }
 
+    async openAnswer() {
+      const modal = await this.modalCtrl.create({
+        component: AnswerModalComponent
+      });
+      modal.present();
 
-  }
+      const { data, role } = await modal.onWillDismiss();
+
+      if (role === 'confirm') {
+       let auxform = {
+          texto_respuesta : data
+        }
+        this.preguntasService.postRespuestaOnPreguntaId(this.id_pregunta,auxform).subscribe((res :any)=>{
+          this.reload();
+        })
+      }
+    }
+}
 

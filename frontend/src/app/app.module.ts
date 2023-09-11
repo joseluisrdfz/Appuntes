@@ -14,10 +14,16 @@ import { IonicStorageModule } from '@ionic/storage-angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
+import { ApuntesModalComponent } from './modals/apuntes-modal/apuntes-modal.component';
+import { QuestionModalComponent } from './modals/question-modal/question-modal.component';
+
+import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { AnswerModalComponent } from './modals/answer-modal/answer-modal.component';
+
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  declarations: [AppComponent],
-  imports: [BrowserModule, IonicStorageModule.forRoot(), IonicModule.forRoot(), AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule],
+  declarations: [AppComponent, ApuntesModalComponent, QuestionModalComponent, AnswerModalComponent ],
+  imports: [BrowserModule, IonicStorageModule.forRoot(), IonicModule.forRoot(), AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, PdfViewerModule],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })

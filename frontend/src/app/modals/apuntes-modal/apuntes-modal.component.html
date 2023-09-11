@@ -1,0 +1,11 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>{{filename}}</ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="cancel()" [strong]="true">Cerrar</ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+    <pdf-viewer [src]="'../../../assets/uploads/apuntes/'  + filename" [render-text]="true" [original-size]="false" [zoom-scale]="'page-fit'" [show-borders]="true" style="width: 90vw; height: 90vh"></pdf-viewer>
+</ion-content>

@@ -1,12 +1,14 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Route, Router } from '@angular/router';
-import { IonModal } from '@ionic/angular';
+import { IonModal, ModalController } from '@ionic/angular';
 import { filter } from 'rxjs/operators';
 import { ApuntesService } from 'src/app/services/apuntes.service';
 import { OverlayEventDetail } from '@ionic/core/components';
 import { Subscription } from 'rxjs';
 import { PreguntasService } from 'src/app/services/preguntas.service';
 import { Form } from '@angular/forms';
+import { ApuntesModalComponent } from 'src/app/modals/apuntes-modal/apuntes-modal.component';
+import { QuestionModalComponent } from 'src/app/modals/question-modal/question-modal.component';
 
 @Component({
   selector: 'app-apuntes',
@@ -14,34 +16,6 @@ import { Form } from '@angular/forms';
   styleUrls: ['./apuntes.page.scss'],
 })
 export class ApuntesPage implements OnInit {
-
-  @ViewChild(IonModal) modal: IonModal | undefined;
-
-  message = 'This modal example uses triggers to automatically open a modal when the button is clicked.';
-  question: string = '';
-
-  cancel() {
-    this.modal?.dismiss(null, 'cancel');
-  }
-
-  confirm() {
-    this.modal?.dismiss(this.question, 'confirm');
-  }
-
-  onWillDismiss(event: Event) {
-    const ev = event as CustomEvent<OverlayEventDetail<string>>;
-    if (ev.detail.role === 'confirm') {
-      let auxform = {
-        texto_pregunta : this.question
-      }
-      this.preguntasService.postPreguntaApuntes(this.id_apuntes,auxform).subscribe((res :any)=>{
-        console.log(res)
-        this.question = '';
-        this.goto('/preguntas/' + res['insertID'])
-      })
-    }
-  }
-
 
     previousUrl: string = '';
     currentUrl: string = '';
@@ -72,7 +46,7 @@ export class ApuntesPage implements OnInit {
     routerSubs : Subscription | undefined = undefined;
 
     id_apuntes : string = '';
-    constructor(private router: Router, private route : ActivatedRoute, private apuntesService : ApuntesService, private preguntasService : PreguntasService) {
+    constructor(private router: Router, private route : ActivatedRoute, private apuntesService : ApuntesService, private preguntasService : PreguntasService, private modalCtrl: ModalController) {
       //console.log(this.router.getCurrentNavigation())
 
     }
@@ -196,7 +170,33 @@ reload(){
     }
 
 
+    async openModal() {
+      const modal = await this.modalCtrl.create({
+        component: ApuntesModalComponent,
+        componentProps: { 'filename' : this.filename}
+      });
+      modal.present();
 
+      const { data, role } = await modal.onWillDismiss();
 
+    }
 
-}
+    async openQuestion() {
+      const modal = await this.modalCtrl.create({
+        component: QuestionModalComponent
+      });
+      modal.present();
+
+      const { data, role } = await modal.onWillDismiss();
+
+      if (role === 'confirm') {
+       let auxform = {
+          texto_pregunta : data
+        }
+        this.preguntasService.postPreguntaApuntes(this.id_apuntes,auxform).subscribe((res :any)=>{
+          console.log(res)
+          this.goto('/preguntas/' + res['insertID'])
+        })
+      }
+      }
+    }
